@@ -2,12 +2,16 @@ Cairo
 GTK::Compat::Types
 GTK::Compat::Value
 GTK::Raw::Types
+GTK::Raw::Utils
 GTK::Roles::Properties
 GTK::Roles::Signals::Generic
 Pango::FontDescription
 Pango::Raw::Types
 Goo::Raw::Types
+Goo::Raw::Enums
 Goo::Raw::CanvasItemModel
 Goo::Raw::CanvasItemSimple
+Goo::Raw::Rect
 Goo::Roles::CanvasItemModel
 Goo::CanvasItemSimple
+Goo::Rect

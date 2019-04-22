@@ -14,6 +14,7 @@ class GooCanvas          is repr('CPointer') is export does GTK::Roles::Pointers
 class GooCanvasItem      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItemModel is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasLineDash  is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasRect      is repr('CPointer') is export does GTK::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 

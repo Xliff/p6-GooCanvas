@@ -21,6 +21,10 @@ class Goo::CanvasItemSimple {
   has GooCanvasItemSimple $!gc;
 
   submethod BUILD (:$simplecanvas) {
+    self.setCanvasItem($simplecanvas);
+  }
+
+  method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
     self!setObject($!gc = $simplecanvas);
   }
 
