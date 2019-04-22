@@ -3,6 +3,8 @@ use v6.c;
 use NativeCall;
 
 use Cairo;
+
+use GTK::Compat::Types;
 use Goo::Raw::Types;
 
 unit package Goo::Raw::CanvasItemSimple;

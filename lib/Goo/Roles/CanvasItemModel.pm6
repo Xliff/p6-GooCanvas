@@ -2,6 +2,9 @@ use v6.c;
 
 use GTK::Compat::Types;
 use Goo::Raw::Types;
+use Goo::Raw::Enums;
+
+use GTK::Raw::Utils;
 
 use Goo::Raw::CanvasItemModel;
 
@@ -10,7 +13,7 @@ use GTK::Roles::Signals::Generic;
 
 use GTK::Compat::Value;
 
-role Goo::Roles::CanvasItemModel;
+role Goo::Roles::CanvasItemModel {
   also does GTK::Roles::Properties;
   also does GTK::Roles::Signals::Generic;
 
@@ -76,23 +79,6 @@ role Goo::Roles::CanvasItemModel;
     );
   }
 
-  # Type: GooCanvasItemModel
-  method parent is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
-    Proxy.new(
-      FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('parent', $gv)
-        );
-        nativecast(GooCanvasItemModel, $gv.object);
-      },
-      STORE => -> $, GoolCanvasItemModel() $val is copy {
-        $gv.object = $val;
-        self.prop_set('parent', $gv);
-      }
-    );
-  }
-
   # Type: GooCanvasPointerEvents
   method pointer-events is rw  {
     my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
@@ -152,7 +138,7 @@ role Goo::Roles::CanvasItemModel;
         $gv = GTK::Compat::Value.new(
           self.prop_get('transform', $gv)
         );
-        Cairo::Pattern.new( nativecast(cairo_pattern_t, $gv.pointer) );
+        Cairo::Pattern.new( cast(cairo_pattern_t, $gv.pointer) );
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val = $val.pattern if $val ~~ Cairo::Pattern;
@@ -344,12 +330,12 @@ role Goo::Roles::CanvasItemModel;
   }
 
   method skew_x (Num() $degrees, Num() $cx, Num() $cy) {
-    my gdouoble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+    my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
     goo_canvas_item_model_skew_x($!im, $d, $cxx, $cyy);
   }
 
   method skew_y (Num() $degrees, Num() $cx, Num() $cy) {
-    my gdouoble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+    my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
     goo_canvas_item_model_skew_y($!im, $degrees, $cx, $cy);
   }
 

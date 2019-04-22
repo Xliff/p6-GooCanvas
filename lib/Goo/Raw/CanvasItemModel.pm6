@@ -25,7 +25,7 @@ sub goo_canvas_item_model_animate (
   gboolean $absolute,
   gint $duration,
   gint $step_time,
-  GooCanvasAnimateType $type
+  uint32 $type                      # GooCanvasAnimateType $type
 )
   is native(goo)
   is export

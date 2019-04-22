@@ -5,6 +5,9 @@ use Cairo;
 use Pango::Raw::Types;
 use GTK::Compat::Types;
 use Goo::Raw::Types;
+use Goo::Raw::Enums;
+
+use GTK::Raw::Utils;
 
 use Goo::Raw::CanvasItemSimple;
 
@@ -15,10 +18,10 @@ use GTK::Roles::Properties;
 class Goo::CanvasItemSimple {
   also does GTK::Roles::Properties;
 
-  has GooCanvasItemSimple $!gcs;
+  has GooCanvasItemSimple $!gc;
 
   submethod BUILD (:$simplecanvas) {
-    self!setObject($!gcs = $simplecanvas);
+    self!setObject($!gc = $simplecanvas);
   }
 
   # Type: GooCairoAntialias
@@ -108,7 +111,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
-        nativecast(cairo_pattern_t, $gv.pointer);
+        cast(cairo_pattern_t, $gv.pointer);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val = $val.pattern if $val ~~ Cairo::Pattern;
@@ -140,7 +143,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('fill-rule', $gv)
         );
-        cairo_line_fill_t( $gv.uint );
+        cairo_fill_rule_t( $gv.uint );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -175,7 +178,7 @@ class Goo::CanvasItemSimple {
           self.prop_get('font-desc', $gv)
         );
         Pango::FontDescription(
-          nativecast(PangoFontDescription, $gv.pointer)
+          cast(PangoFontDescription, $gv.pointer)
         )
       },
       STORE => -> $, PangoFontDescription() $val is copy {
@@ -227,7 +230,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('line-dash', $gv)
         );
-        nativecast(GooCanvasLineDash, $gv.object);
+        cast(GooCanvasLineDash, $gv.object);
       },
       STORE => -> $, GooCanvasLineDash() $val is copy {
         $gv.object = $val;
@@ -343,7 +346,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
-        nativecast(GooCairoPattern, $gv.pointer);
+        cast(GooCairoPattern, $gv.pointer);
       },
       STORE => -> $, GooCairoPattern $val is copy {
         $gv.pointer = $val;

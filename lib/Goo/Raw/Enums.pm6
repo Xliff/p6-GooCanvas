@@ -1,0 +1,41 @@
+use v6.c;
+
+use Cairo;
+
+unit package Goo::Raw::Enums;
+
+constant cairo_fill_rule_t   is export := Cairo::FillRule;
+constant cairo_hint_metric_t is export := Cairo::HintMetrics;
+constant cairo_line_cap_t    is export := Cairo::LineCap;
+constant cairo_line_join_t   is export := Cairo::LineJoin;
+
+our enum GooCanvasItemVisibility is export (
+    GOO_CANVAS_ITEM_HIDDEN =>  0,
+    GOO_CANVAS_ITEM_INVISIBLE =>  1,
+    GOO_CANVAS_ITEM_VISIBLE =>  2,
+    GOO_CANVAS_ITEM_VISIBLE_ABOVE_THRESHOLD =>  3,
+);
+
+our enum GooCanvasAnimateType is export <
+    GOO_CANVAS_ANIMATE_FREEZE
+    GOO_CANVAS_ANIMATE_RESET
+    GOO_CANVAS_ANIMATE_RESTART
+    GOO_CANVAS_ANIMATE_BOUNCE
+>;
+
+our enum GooCanvasPointerEvents is export (
+  GOO_CANVAS_EVENTS_NONE                => 0,
+  GOO_CANVAS_EVENTS_VISIBLE_MASK        => 1 +< 0,
+  GOO_CANVAS_EVENTS_PAINTED_MASK        => 1 +< 1,
+  GOO_CANVAS_EVENTS_FILL_MASK           => 1 +< 2,
+  GOO_CANVAS_EVENTS_STROKE_MASK         => 1 +< 3,
+
+  GOO_CANVAS_EVENTS_VISIBLE_PAINTED     => 15,     # GOO_CANVAS_EVENTS_VISIBLE_MASK | GOO_CANVAS_EVENTS_PAINTED_MASK | GOO_CANVAS_EVENTS_FILL_MASK | GOO_CANVAS_EVENTS_STROKE_MASK,
+  GOO_CANVAS_EVENTS_VISIBLE_FILL        => 5,      # GOO_CANVAS_EVENTS_VISIBLE_MASK | GOO_CANVAS_EVENTS_FILL_MASK,
+  GOO_CANVAS_EVENTS_VISIBLE_STROKE      => 9,      # GOO_CANVAS_EVENTS_VISIBLE_MASK | GOO_CANVAS_EVENTS_STROKE_MASK,
+  GOO_CANVAS_EVENTS_VISIBLE             => 13,     # GOO_CANVAS_EVENTS_VISIBLE_MASK | GOO_CANVAS_EVENTS_FILL_MASK | GOO_CANVAS_EVENTS_STROKE_MASK,
+  GOO_CANVAS_EVENTS_PAINTED             => 14,     # GOO_CANVAS_EVENTS_PAINTED_MASK | GOO_CANVAS_EVENTS_FILL_MASK | GOO_CANVAS_EVENTS_STROKE_MASK,
+  GOO_CANVAS_EVENTS_FILL                => 1 +< 2, # GOO_CANVAS_EVENTS_FILL_MASK,
+  GOO_CANVAS_EVENTS_STROKE              => 1 +< 3, # GOO_CANVAS_EVENTS_STROKE_MASK,
+  GOO_CANVAS_EVENTS_ALL                 => 12      # GOO_CANVAS_EVENTS_FILL_MASK | GOO_CANVAS_EVENTS_STROKE_MASK
+);

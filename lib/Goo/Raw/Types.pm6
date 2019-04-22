@@ -8,13 +8,26 @@ use GTK::Raw::Types;
 
 unit package Goo::Raw::Types;
 
+constant goo is export = 'goocanvas-2.0',v9;
+
 class GooCanvas          is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItem      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItemModel is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasLineDash  is repr('CPointer') is export does GTK::Roles::Pointers { }
 
-my subset BooleanValue where True | False | 1 | 0;
+our subset BooleanValue is export where True | False | 1 | 0;
 
-constant cairo_matrix_t is export := Cairo::cairo_matrix_t;
+constant cairo_matrix_t   is export := Cairo::cairo_matrix_t;
+constant cairo_pattern_t  is export := Cairo::cairo_pattern_t;
+
+our subset CairoContextObject is export of Mu
+  where Cairo::Context | cairo_t;
+our subset CairoPatternObject is export of Mu
+  where Cairo::Pattern | cairo_pattern_t;
+our subset CairoMatrixObject  is export of Mu
+  where Cairo::Matrix | cairo_matrix_t;
+
+constant GooCairoPattern is export := CairoPatternObject;
 
 class GooCanvasBounds is repr('CStruct') is export does GTK::Roles::Pointers {
   has gdouble $.x1 is rw;
