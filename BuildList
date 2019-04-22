@@ -4,6 +4,7 @@ GTK::Compat::Value
 GTK::Raw::Types
 GTK::Raw::Utils
 GTK::Roles::Properties
+GTK::Roles::Protection
 GTK::Roles::Signals::Generic
 Pango::FontDescription
 Pango::Raw::Types
@@ -12,6 +13,8 @@ Goo::Raw::Enums
 Goo::Raw::CanvasItemModel
 Goo::Raw::CanvasItemSimple
 Goo::Raw::Rect
+Goo::Raw::Text
 Goo::Roles::CanvasItemModel
 Goo::CanvasItemSimple
 Goo::Rect
+Goo::Text

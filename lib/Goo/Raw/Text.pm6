@@ -14,7 +14,7 @@ sub goo_canvas_text_new (
   gdouble       $x,
   gdouble       $y,
   gdouble       $width,
-  uint32        $anchor                  # GooCanvasAnchorType
+  uint32        $anchor,                 # GooCanvasAnchorType
   Str
 )
   returns GooCanvasText

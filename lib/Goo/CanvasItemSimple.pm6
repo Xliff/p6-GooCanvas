@@ -13,6 +13,8 @@ use Goo::Raw::CanvasItemSimple;
 
 use GTK::Compat::Value;
 use Pango::FontDescription;
+
+use GTK::Roles::Protection;
 use GTK::Roles::Properties;
 
 class Goo::CanvasItemSimple {
@@ -21,10 +23,12 @@ class Goo::CanvasItemSimple {
   has GooCanvasItemSimple $!gc;
 
   submethod BUILD (:$simplecanvas) {
+    self.ADD-PREFIX('Goo::');
     self.setCanvasItem($simplecanvas);
   }
 
   method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
+    self.IS-PROTECTED;
     self!setObject($!gc = $simplecanvas);
   }
 
