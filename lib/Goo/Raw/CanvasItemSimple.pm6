@@ -3,9 +3,9 @@ use v6.c;
 use NativeCall;
 
 use Cairo;
-use GooCanvas::Raw::Types;
+use Goo::Raw::Types;
 
-unit package GooCanvas::Raw::CanvasItemSimple;
+unit package Goo::Raw::CanvasItemSimple;
 
 sub goo_canvas_item_model_simple_get_type ()
   returns GType

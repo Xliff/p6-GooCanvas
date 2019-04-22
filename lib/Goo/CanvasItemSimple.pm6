@@ -4,18 +4,15 @@ use Cairo;
 
 use Pango::Raw::Types;
 use GTK::Compat::Types;
-use GooCanvas::Raw::Types;
+use Goo::Raw::Types;
 
-use GooCanvas::Raw::CanvasItemSimple;
+use Goo::Raw::CanvasItemSimple;
 
 use GTK::Compat::Value;
 use Pango::FontDescription;
 use GTK::Roles::Properties;
 
-subset CairoContextObject of Mu where Cairo::Context | cairo_t;
-subset CairoPatternObject of Mu where Cairo::Pattern | cairo_pattern_t;
-
-class GooCanvas::CanvasItemSimple {
+class Goo::CanvasItemSimple {
   also does GTK::Roles::Properties;
 
   has GooCanvasItemSimple $!gcs;

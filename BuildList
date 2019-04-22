@@ -1,0 +1,13 @@
+Cairo
+GTK::Compat::Types
+GTK::Compat::Value
+GTK::Raw::Types
+GTK::Roles::Properties
+GTK::Roles::Signals::Generic
+Pango::FontDescription
+Pango::Raw::Types
+Goo::Raw::Types
+Goo::Raw::CanvasItemModel
+Goo::Raw::CanvasItemSimple
+Goo::Roles::CanvasItemModel
+Goo::CanvasItemSimple
