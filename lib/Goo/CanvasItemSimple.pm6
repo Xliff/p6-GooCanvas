@@ -15,21 +15,23 @@ use GTK::Compat::Value;
 use Pango::FontDescription;
 
 use GTK::Roles::Protection;
-use GTK::Roles::Properties;
+use Goo::Roles::CanvasItem;
 
 class Goo::CanvasItemSimple {
-  also does GTK::Roles::Properties;
+  also does GTK::Roles::Protection;
+  also does Goo::Roles::CanvasItem;
 
   has GooCanvasItemSimple $!gc;
 
   submethod BUILD (:$simplecanvas) {
     self.ADD-PREFIX('Goo::');
-    self.setCanvasItem($simplecanvas);
+    self.setSimpleCanvasItem($simplecanvas) if $simplecanvas.defined;
   }
 
   method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
     self.IS-PROTECTED;
     self!setObject($!gc = $simplecanvas);
+    $!ci = cast(GooCanvasItem, $!gc);
   }
 
   # Type: GooCairoAntialias
@@ -71,7 +73,8 @@ class Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "'clip-path' does not allow reading"
+        warn "'clip-path' does not allow reading" if $DEBUG;
+        ''
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -85,7 +88,8 @@ class Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "'fill-color' does not allow reading"
+        warn "'fill-color' does not allow reading" if $DEBUG;
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -134,7 +138,8 @@ class Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
-        warn "'fill-pixbuf' does not allow reading"
+        warn "'fill-pixbuf' does not allow reading" if $DEBUG;
+        0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;
@@ -320,7 +325,8 @@ class Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "'stroke-color' does not allow reading"
+        warn "'stroke-color' does not allow reading" if $DEBUG;
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -368,7 +374,8 @@ class Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
-        warn "'stroke-pixbuf' does not allow reading"
+        warn "'stroke-pixbuf' does not allow reading" if $DEBUG;
+        0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;

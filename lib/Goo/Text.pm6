@@ -31,7 +31,9 @@ class Goo::Text is Goo::CanvasItemSimple {
   ) {
     my gdouble ($xx, $yy, $w) = ($x, $y, $w);
     my guint $a = resolve-uint($anchor);
-    self.bless( text => goo_canvas_text_new($parent, $xx, $yy, $w, $a) );
+    self.bless(
+      text => goo_canvas_text_new($parent, $text, $xx, $yy, $w, $a, Str)
+    );
   }
 
   # Type: PangoAlignment

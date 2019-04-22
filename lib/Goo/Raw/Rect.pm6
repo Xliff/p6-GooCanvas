@@ -16,6 +16,7 @@ sub goo_canvas_rect_new (
   Str
 )
   returns GooCanvasRect
+  is native(goo)
   is export
   { * }
 

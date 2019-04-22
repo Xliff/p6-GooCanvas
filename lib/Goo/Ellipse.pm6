@@ -1,41 +1,66 @@
 use v6.c;
 
+use NativeCall;
+
 use GTK::Compat::Types;
 use Goo::Raw::Types;
 
-use Goo::Raw::Rect;
-
-use GTK::Compat::Value;
-
 use Goo::CanvasItemSimple;
 
-our subset GooRectAncestry
-  where GooCanvasRect | GooCanvasItem;
+class Goo::Ellipse is Goo::CanvasItemSimple {
+  has GooCanvasEllipse $!e;
 
-class Goo::Rect is Goo::CanvasItemSimple {
-  has GooCanvasRect $!r;
+  submethod BUILD (:$ellipse) {
+    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!e = $ellipse) )
+  }
 
-  submethod BUILD (:$rect) {
-    self.setSimpleCanvasItem(
-      cast(
-        GooCanvasItemSimple,
-        $!r = cast(GooCanvasRect, $rect)
-      )
+  multi method new (GooCanvasEllipse $ellipse) {
+    self.bless( :$ellipse );
+  }
+  multi method new (
+    GooCanvasItemModel() $parent,
+    Num() $center_x,
+    Num() $center_y,
+    Num() $radius_x,
+    Num() $radius_y
+  ) {
+    my gdouble ($cx, $cy, $rx, $ry) =
+      ($center_x, $center_y, $radius_x, $radius_y);
+    self.bless( ellipse => self.bless($parent, $cx, $cy, $rx, $ry) );
+  }
+
+  # Type: gdouble
+  method center-x is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('center-x', $gv)
+        );
+        $gv.double;
+      },
+      STORE => -> $, Num() $val is copy {
+        $gv.double = $val;
+        self.prop_set('center-x', $gv);
+      }
     );
   }
 
-  multi method new (GooRectAncestry $rect) {
-    self.bless(:$rect);
-  }
-  multi method new (
-    GooCanvasItem() $parent,
-    Num() $x,
-    Num() $y,
-    Num() $width,
-    Num() $height,
-  ) {
-    my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
-    self.bless( rect => goo_canvas_rect_new($parent, $xx, $yy, $w, $h, Str) );
+  # Type: gdouble
+  method center-y is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('center-y', $gv)
+        );
+        $gv.double;
+      },
+      STORE => -> $, Num() $val is copy {
+        $gv.double = $val;
+        self.prop_set('center-y', $gv);
+      }
+    );
   }
 
   # Type: gdouble
@@ -142,12 +167,37 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   method get_type {
     state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_rect_get_type, $n, $t );
+    unstable_get_type( self.^name, &goo_canvas_ellipse_get_type, $n, $t );
   }
 
   method model_get_type {
     state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_rect_model_get_type, $n, $t );
+    unstable_get_type( self.^name, &goo_canvas_ellipse_model_get_type, $n, $t );
   }
 
 }
+
+sub goo_canvas_ellipse_model_new (
+  GooCanvasItemModel $parent,
+  gdouble            $center_x,
+  gdouble            $center_y,
+  gdouble            $radius_x,
+  gdouble            $radius_y,
+  Str
+)
+  returns GooCanvasEllipse
+  is native(goo)
+  is export
+  { * }
+
+sub goo_canvas_ellipse_get_type ()
+  returns GType
+  is native(goo)
+  is export
+  { * }
+
+sub goo_canvas_ellipse_model_get_type ()
+  returns GType
+  is native(goo)
+  is export
+  { * }

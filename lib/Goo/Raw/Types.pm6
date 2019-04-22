@@ -11,16 +11,19 @@ unit package Goo::Raw::Types;
 constant goo is export = 'goocanvas-2.0',v9;
 
 class GooCanvas          is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasEllipse   is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItem      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItemModel is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasLineDash  is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasRect      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasText      is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasWidget    is repr('CPointer') is export does GTK::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 
 constant cairo_matrix_t   is export := Cairo::cairo_matrix_t;
 constant cairo_pattern_t  is export := Cairo::cairo_pattern_t;
+constant cairo_t          is export := Cairo::cairo_t;
 
 our subset CairoContextObject is export of Mu
   where Cairo::Context | cairo_t;
