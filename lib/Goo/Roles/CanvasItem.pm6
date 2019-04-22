@@ -22,7 +22,7 @@ role Goo::Roles::CanvasItem {
   # Is originally:
   # GooCanvasItem, gboolean, gpointer --> void
   method animation-finished {
-    self.connect-bool($!ci, 'animation-finished');
+    self.connect-uint($!ci, 'animation-finished');
   }
 
   # Is originally:

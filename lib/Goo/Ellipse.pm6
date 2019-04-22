@@ -18,7 +18,7 @@ class Goo::Ellipse is Goo::CanvasItemSimple {
     self.bless( :$ellipse );
   }
   multi method new (
-    GooCanvasItemModel() $parent,
+    GooCanvasItem() $parent,
     Num() $center_x,
     Num() $center_y,
     Num() $radius_x,
@@ -26,7 +26,9 @@ class Goo::Ellipse is Goo::CanvasItemSimple {
   ) {
     my gdouble ($cx, $cy, $rx, $ry) =
       ($center_x, $center_y, $radius_x, $radius_y);
-    self.bless( ellipse => self.bless($parent, $cx, $cy, $rx, $ry) );
+    self.bless(
+      ellipse => goo_canvas_ellipse_new($parent, $cx, $cy, $rx, $ry, Str)
+    );
   }
 
   # Type: gdouble
@@ -176,6 +178,19 @@ class Goo::Ellipse is Goo::CanvasItemSimple {
   }
 
 }
+
+sub goo_canvas_ellipse_new (
+  GooCanvasItem $parent,
+  gdouble       $center_x,
+  gdouble       $center_y,
+  gdouble       $radius_x,
+  gdouble       $radius_y,
+  Str
+)
+  returns GooCanvasEllipse
+  is native(goo)
+  is export
+  { * }
 
 sub goo_canvas_ellipse_model_new (
   GooCanvasItemModel $parent,
