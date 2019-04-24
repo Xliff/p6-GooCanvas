@@ -106,9 +106,9 @@ role Goo::Roles::CanvasItem {
   method canvas is rw {
     Proxy.new(
       FETCH => sub ($) {
-        goo_canvas_item_get_canvas($!ci);
+        Goo::Canvas.new( goo_canvas_item_get_canvas($!ci) );
       },
-      STORE => sub ($, $canvas is copy) {
+      STORE => sub ($, GooCanvas() $canvas is copy) {
         goo_canvas_item_set_canvas($!ci, $canvas);
       }
     );

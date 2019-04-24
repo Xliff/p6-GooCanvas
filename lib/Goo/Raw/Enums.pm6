@@ -5,7 +5,6 @@ use Cairo;
 unit package Goo::Raw::Enums;
 
 constant cairo_fill_rule_t   is export := Cairo::FillRule;
-constant cairo_hint_metric_t is export := Cairo::HintMetrics;
 constant cairo_line_cap_t    is export := Cairo::LineCap;
 constant cairo_line_join_t   is export := Cairo::LineJoin;
 

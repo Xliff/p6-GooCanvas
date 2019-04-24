@@ -58,10 +58,13 @@ class Goo::Canvas is GTK::Container {
   }
 
   method Goo::Raw::Types::GooCanvas
-    #is also<GooCanvas>
+    #is also<Canvas>
   { $!gc }
 
-  method new {
+  multi method new (GooCanvas $canvas) {
+    self.bless(:$canvas);
+  }
+  multi method new {
     self.bless( canvas => goo_canvas_new() );
   }
 

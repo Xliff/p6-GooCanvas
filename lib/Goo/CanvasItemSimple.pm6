@@ -209,7 +209,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
-        cairo_hint_metric_t( $gv.uint );
+        cairo_hint_metrics_t( $gv.uint );
       },
       STORE => -> $, Int()  $val is copy {
         $gv.uint = $val;
@@ -237,16 +237,16 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCanvasLineDash
   method line-dash is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GTK::Compat::Value.new(
           self.prop_get('line-dash', $gv)
         );
-        cast(GooCanvasLineDash, $gv.object);
+        cast(GooCanvasLineDash, $gv.pointer);
       },
-      STORE => -> $, GooCanvasLineDash() $val is copy {
-        $gv.object = $val;
+      STORE => -> $, GooCanvasLineDash $val is copy {
+        $gv.pointer = $val;
         self.prop_set('line-dash', $gv);
       }
     );

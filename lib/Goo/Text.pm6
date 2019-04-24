@@ -18,6 +18,12 @@ class Goo::Text is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!t = $text) )
   }
 
+  method Goo::Raw::Types::GooCanvasText
+    #is also<Text>
+  { $!t }
+
+  proto method new (|) { * }
+
   multi method new (GooCanvasText $text) {
     self.bless($text);
   }

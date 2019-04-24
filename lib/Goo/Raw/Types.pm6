@@ -10,14 +10,17 @@ unit package Goo::Raw::Types;
 
 constant goo is export = 'goocanvas-2.0',v9;
 
-class GooCanvas          is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasEllipse   is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasItem      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasItemModel is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasLineDash  is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasRect      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasText      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasWidget    is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvas           is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasEllipse    is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasGroup      is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasItem       is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasItemSimple is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasItemModel  is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasRect       is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasPolyline   is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasText       is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasTable      is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasWidget     is repr('CPointer') is export does GTK::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 
@@ -41,9 +44,22 @@ class GooCanvasBounds is repr('CStruct') is export does GTK::Roles::Pointers {
   has gdouble $.y2 is rw;
 }
 
+class GooCanvasPoints is repr('CStruct') is export does GTK::Roles::Pointers {
+  has CArray[num64] $.coords;
+  has gint          $num_points;
+  has gint          $ref_count;
+}
+
 class GooCanvasStyle is repr('CStruct') is export does GTK::Roles::Pointers {
   has GooCanvasStyle $.parent;
   has GArray         $.properties;
+}
+
+class GooCanvasLineDash is repr('CStruct') is export does GTK::Roles::Pointers {
+  has gint    $.ref_count;
+  has gint    $.num_dashes;
+  has gdouble $.dashes;
+  has gdouble $.dash_offset;
 }
 
 my enum CanvasDataBitmask (
@@ -158,46 +174,46 @@ my enum SimpleCanvasBitmask (
   SIMPLE_NEED_ENTIRE   => 0
 );
 
-class GooCanvasItemModelSimple is repr('CStruct') is export does GTK::Roles::Pointers {
-  HAS GObject                 $!parent_object;
-  has GooCanvasItemModel      $.parent;
-  HAS GooCanvasItemSimpleData $.simple_data;
-  has Str                     $!title;
-  has Str                     $!description;
-};
+# class GooCanvasItemModelSimple is repr('CStruct') is export does GTK::Roles::Pointers {
+#   HAS GObject                 $!parent_object;
+#   has GooCanvasItemModel      $.parent;
+#   HAS GooCanvasItemSimpleData $.simple_data;
+#   has Str                     $!title;
+#   has Str                     $!description;
+# };
 
-class GooCanvasItemSimple is repr('CStruct') is export does GTK::Roles::Pointers {
-  HAS GObject                  $!parent_object;
-
-  has GooCanvas                $.canvas;
-  has GooCanvasItem            $.parent;
-  has GooCanvasItemModelSimple $.model;
-  has GooCanvasItemSimpleData  $.simple_data;
-  has GooCanvasBounds          $.bounds;
-
-  #guint need_update			               : 1;
-  #guint need_entire_subtree_update      : 1;
-  has guint                    $!mask;
-
-  has gpointer                 $.priv;
-
-  method need_update is rw {
-    Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_UPDATE) },
-      STORE => -> $, BooleanValue $val {
-        $val ??
-          ( $!mask +|=    1 +< SIMPLE_NEED_UPDATE  ) !!
-          ( $!mask +&= +^(1 +< SIMPLE_NEED_UPDATE) )
-      }
-  }
-
-  method need_entire_subtree_update is rw {
-    Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_ENTIRE) },
-      STORE => -> $, BooleanValue $val {
-        $val ??
-          ( $!mask +|=    1 +< SIMPLE_NEED_ENTIRE  ) !!
-          ( $!mask +&= +^(1 +< SIMPLE_NEED_ENTIRE) )
-      }
-  }
-};
+# class GooCanvasItemSimple is repr('CStruct') is export does GTK::Roles::Pointers {
+#   HAS GObject                  $!parent_object;
+#
+#   has GooCanvas                $.canvas;
+#   has GooCanvasItem            $.parent;
+#   has GooCanvasItemModelSimple $.model;
+#   has GooCanvasItemSimpleData  $.simple_data;
+#   has GooCanvasBounds          $.bounds;
+#
+#   #guint need_update			               : 1;
+#   #guint need_entire_subtree_update      : 1;
+#   has guint                    $!mask;
+#
+#   has gpointer                 $.priv;
+#
+#   method need_update is rw {
+#     Proxy.new:
+#       FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_UPDATE) },
+#       STORE => -> $, BooleanValue $val {
+#         $val ??
+#           ( $!mask +|=    1 +< SIMPLE_NEED_UPDATE  ) !!
+#           ( $!mask +&= +^(1 +< SIMPLE_NEED_UPDATE) )
+#       }
+#   }
+#
+#   method need_entire_subtree_update is rw {
+#     Proxy.new:
+#       FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_ENTIRE) },
+#       STORE => -> $, BooleanValue $val {
+#         $val ??
+#           ( $!mask +|=    1 +< SIMPLE_NEED_ENTIRE  ) !!
+#           ( $!mask +&= +^(1 +< SIMPLE_NEED_ENTIRE) )
+#       }
+#   }
+# };

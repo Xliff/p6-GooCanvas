@@ -24,6 +24,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
     );
   }
 
+  method Goo::Raw::Types::GooCanvasRect
+    #is also<Rect>
+  { $!r }
+
   multi method new (GooRectAncestry $rect) {
     self.bless(:$rect);
   }

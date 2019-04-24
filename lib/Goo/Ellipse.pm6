@@ -14,6 +14,10 @@ class Goo::Ellipse is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!e = $ellipse) )
   }
 
+  method Goo::Raw::Types::GooCanvasEllipse
+    #is also<Ellipse>
+  { $!e }
+
   multi method new (GooCanvasEllipse $ellipse) {
     self.bless( :$ellipse );
   }
