@@ -31,7 +31,7 @@ enum OurShapes (
 
 constant DEFAULT_WIDTH = 2;
 
-my (%data, %globals);
+my (%data, %globals, $app);
 
 sub set_dimension ($arrow, $text, Array $points, $tx, $ty, $dim) {
   my $pts = Goo::Points.new(2);
@@ -43,8 +43,9 @@ sub set_dimension ($arrow, $text, Array $points, $tx, $ty, $dim) {
   %data<canvas>{$text}.y       = $ty;
 }
 
-sub move_drag_box ($x, $y) {
-  %data<canvas><x y> = ($x - 5, $y - 5)
+sub move_drag_box ($box, $x, $y) {
+  %data<canvas>{$box}.x = $x - 5;
+  %data<canvas>{$box}.y = $y - 5;
 }
 
 sub set_arrow_shape {
@@ -74,14 +75,17 @@ sub set_arrow_shape {
 
   # Drag Boxes
   move_drag_box(
+    'width_drag_box',
     LEFT,
     MIDDLE - 10 * $width / 2
   );
   move_drag_box(
+    'shape_a_drag_box',
     RIGHT - 10 * $shape_a * $width,
     MIDDLE
   );
   move_drag_box(
+    'shape_b_c_drag_box',
     RIGHT  - 10 * $shape_b * $width,
     MIDDLE - 10 * $shape_c * $width / 2
   );
@@ -189,7 +193,10 @@ sub button_release ($item, $button_event, $r) {
   $r.r = 1;
 }
 
-sub on_motion ($item, $button_event, $r) {
+sub on_motion ($item, $event, $r) {
+  CATCH { default { .message.say; $app.exit }; }
+
+  my $button_event = cast(GdkEventButton, $event);
   return ($r.r = 0) unless $button_event.state +& GDK_BUTTON1_MASK;
 
   my ($p, $width, $change) = ( +$item.CanvasItem.p, Nil, False );
@@ -320,7 +327,7 @@ LABEL
 }
 
 sub MAIN {
-  my $app = GTK::Application.new( title => 'org.genex.goo.arrow' );
+  $app = GTK::Application.new( title => 'org.genex.goo.arrow' );
 
   $app.activate.tap({
     $app.wait-for-init;
