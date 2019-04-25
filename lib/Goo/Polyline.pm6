@@ -20,7 +20,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
   { $!pl }
 
   submethod BUILD (:$line) {
-      self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!pl = $line) )
+    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!pl = $line) )
   }
 
   multi method new (GooCanvasPolyline $line) {
@@ -154,7 +154,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
 
   # Type: GooCanvasPoints
   method points is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GTK::Compat::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GTK::Compat::Value.new(
@@ -171,13 +171,15 @@ class Goo::Polyline is Goo::CanvasItemSimple {
           when Array {
             my $cv = CArray[num64].new;
             $cv[$_] = $val[$_].Num for ^$val.elems;
-            $val = nativecast(Pointer, $cv);
+            $val = $cv;
+            say "A: { $val.^name }";
           }
           when Goo::Points {
             $val = Goo::Raw::Types::GooCanvasPoints($val);
+            say "GP: $val";
           }
         }
-        $gv.object = $val;
+        $gv.boxed = $val;
         self.prop_set('points', $gv);
       }
     );

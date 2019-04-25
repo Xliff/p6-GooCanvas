@@ -226,7 +226,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('line-cap', $gv)
         );
-        cairo_line_cap_t( $gv.uint );
+        cairo_line_cap_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -260,7 +260,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('line-join', $gv)
         );
-        cairo_line_join_t( $gv.uint );
+        cairo_line_join_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -311,7 +311,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('operator', $gv)
         );
-        cairo_operator_t( $gv.uint );
+        cairo_operator_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;

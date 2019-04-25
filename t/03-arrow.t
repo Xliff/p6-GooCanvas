@@ -33,11 +33,11 @@ constant DEFAULT_WIDTH = 2;
 
 my (%data, %globals);
 
-sub set_dimension ($arrow, $text, @points, $tx, $ty, $dim) {
-  my $points = Goo::Points.new(2);
-  $points.set_points(@points);
+sub set_dimension ($arrow, $text, Array $points, $tx, $ty, $dim) {
+  my $pts = Goo::Points.new(2);
+  $pts.set_points($points);
 
-  %data<canvas>{$arrow}.points = $points;
+  %data<canvas>{$arrow}.points = $pts;
   %data<canvas>{$text}.text    = $dim;
   %data<canvas>{$text}.x       = $tx;
   %data<canvas>{$text}.y       = $ty;
@@ -88,40 +88,46 @@ sub set_arrow_shape {
 
   # Dimensions
   set_dimension('width_arrow', 'width_text',
-    LEFT   - 10,
-    MIDDLE - 10 * $width / 2,
-    LEFT   - 10,
-    MIDDLE + 10 * $width / 2,
+    [
+      LEFT   - 10,
+      MIDDLE - 10 * $width / 2,
+      LEFT   - 10,
+      MIDDLE + 10 * $width / 2
+    ],
     LEFT   - 15,
     MIDDLE,
     $width
   );
 
   set_dimension('shape_a_arrow', 'shape_a_text',
-    RIGHT  - 10 * $shape_a * $width,
-    MIDDLE + 10 * $shape_c * $width / 2 + 10,
-    RIGHT,
-    MIDDLE + 10 * $shape_c * $width / 2 + 10,
+    [
+      RIGHT  - 10 * $shape_a * $width,
+      MIDDLE + 10 * $shape_c * $width / 2 + 10,
+      RIGHT,
+      MIDDLE + 10 * $shape_c * $width / 2 + 10
+    ],
     RIGHT  - 10 * $shape_a * $width / 2,
     MIDDLE + 10 * $shape_c * $width / 2 + 15,
     $shape_a
   );
 
   set_dimension('shape_c_arrow', 'shape_c_text',
-    RIGHT  + 10,
-    MIDDLE - 10 * $shape_c * $width / 2,
-    RIGHT  + 10,
-    MIDDLE + 10 * $shape_c * $width / 2,
+    [
+      RIGHT  + 10,
+      MIDDLE - 10 * $shape_c * $width / 2,
+      RIGHT  + 10,
+      MIDDLE + 10 * $shape_c * $width / 2
+    ],
     RIGHT  + 15,
     MIDDLE,
     $shape_c
   );
 
   # Info
-  %data<canvas><width_info>.text   = "line-witdh: { $width }";
-  %data<canvas><shape_a_info>.text = "arrow-tip-length: { $shape_a } (* line-width)";
-  %data<canvas><shape_b_info>.text = "arrow-length: { $shape_b } (* line-width)";
-  %data<canvas><shape_c_info>.text = "arrow-width: { $shape_c } (* line-width)";
+  %data<canvas><width_info>.text   = "line-witdh: { $width.Int }";
+  %data<canvas><shape_a_info>.text = "arrow-tip-length: { $shape_a.Int } (* line-width)";
+  %data<canvas><shape_b_info>.text = "arrow-length: { $shape_b.Int } (* line-width)";
+  %data<canvas><shape_c_info>.text = "arrow-width: { $shape_c.Int } (* line-width)";
 
   # Sample arrows
   for <sample_1 sample_2 sample_3> {
@@ -129,7 +135,7 @@ sub set_arrow_shape {
       .line-width        = $width;
       .arrow-tip-length  = $shape_a;
       .arrow-length      = $shape_b;
-      .arrow_width       = $shape_c;
+      .arrow-width       = $shape_c;
     }
   }
 }
@@ -257,21 +263,24 @@ LABEL
   %globals<canvas>.set_bounds(0, 0, 500, 350);
   %globals<frame>.add(%globals<canvas>);
 
-  %data<canvas><width>   = DEFAULT_WIDTH;
-  %data<canvas><shape_a> = DEFAULT_SHAPE_A;
-  %data<canvas><shape_b> = DEFAULT_SHAPE_B;
-  %data<canvas><shape_c> = DEFAULT_SHAPE_C;
+  %data<canvas><width>   = DEFAULT_WIDTH.Int;
+  %data<canvas><shape_a> = DEFAULT_SHAPE_A.Int;
+  %data<canvas><shape_b> = DEFAULT_SHAPE_B.Int;
+  %data<canvas><shape_c> = DEFAULT_SHAPE_C.Int;
 
   # Big Arrow
-  (.stroke-color, .end-arrow) = ('mediumseagreen', True)
-    with %data<canvas><big_arrow> = Goo::Polyline.new_line(
+  (.stroke-color, .end-arrow) = ('mediumseagreen', True) with
+    %data<canvas><big_arrow> = Goo::Polyline.new_line(
       $root, LEFT, MIDDLE, RIGHT, MIDDLE
     );
 
   # Arrow outline
   with %data<canvas><outline> = Goo::Polyline.new($root, True, 0) {
     (.stroke-color, .line-width) = ('black', 2);
-    (.line-cap, .line-join) = (CAIRO_LINE_CAP_ROUND, CAIRO_LINE_JOIN_ROUND);
+    # Setting this using the above method generates lots of GTK warnings.
+    # Using the standard method, solves the problem.
+    .line-cap = LINE_CAP_ROUND;
+    .line-join = LINE_JOIN_ROUND;
   }
 
   # Drag Boxes
@@ -292,8 +301,8 @@ LABEL
   create_info($root, 'shape_c_info', LEFT, 320);
 
   # Divisioin line
-  (.fill-color, .line-width) = ('black', 2)
-    with %globals<divline> = Goo::Polyline.new_line(
+  (.fill-color, .line-width) = ('black', 2) with
+    %globals<divline> = Goo::Polyline.new_line(
       $root, RIGHT + 50, 0, RIGHT + 50, 1000
     );
 

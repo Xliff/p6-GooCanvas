@@ -25,22 +25,21 @@ class Goo::Points {
     );
   }
 
-  method set_points (@points where .all ~~ Num) {
-    if @points.elems > $.elems * 2 {
+  method set_points ($points is copy) {
+    die '$points is a { $points.^name }, not an Array' unless $points ~~ Array;
+    die '$points must only contain Num compatible objects'
+      unless $points.grep({ $_.^can('Num').elems }) == $points.elems;
+    die '$points must be even' unless $points.elems % 2 == 0;
+
+    if $points.elems > $.elems * 2 {
       warn 'Too many points! Clipping...';
-      @points = @points[ ^($.elems * 2) ];
+      $points = $points[ ^($.elems * 2) ];
     }
     my $idx = 0;
-    samewith($idx++, |$_) for @points.rotor(2);
+    self.set_point($idx++, |@($_) ) for $points.rotor(2);
   }
-
-  multi method set_point (Int() $idx, @p) {
-    die '@p must contain only 2 values' unless @p.elems == 2;
-    die '@p must be floating point values'
-      unless @p.grep( *.^can('Num').elems ).elems == 2;
-    samewith($idx, |@p);
-  }
-  multi method set_point (
+  
+  method set_point (
     Int() $idx,
     Num() $x,
     Num() $y
@@ -69,6 +68,11 @@ class Goo::Points {
     my gdouble ($xx, $yy) = ($x, $y);
     goo_canvas_points_get_point($!points, $i, $xx, $yy);
     ($x, $y) = ($xx, $yy);
+  }
+
+  method get_type {
+    state ($n, $t);
+    unstable_get_type( self.^name, &goo_canvas_points_get_type, $n, $t );
   }
 
 }
