@@ -100,7 +100,7 @@ sub set_arrow_shape {
     ],
     LEFT   - 15,
     MIDDLE,
-    $width
+    $width.Int
   );
 
   set_dimension('shape_a_arrow', 'shape_a_text',
@@ -112,7 +112,7 @@ sub set_arrow_shape {
     ],
     RIGHT  - 10 * $shape_a * $width / 2,
     MIDDLE + 10 * $shape_c * $width / 2 + 15,
-    $shape_a
+    $shape_a.Int
   );
 
   set_dimension('shape_c_arrow', 'shape_c_text',
@@ -124,7 +124,7 @@ sub set_arrow_shape {
     ],
     RIGHT  + 15,
     MIDDLE,
-    $shape_c
+    $shape_c.Int
   );
 
   # Info
@@ -178,18 +178,24 @@ multi sub create_sample_arrow ($root, $sample, $x1, $y1, $x2, $y2) {
   }
 }
 
-sub button_press ($item, $button_event, $r) {
-  my $canvas = $item.get_canvas;
-  my $fleur = GTK::Compat::Cursor($canvas.get_display, GDK_FLEUR);
+sub button_press ($item, $event, $r) {
+  CATCH { default { .message.say; $app.exit; } }
+
+  my $canvas = $item.canvas;
+  my $fleur = GTK::Compat::Cursor.new_for_display($canvas.display, GDK_FLEUR);
   my $mask = GDK_POINTER_MOTION_MASK +|
              GDK_POINTER_MOTION_HINT_MASK +|
              GDK_BUTTON_RELEASE_MASK;
+  my $button_event = cast(GdkEventButton, $event);
   $canvas.pointer_grab($item, $mask, $fleur, $button_event.time);
   $r.r = 1;
 }
 
-sub button_release ($item, $button_event, $r) {
-  $item.get_canvas.pointer_ungrab($item, $button_event.time);
+sub button_release ($item, $event, $r) {
+  CATCH { default { .message.say; $app.exit; } }
+
+  my $button_event = cast(GdkEventButton, $event);
+  $item.canvas.pointer_ungrab($item, $button_event.time);
   $r.r = 1;
 }
 
@@ -201,21 +207,23 @@ sub on_motion ($item, $event, $r) {
 
   my ($p, $width, $change) = ( +$item.CanvasItem.p, Nil, False );
   if $p == +%data<canvas><width_drag_box>.CanvasItem.p {
-    my ($width, $y) = (MIDDLE - $y / 5, $button_event.y);
+    my $y     = $button_event.y;
+    my $width = (MIDDLE - $y) / 5;
 
     return ($r.r = 0) if $width < 0;
     %data<canvas><width> = $width;
     set_arrow_shape;
   } elsif $p == +%data<canvas><shape_a_drag_box>.CanvasItem.p {
-    my ($width, $x) = (%data<canvas><width>, $button_event.x);
+    my $x       = $button_event.x;
+    my $width   = %data<canvas><width>;
     my $shape_a = (RIGHT - $x) / 10 / $width;
 
     return ($r.r = 0) unless $shape_a ~~ 0..30;
     %data<canvas><shape_a> = $shape_a;
     set_arrow_shape;
   } elsif $p == +%data<canvas><shape_b_c_drag_box>.CanvasItem.p {
-    my ($width, $x, $y) =
-      (%data<canvas><width>, $button_event.x, $button_event.y);
+    my ($x, $y) = ($button_event.x, $button_event.y);
+    my $width   = %data<canvas><width>;
     my $shape_b = (RIGHT  - $x)     / 10 / $width;
     my $shape_c = (MIDDLE - $y) * 2 / 10 / $width;
 
@@ -241,9 +249,9 @@ sub create_drag_box ($root, $box) {
     .enter-notify-event.tap(-> *@a { .fill-color = 'red';   @a[* - 1].r = 1 });
     .leave-notify-event.tap(-> *@a { .fill-color = 'black'; @a[* - 1].r = 1 });
 
-    .button-press-event  .tap(-> *@a { button_press(   |@a[0, 2, *-1] ) });
-    .button-release-event.tap(-> *@a { button_release( |@a[0, 2, *-1] ) });
-    .motion-notify-event. tap(-> *@a { on_motion(      |@a[0, 2, *-1] ) });
+    .button-press-event  .tap(-> *@a { button_press(   $_, |@a[2, *-1] ) });
+    .button-release-event.tap(-> *@a { button_release( $_, |@a[2, *-1] ) });
+    .motion-notify-event. tap(-> *@a { on_motion(      $_, |@a[2, *-1] ) });
   }
   %data<canvas>{$box} = $item;
 }
