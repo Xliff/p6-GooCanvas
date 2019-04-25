@@ -62,7 +62,8 @@ class Goo::Canvas is GTK::Container {
   { $!gc }
 
   multi method new (GooCanvas $canvas) {
-    self.bless(:$canvas);
+    my $o = self.bless(:$canvas);
+    $o.upref;
   }
   multi method new {
     self.bless( canvas => goo_canvas_new() );

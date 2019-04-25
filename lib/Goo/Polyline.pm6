@@ -172,11 +172,9 @@ class Goo::Polyline is Goo::CanvasItemSimple {
             my $cv = CArray[num64].new;
             $cv[$_] = $val[$_].Num for ^$val.elems;
             $val = $cv;
-            say "A: { $val.^name }";
           }
           when Goo::Points {
             $val = Goo::Raw::Types::GooCanvasPoints($val);
-            say "GP: $val";
           }
         }
         $gv.boxed = $val;
