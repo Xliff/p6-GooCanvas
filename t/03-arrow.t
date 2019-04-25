@@ -71,7 +71,8 @@ sub set_arrow_shape {
   @p.push: MIDDLE + 10 * ($shape_c * $width / 2.0);
   @p.push: @p[0];
   @p.push: MIDDLE + 10 * $width / 2;
-  %data<canvas><outline>.points = @p;
+  $points.set_points(@p);
+  %data<canvas><outline>.points = $points;
 
   # Drag Boxes
   move_drag_box(
@@ -113,6 +114,18 @@ sub set_arrow_shape {
     RIGHT  - 10 * $shape_a * $width / 2,
     MIDDLE + 10 * $shape_c * $width / 2 + 15,
     $shape_a.Int
+  );
+
+  set_dimension('shape_b_arrow', 'shape_b_text',
+    [
+      RIGHT  - 10 *  $shape_b * $width,
+      MIDDLE + 10 * ($shape_c * $width / 2.0) + 35,
+      RIGHT,
+      MIDDLE + 10 * ($shape_c * $width / 2.0) + 35
+    ],
+    RIGHT  - 10 *  $shape_b * $width / 2.0,
+    MIDDLE + 10 * ($shape_c * $width / 2.0) + 40,
+    $shape_b.Int
   );
 
   set_dimension('shape_c_arrow', 'shape_c_text',
