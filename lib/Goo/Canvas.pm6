@@ -7,9 +7,11 @@ use Goo::Raw::Enums;
 
 use Goo::Raw::Canvas;
 
+use GTK::Compat::Roles::ListData;
 use GTK::Roles::Scrollable;
 use Goo::Roles::Signals::Canvas;
 
+use GTK::Compat::GList;
 use GTK::Compat::RGBA;
 use GTK::Container;
 
@@ -29,6 +31,7 @@ class Goo::Canvas is GTK::Container {
   }
 
   submethod BUILD (:$canvas) {
+    self.ADD-PREFIX('Goo::');
     given $canvas {
       when GooCanvasAncestry {
         my $to-parent;
@@ -98,12 +101,19 @@ class Goo::Canvas is GTK::Container {
     );
   }
 
+  # This will attempt to reuse the last set object for as long as it stays
+  # the same.
   method static_root_item is rw {
+    state $ri;
     Proxy.new(
       FETCH => sub ($) {
-        goo_canvas_get_static_root_item($!gc);
+        $ri = ::('Goo::Roles::CanvasItem').new(
+          goo_canvas_get_static_root_item($!gc)
+        ) unless $ri.defined;
+        $ri;
       },
-      STORE => sub ($, $item is copy) {
+      STORE => sub ($, GooCanvasItem() $item is copy) {
+        $ri = $item ~~ GooCanvas ?? $item !! Goo::Canvas.new( $item );
         goo_canvas_set_static_root_item($!gc, $item);
       }
     );
@@ -507,28 +517,42 @@ class Goo::Canvas is GTK::Container {
     goo_canvas_get_item_at($!gc, $xx, $yy, $i);
   }
 
-  method get_items_at (Num() $x, Num() $y, Int() $is_pointer_event) {
+  method get_items_at (
+    Num() $x,
+    Num() $y,
+    Int() $is_pointer_event = False,
+    :$raw = False
+  ) {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean $i = self.RESOLVE-BOOL($is_pointer_event);
-    goo_canvas_get_items_at($!gc, $x, $y, $is_pointer_event);
+    my $l = GTK::Compat::GList.new(
+      goo_canvas_get_items_at($!gc, $x, $y, $is_pointer_event)
+    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    $raw ??
+      $l.Array !! $l.Array.map({ ::('Goo::Roles::CanvasItem').new($_) })
   }
 
   method get_items_in_area (
     GooCanvasBounds() $area,
-    gboolean $inside_area,
-    gboolean $allow_overlaps,
-    gboolean $include_containers
+    Int() $inside_area,
+    Int() $allow_overlaps,
+    Int() $include_containers,
+    :$raw = False
   ) {
     my gboolean ($ia, $ao, $ic) = self.RESOLVE-BOOL(
       $inside_area,
       $allow_overlaps,
       $include_containers
     );
-    goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic);
+    my $l = GTK::Compat::GList.new(
+      goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic)
+    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    $raw ??
+      $l.Array !! $l.Array.map({ ::('Goo::Roles::CanvasItem').new($_) })
   }
 
   method get_root_item {
-    goo_canvas_get_root_item($!gc);
+    ::('Goo::Roles::CanvasItem').new( goo_canvas_get_root_item($!gc) );
   }
 
   method get_type {

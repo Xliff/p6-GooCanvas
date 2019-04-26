@@ -120,7 +120,7 @@ sub create_clipping_page {
   with my $sw = GTK::ScrolledWindow.new {
     .shadow_type = GTK_SHADOW_IN; .halign = .valign = GTK_ALIGN_FILL;
     .hexpand = .vexpand = True;
-    .set-size-request(600, 450);
+    .set-size-request(800, 600);
     $vbox.pack_start($_);
   }
 

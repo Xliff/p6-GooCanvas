@@ -24,12 +24,17 @@ role Goo::Roles::CanvasItem {
 
   has GooCanvasItem $!ci;
 
+  submethod BUILD (:$item) {
+    $!ci = $item;
+  }
+
   method Goo::Raw::Types::GooCanvasItem
     is also<CanvasItem>
   { $!ci }
 
+
   multi method new (GooCanvasItem $item) {
-    $!ci = $item;
+    self.bless(:$item);
   }
 
   # Is originally:
@@ -364,20 +369,39 @@ DIE
     goo_canvas_item_get_child_property($!ci, $child, $property_name, $value);
   }
 
-  method get_items_at (
+
+  proto method get_items_at
+    is also<get-items-at>
+  { * }
+  
+  multi method get_items_at (
     Num() $x,
     Num() $y,
     CairoContextObject $cr is copy,
     Int() $is_pointer_event,
     Int() $parent_is_visible,
-    GList() $found_items
-  )
-    is also<get-items-at>
-  {
+    :$raw = False
+  ) {
+    my $fi = GList.new;
+    samewith($x, $y, $cr, $is_pointer_event, $parent_is_visible, $fi, :$raw);
+  }
+  multi method get_items_at (
+    Num() $x,
+    Num() $y,
+    CairoContextObject $cr is copy,
+    Int() $is_pointer_event,
+    Int() $parent_is_visible,
+    GList() $found_items,
+    :$raw = False
+  ) {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean ($i, $p) = resolve-bool($is_pointer_event, $parent_is_visible);
     $cr .= context if $cr ~~ Cairo::Context;
-    goo_canvas_item_get_items_at($!ci, $x, $y, $cr, $i, $p, $found_items);
+    my $l = GTK::Compat::List.new(
+      goo_canvas_item_get_items_at($!ci, $x, $y, $cr, $i, $p, $found_items)
+    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    $raw ??
+      $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) });
   }
 
   method get_model is also<get-model> {

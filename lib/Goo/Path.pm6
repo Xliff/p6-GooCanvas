@@ -10,7 +10,11 @@ use Goo::CanvasItemSimple;
 class Goo::Path is Goo::CanvasItemSimple {
   has GooCanvasPath $!p;
 
-  multi method new ($path) {
+  submethod BUILD (:$path) {
+    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!p = $path) );
+  }
+
+  multi method new (GooCanvasPath $path) {
     self.bless(:$path);
   }
   multi method new (GooCanvasItem() $parent, Str $path_data) {
@@ -22,7 +26,7 @@ class Goo::Path is Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "data does not allow reading";
+        warn 'data does not allow reading' if $DEBUG;
         ''
       },
       STORE => -> $, Str() $val is copy {
