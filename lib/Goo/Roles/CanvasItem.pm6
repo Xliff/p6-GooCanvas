@@ -7,6 +7,7 @@ use Cairo;
 use GTK::Compat::Types;
 use GTK::Raw::Types;
 use Goo::Raw::Types;
+use Goo::Raw::Enums;
 
 use GTK::Raw::Utils;
 
@@ -26,6 +27,10 @@ role Goo::Roles::CanvasItem {
   method Goo::Raw::Types::GooCanvasItem
     is also<CanvasItem>
   { $!ci }
+
+  multi method new (GooCanvasItem $item) {
+    $!ci = $item;
+  }
 
   # Is originally:
   # GooCanvasItem, gboolean, gpointer --> void
@@ -145,6 +150,148 @@ role Goo::Roles::CanvasItem {
     );
   }
 
+  # Type: gboolean
+  method can-focus is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('can-focus', $gv)
+        );
+        $gv.boolean;
+      },
+      STORE => -> $, Int() $val is copy {
+        $gv.boolean = $val;
+        self.prop_set('can-focus', $gv);
+      }
+    );
+  }
+
+  # Type: gchar
+  method description is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('description', $gv)
+        );
+        $gv.string;
+      },
+      STORE => -> $, Str() $val is copy {
+        $gv.string = $val;
+        self.prop_set('description', $gv);
+      }
+    );
+  }
+
+  # Type: GooCanvasPointerEvents
+  method pointer-events is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('pointer-events', $gv)
+        );
+        GooCanvasPointerEvents( $gv.enum );
+      },
+      STORE => -> $, Int() $val is copy {
+        $gv.uint = $val;
+        self.prop_set('pointer-events', $gv);
+      }
+    );
+  }
+
+  # Type: gchar
+  method title is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('title', $gv)
+        );
+        $gv.string;
+      },
+      STORE => -> $, Str() $val is copy {
+        $gv.string = $val;
+        self.prop_set('title', $gv);
+      }
+    );
+  }
+
+  # Type: gchar
+  method tooltip is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('tooltip', $gv)
+        );
+        $gv.string;
+      },
+      STORE => -> $, Str() $val is copy {
+        $gv.string = $val;
+        self.prop_set('tooltip', $gv);
+      }
+    );
+  }
+
+  # Type: GooCairoMatrix
+  method transform is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('transform', $gv)
+        );
+        Cairo::Matrix.new( cast(cairo_matrix_t, $gv.pointer) );
+      },
+      STORE => -> $, $val is copy {
+        die qq:to/DIE/.chomp unless $val ~~ (Cairo::Matrix, cairo_matrix_t).any;
+Invalid type for .transform. Will only accept a cairo_matrix_t compatible{ ''
+} value.
+DIE
+
+        $val .= matrix if $val ~~ Cairo::Matrix;
+        $gv.pointer = $val;
+        self.prop_set('transform', $gv);
+      }
+    );
+  }
+
+  # Type: GooCanvasItemVisibility
+  method visibility is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('visibility', $gv)
+        );
+        GooCanvasItemVisibility( $gv.enum );
+      },
+      STORE => -> $, Int() $val is copy {
+        $gv.uint = $val;
+        self.prop_set('visibility', $gv);
+      }
+    );
+  }
+
+  # Type: gdouble
+  method visibility-threshold is also<visibility_threshold> is rw  {
+    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    Proxy.new(
+      FETCH => -> $ {
+        $gv = GTK::Compat::Value.new(
+          self.prop_get('visibility-threshold', $gv)
+        );
+        $gv.double;
+      },
+      STORE => -> $, Num() $val is copy {
+        $gv.double = $val;
+        self.prop_set('visibility-threshold', $gv);
+      }
+    );
+  }
+
   method add_child (GooCanvasItem() $child, Int() $position)
     is also<add-child>
   {
@@ -237,12 +384,24 @@ role Goo::Roles::CanvasItem {
     goo_canvas_item_get_model($!ci);
   }
 
-  method get_n_children is also<get-n-children> {
+  method get_n_children is also<
+    get-n-children
+    n_children
+    n-children
+    elems
+  > {
     goo_canvas_item_get_n_children($!ci);
   }
 
-  method get_parent is also<get-parent> {
-    goo_canvas_item_get_parent($!ci);
+  method get_parent
+    is also<
+      get-parent
+      parent
+    >
+  {
+    # Determine a method that will allow an object to keep a copy of its
+    # parent for the lifetime of the actual backing pointer.
+    Goo::Roles::CanvasItem.new( goo_canvas_item_get_parent($!ci) );
   }
 
   method get_requested_area (

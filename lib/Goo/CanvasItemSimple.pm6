@@ -42,7 +42,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('antialias', $gv)
         );
-        cairo_antialias_t( $gv.uint );
+        cairo_antialias_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -59,7 +59,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
-        cairo_fill_rule_t( $gv.uint );
+        cairo_fill_rule_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -156,7 +156,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('fill-rule', $gv)
         );
-        cairo_fill_rule_t( $gv.uint );
+        cairo_fill_rule_t( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -209,7 +209,7 @@ class Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
-        cairo_hint_metrics_t( $gv.uint );
+        cairo_hint_metrics_t( $gv.enum );
       },
       STORE => -> $, Int()  $val is copy {
         $gv.uint = $val;
@@ -363,7 +363,7 @@ class Goo::CanvasItemSimple {
         cast(GooCairoPattern, $gv.pointer);
       },
       STORE => -> $, GooCairoPattern $val is copy {
-        $gv.pointer = $val;
+        $gv.pointer = $val // cairo_matrix_t;
         self.prop_set('stroke-pattern', $gv);
       }
     );

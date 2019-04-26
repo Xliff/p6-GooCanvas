@@ -10,6 +10,7 @@ GTK::Roles::Properties
 GTK::Roles::Protection
 GTK::Roles::Scrollable
 GTK::Roles::Signals::Generic
+Method::Also
 Pango::FontDescription
 Pango::Raw::Types
 Goo::Raw::Types
@@ -25,6 +26,7 @@ Goo::Raw::Text
 Goo::Roles::CanvasItemModel
 Goo::Roles::Signals::Canvas
 Goo::Roles::Signals::CanvasItem
+Goo::Widget
 Goo::Canvas
 Goo::Points
 Goo::Roles::CanvasItem
