@@ -5,6 +5,8 @@ use NativeCall;
 use GTK::Compat::Types;
 use Goo::Raw::Types;
 
+use GTK::Raw::Utils;
+
 use GTK::Compat::Value;
 use Goo::Group;
 use Goo::CanvasItemSimple;
@@ -190,33 +192,41 @@ class Goo::Table is Goo::Group {
 
   multi method set_child_property (
     GooCanvasItem() $child,
-    Str() $property_name,
-    Int $value
+    Str() $property_name where * eq (
+      |@child-property-uint,
+      |@child-property-bool
+    ).any,
+    Int $value is copy
   ) {
-    die "Invalid INT Child property name '{ $property_name }'!"
-      unless
-        $property_name eq @child-property-uint.any ||
-        $property_name eq @child-property-bool.any;
-    nextwith($child, $property_name, gv_uint($value.Int));
+    $value = resolve-bool($value)
+      if $property_name eq @child-property-bool.any;
+    samewith( $child, $property_name, gv_uint($value.Int) );
   }
   multi method set_child_property (
     GooCanvasItem() $child,
-    Str() $property_name,
+    Str() $property_name where * eq @child-property-bool.any,
     Bool $value
   ) {
-    die "Invalid BOOL Child property name '{ $property_name }'!"
-      unless $property_name eq @child-property-bool.any;
-    nextwith($child, $property_name, gv_bool($value));
+    samewith( $child, $property_name, gv_bool($value) );
+  }
+  multi method set_child_property (
+    GooCanvasItem() $child,
+    Str() $property_name where * eq @child-property-double.any,
+    Cool $value is copy
+  ) {
+    $value .= Num;
+    samewith( $child, $property_name, gv_dbl($value) );
   }
   multi method set_child_property (
     GooCanvasItem() $child,
     Str() $property_name,
-    Num $value
+    GValue $value
   ) {
-    die "Invalid DOUBLE Child property name '{ $property_name }'!"
-      unless $property_name eq @child-property-double.any;
-    nextwith($child, $property_name, gv_dbl($value));
+    die "Invalid child property name '{ $property_name }'!"
+      unless $property_name eq @valid-child-properties.any;
+    nextwith($child, $property_name, $value);
   }
+
   multi method set_child_property (
     GooCanvasItem() $child,
     Str() $property_name,
@@ -224,12 +234,14 @@ class Goo::Table is Goo::Group {
   ) {
     die "Invalid child property name '{ $property_name }'!"
       unless $property_name eq @valid-child-properties.any;
-    my $v = do {
-      when $property_name eq @child-property-uint    { $v.Int }
-      when $property_name eq @child-property-bool    { $v.Int }
-      when $property_name eq @child-property-double  { $v.Num }
+    # Force to right method in inheritance chain.
+    if $value ~~ (GTK::Compat::Value, GValue).any {
+      self.Goo::Roles::CanvasItem::set_child_property(
+        $child, $property_name, $value
+      )
+    } else {
+      die "Invalid value of type { $value.^name } passed!";
     }
-    nextwith($child, $property_name, $v);
   }
 
   method get_type {

@@ -575,7 +575,7 @@ DIE
   }
 
   method translate (Num() $tx, Num() $ty) {
-    my gdouble ($txx, $tyy);
+    my gdouble ($txx, $tyy) = ($tx, $ty);
     goo_canvas_item_translate($!ci, $txx, $tyy);
   }
 

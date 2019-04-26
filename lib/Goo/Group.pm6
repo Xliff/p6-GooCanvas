@@ -11,7 +11,7 @@ class Goo::Group is Goo::CanvasItemSimple {
   has GooCanvasGroup $!g;
 
   submethod BUILD (:$group) {
-    self.setGroup($group)
+    self.setGroup($group) if $group.defined;
   }
 
   method setGroup(GooCanvasGroup $group) {
