@@ -24,7 +24,9 @@ class Goo::Image is Goo::CanvasItemSimple {
     Num()           $y
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    self.bless( image => goo_canvas_image_new($parent, $pixbuf, $xx, $yy) );
+    self.bless(
+      image => goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str)
+    );
   }
 
   # Type: gdouble
