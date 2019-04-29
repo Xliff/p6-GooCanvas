@@ -97,25 +97,25 @@ class Goo::Raw::Boxed {
 
 }
 
-sub goo_cairo_pattern_get_type (void)
+sub goo_cairo_pattern_get_type ()
   returns GType
   is native(goo)
   is export
 { * }
 
-sub goo_cairo_fill_rule_get_type (void)
+sub goo_cairo_fill_rule_get_type ()
   returns GType
   is native(goo)
   is export
 { * }
 
-sub goo_cairo_operator_get_type (void)
+sub goo_cairo_operator_get_type ()
   returns GType
   is native(goo)
   is export
 { * }
 
-sub goo_cairo_antialias_get_type (void)
+sub goo_cairo_antialias_get_type ()
   returns GType
   is native(goo)
   is export

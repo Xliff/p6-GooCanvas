@@ -2,6 +2,8 @@ use v6.c;
 
 use NativeCall;
 
+use Cairo;
+
 use GTK::Compat::Types;
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;
@@ -67,20 +69,23 @@ class Goo::Image is Goo::CanvasItemSimple {
   # Type: GooCairoPattern
   method pattern is rw  {
     my GTK::Compat::Value $gv .= new(
-      #Goo::Raw::Boxed.pattern_get_type()
-      G_TYPE_POINTER
+      Goo::Raw::Boxed.pattern_get_type()
     );
     Proxy.new(
       FETCH => -> $ {
         $gv = GTK::Compat::Value.new(
           self.prop_get('pattern', $gv)
         );
-        Cairo::Pattern::Surface.new(
-          cast(cairo_pattern_t, $gv.pointer)
-        )
+        $gv.boxed.defined ??
+          Cairo::Pattern::Surface.new(
+            cast(cairo_pattern_t, $gv.boxed)
+          ) !! Nil;
       },
       STORE => -> $, $val is copy {
-        $gv.pointer = $val;
+        die 'Pattern must be a Cairo::Pattern compatible object!'
+          unless $val ~~ CairoPatternObject;
+        $val .= pattern if $val ~~ Cairo::Pattern;
+        $gv.boxed = $val;
         self.prop_set('pattern', $gv);
       }
     );

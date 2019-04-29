@@ -82,16 +82,15 @@ sub setup_canvas ($canvas, $units, $unit_name) {
   );
   $t2.font = "Sans { @d[7] }px";
 
-  with Goo::Image.new( $root, GdkPixbuf, |@d[8,9] ) {
-    #.pattern = $flower-pattern.pattern;
-    (.width, .height) = @d[10,11];
-    .scale-to-fit = True;
-  }
+  my $i = Goo::Image.new( $root, GdkPixbuf, |@d[8,9] );
+  $i.pattern = $flower-pattern;
+  ($i.width, $i.height) = @d[10,11];
+  $i.scale-to-fit = True;
 }
 
 my %canvas;
 sub create_canvas($unit, $unit_name) {
-  CATCH { default { .message.say } }
+  CATCH { default { .message.say; $app.exit } }
 
   my $vbox = GTK::Box.new-vbox(4);
   $vbox.margin = 4;
@@ -144,22 +143,15 @@ sub MAIN {
     $flower-pattern = Cairo::Pattern::Surface.create($surface.surface);
 
     my @labels;
-    for (
-      GTK_UNIT_PIXELS,
-      GTK_UNIT_POINTS,
-      GTK_UNIT_INCH,
-      GTK_UNIT_MM
-    ) {
-      my $name;
+    for (GTK_UNIT_PIXELS, GTK_UNIT_POINTS, GTK_UNIT_INCH, GTK_UNIT_MM) {
       @labels.push: GTK::Label.new(
-        $name = do {
+        my $name = do {
           when GTK_UNIT_PIXELS { 'Pixels'      }
           when GTK_UNIT_POINTS { 'Points'      }
           when GTK_UNIT_INCH   { 'Inches'      }
           when GTK_UNIT_MM     { 'Millimeters' }
         }
       );
-      # Is GTK::Notebook properly storing its children?
       $notebook.append_page( create_canvas($_, $name), @labels[*-1] );
     }
 
