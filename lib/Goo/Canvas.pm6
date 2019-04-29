@@ -138,7 +138,7 @@ class Goo::Canvas is GTK::Container {
         $gv = GTK::Compat::Value.new(
           self.prop_get('anchor', $gv)
         );
-        GooCanvasAnchorType( $gv.uint );
+        GooCanvasAnchorType( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
