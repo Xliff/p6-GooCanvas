@@ -18,7 +18,6 @@ use GTK::Roles::Protection;
 use Goo::Roles::CanvasItem;
 
 class Goo::CanvasItemSimple {
-  also does GTK::Roles::Protection;
   also does Goo::Roles::CanvasItem;
 
   has GooCanvasItemSimple $!gc;
@@ -30,8 +29,7 @@ class Goo::CanvasItemSimple {
 
   method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
     self.IS-PROTECTED;
-    self!setObject($!gc = $simplecanvas);
-    $!ci = cast(GooCanvasItem, $!gc);
+    self.setCanvasItem($!gc = $simplecanvas);
   }
 
   # Type: GooCairoAntialias

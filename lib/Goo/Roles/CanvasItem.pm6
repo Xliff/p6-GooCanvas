@@ -20,12 +20,19 @@ use Goo::Canvas;
 
 role Goo::Roles::CanvasItem {
   also does GTK::Roles::Properties;
+  also does GTK::Roles::Protection;
   also does Goo::Roles::Signals::CanvasItem;
 
   has GooCanvasItem $!ci;
 
   submethod BUILD (:$item) {
-    $!ci = $item;
+    self.ADD-PREFIX('Goo::');
+    self.setCanvasItem($item) if $item.defined;
+  }
+
+  method setCanvasItem ($item) {
+    self.IS-PROTECTED;
+    self!setObject($!ci = cast(GooCanvasItem, $item));
   }
 
   method Goo::Raw::Types::GooCanvasItem
@@ -297,7 +304,7 @@ DIE
     );
   }
 
-  method add_child (GooCanvasItem() $child, Int() $position)
+  method add_child (GooCanvasItem() $child, Int() $position = -1)
     is also<add-child>
   {
     my gint $p = resolve-int($position);
@@ -373,7 +380,7 @@ DIE
   proto method get_items_at
     is also<get-items-at>
   { * }
-  
+
   multi method get_items_at (
     Num() $x,
     Num() $y,

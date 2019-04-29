@@ -141,7 +141,7 @@ sub set_arrow_shape {
   );
 
   # Info
-  %data<canvas><width_info>.text   = "line-witdh: { $width.Int }";
+  %data<canvas><width_info>.text   = "line-width: { $width.Int }";
   %data<canvas><shape_a_info>.text = "arrow-tip-length: { $shape_a.Int } (* line-width)";
   %data<canvas><shape_b_info>.text = "arrow-length: { $shape_b.Int } (* line-width)";
   %data<canvas><shape_c_info>.text = "arrow-width: { $shape_c.Int } (* line-width)";

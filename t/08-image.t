@@ -45,8 +45,9 @@ sub create_canvas_scalability {
     my ($x, $y) = ( $c * ($width + PADDING), $r * ($height + PADDING) );
     # Original used fill-color on the Goo::Image, which does nothing.
     # A little creative interpretation adds a nice pop! :)
-    .fill-color = $r % 2 ?? 'mediumseagreen' !! 'steelblue' with
-      Goo::Rect.new($root, $x, $y, $width, $height);
+    my $rect = Goo::Rect.new($root, $x, $y, $width, $height);
+    $rect.fill-color = $r % 2 ?? 'mediumseagreen' !! 'steelblue';
+
     Goo::Image.new($root, $pixbuf, $x, $y);
   }
 
