@@ -87,6 +87,7 @@ sub create_demo_item (
     when DEMO_WIDGET_ITEM {
       my $widget = GTK::Button.new_with_label($text);
       $item = Goo::Widget.new($table, $widget, 0, 0, -1, -1);
+      $widget.clicked.tap({ say "Button '$text' pressed!" });
     }
   }
 
