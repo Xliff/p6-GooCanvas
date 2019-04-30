@@ -35,7 +35,7 @@ class Goo::Text is Goo::CanvasItemSimple {
     Num() $width,
     Int() $anchor
   ) {
-    my gdouble ($xx, $yy, $w) = ($x, $y, $w);
+    my gdouble ($xx, $yy, $w) = ($x, $y, $width);
     my guint $a = resolve-uint($anchor);
     self.bless(
       text => goo_canvas_text_new($parent, $text, $xx, $yy, $w, $a, Str)

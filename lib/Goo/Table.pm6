@@ -20,7 +20,7 @@ class Goo::Table is Goo::Group {
     x-align         y-align
   >;
   my @child-property-bool = <
-    x-expand        x-fill        x-shrink
+    x-expand        x-fill        x-shrink 
     y-expand        y-fill        y-shrink
   >;
   my @valid-child-properties = (

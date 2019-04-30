@@ -48,6 +48,8 @@ sub set-data (ObjectOrPointer $i is copy, $k, $v) {
 }
 
 sub button-press ($item, $evt, $r) {
+  CATCH { default { .message.say; } }
+
   my $event = cast(GdkEventButton, $evt);
 
   say qq:to/SAY/.chomp;
@@ -102,7 +104,8 @@ sub create_demo_item (
     unless $new_row == $row;
 
   set-data($item, 'id', $text);
-  $item.button-press-event.tap(-> *@a { button-press($item, @a[2, *-1]) });
+
+  $item.button-press-event.tap(-> *@a { button-press($item, |@a[2, *-1]) });
 }
 
 sub create_table (
@@ -119,7 +122,8 @@ sub create_table (
 ) {
   my $table = Goo::Table.new($parent);
   ($table.row-spacing, $table.column-spacing) = 4 xx 2;
-  ($table.horz-grid-line-width, $table.vert-grid-line-width) = 1 xx 2;
+  ($table.horz-grid-line-width, $table.vert-grid-line-width) = 1 xx 2
+    if $show_grid_lines;
   $table.translate($x, $y);
   $table.rotate($rotation, 0, 0);
   $table.scale($scale, $scale);
@@ -140,7 +144,7 @@ sub create_table (
       @p[4] = 0.7 if $_ == 0;
       @p[4] = 1.5 if $_ == 180;
       @p[4] = 2   if $_ == 360;
-      create_table($table, $_ div 135, (($_ + 135) % 135) / 45, |@p);
+      create_table($table, $_ div 135, (($_ + 135) % 135) div 45, |@p);
     }
   } elsif $demo_item_type == DEMO_TEXT_ITEM_2 {
     create_demo_item(
@@ -290,7 +294,7 @@ sub create_width_for_height_table (
 ) {
   my $t = qq:to/TEXT/.chomp;
   This is a long paragraph will have to be split over a few lines so we can{''
-  }see if its allocated height changes when its allocated width is changed
+  } see if its allocated height changes when its allocated width is changed
   TEXT
 
   my $table = Goo::Table.new($root);
@@ -304,7 +308,7 @@ sub create_width_for_height_table (
     'row', 0, 'column', 0, 'x-shrink', True
   );
 
-  $item = Goo::Text($table, $t, 0, 0, -1, GOO_CANVAS_ANCHOR_NW);
+  $item = Goo::Text.new($table, $t, 0, 0, -1, GOO_CANVAS_ANCHOR_NW);
   $table.set-child-properties($item,
     'row',      1,    'column',   0,     'x-expand', True, 'x-fill', True,
     'x-shrink', True, 'y-expand', True,  'y-fill',   True
@@ -314,9 +318,7 @@ sub create_width_for_height_table (
 
   $item = Goo::Rect.new($table, 0, 0, $width - 2, 10);
   $item.fill-color = 'red';
-  $table.set-child-properties($item,
-    'row', 2, 'column', 0, 'x-shrink', True
-  );
+  $table.set-child-properties($item, 'row', 2, 'column', 0, 'x-shrink', True);
 }
 
 sub create_table_page {
@@ -347,7 +349,7 @@ sub create_table_page {
   create_table($root, -1, -1, 0, 500, 10, 90, 1.0, DEMO_TEXT_ITEM, False);
 
   $table = create_table(
-    $root, -1, -1, 0,  30,  150,  0, 1.0, DEMO_TEXT_ITEM_2, True
+    $root, -1, -1, 0,  30,  150,  0, 1.0, DEMO_TEXT_ITEM, False
   );
   (.width, .height) = (300, 100) with $table;
 
@@ -368,20 +370,19 @@ sub create_table_page {
     $root, -1, -1, 0, 630, 1830, 30, 1.0, DEMO_TEXT_ITEM_3, True
   );
 
-  # xx
-  # create_table(
-  #   $root, -1, -1, 1, 200,  200, 30, 0.8, DEMO_TEXT_ITEM,   False
-  # );
+  create_table(
+    $root, -1, -1, 1, 200,  200, 30, 0.8, DEMO_TEXT_ITEM,   False
+  );
 
   $table = create_table(
     $root, -1, -1, 0,  10,  700,  0, 1.0, DEMO_WIDGET_ITEM, False
   );
   (.width, .height) = (300, 200) with $table;
-  #
-  # create_width_for_height_table($root, 100, 1000, 200, -1, 0);
-  # create_width_for_height_table($root, 100, 1200, 300, -1, 0);
-  # create_width_for_height_table($root, 500, 1000, 200, -1, 30);
-  # create_width_for_height_table($root, 500, 1200, 300, -1, 30);
+
+  create_width_for_height_table($root, 100, 1000, 200, -1, 0);
+  create_width_for_height_table($root, 100, 1200, 300, -1, 0);
+  create_width_for_height_table($root, 500, 1000, 200, -1, 30);
+  create_width_for_height_table($root, 500, 1200, 300, -1, 30);
 
   $vbox;
 }
