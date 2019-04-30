@@ -13,7 +13,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   has GooCanvasWidget $!gw;
   has $!gtk_widget;
 
-  submethod BUILD (:$widget) {
+  submethod BUILD (:$widget, :$!gtk_widget) {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!gw = $widget) )
   }
 
@@ -26,15 +26,17 @@ class Goo::Widget is Goo::CanvasItemSimple {
   }
   multi method new (
     GooCanvasItem() $parent,
-    GtkWidget()     $widget,
+                    $widget is copy,
     Num()           $x,
     Num()           $y,
     Num()           $width,
     Num()           $height
   ) {
     my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
+    my $ww = $widget ~~ GTK::Widget ?? $widget.Widget !! $widget;
     self.bless(
-      widget => goo_canvas_widget_new($parent, $xx, $yy, $w, $h, Str)
+      widget      => goo_canvas_widget_new($parent, $ww, $xx, $yy, $w, $h, Str),
+      gtk_widget  => $widget
     );
   }
 

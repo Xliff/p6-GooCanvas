@@ -1,0 +1,16 @@
+{
+  "name": "p6-GooCanvas",
+  "description": "Bindings for GNOME's libgoocanvas for Perl6",
+  "version": "0.01",
+  "perl": "6.*",
+  "auth": "clifton.wood@gmail.com",
+  "depends": [
+    "p6-GtkPlus"
+  ],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {},
+  "resources": [],
+  "license": "Write me!",
+  "source-url": "https://github.com/Xliff/p6-GooCanvas.git"
+}

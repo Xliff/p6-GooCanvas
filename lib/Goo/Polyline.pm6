@@ -14,25 +14,41 @@ use Goo::Points;
 
 class Goo::Polyline is Goo::CanvasItemSimple {
   has GooCanvasPolyline $!pl;
+  has $!num;
 
   method Goo::Raw::Types::GooCanvasPolyline
     # is also<Polyline>
   { $!pl }
 
-  submethod BUILD (:$line) {
+  submethod BUILD (:$line, :$!num) {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!pl = $line) )
   }
 
-  multi method new (GooCanvasPolyline $line) {
-    self.bless(:$line);
+  proto method new(|) { * }
+
+  multi method new (
+    GooCanvasPolyline $line,
+    Int() $num?
+  ) {
+    self.bless(:$line, :$num);
   }
   multi method new (
     GooCanvasItem() $parent,
     Int() $close,
-    Int() $num_points
+    Int() $num_points,
+    *@points
   ) {
+    die '@points must contain numeric values'
+      unless @points.map( *.Num ).all ~~ Num;
+    die '@points must contain an even number of elements!'
+      unless @points.elems == 0 || @points.elems % 2 == 0;
     my ($c, $n) = ( resolve-bool($close), resolve-int($num_points) );
-    self.bless( line => goo_canvas_polyline_new($parent, $c, $n, Str) )
+    my $o = self.bless(
+      line => goo_canvas_polyline_new($parent, $c, 0, Str),
+      num  => $num_points
+    );
+    $o.points = @points if +@points;
+    $o;
   }
 
   method new_line (
@@ -157,21 +173,15 @@ class Goo::Polyline is Goo::CanvasItemSimple {
     my GTK::Compat::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('points', $gv)
-        );
-        Goo::CanvasPoints.new(
-          cast(GooCanvasPoints, $gv.object)
-        );
+        $gv.boxed.defined ??
+          Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) ) !! 0;
       },
       STORE => -> $, $val is copy {
         die "Invalid value of type '{ $val.^name }' passed."
           unless $val ~~ (Array, GooCanvasPoints, Goo::Points).any;
         given $val {
           when Array {
-            my $cv = CArray[num64].new;
-            $cv[$_] = $val[$_].Num for ^$val.elems;
-            $val = $cv;
+            $val = Goo::Points.new($val).Points;
           }
           when Goo::Points {
             $val = Goo::Raw::Types::GooCanvasPoints($val);

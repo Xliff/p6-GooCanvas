@@ -1,3 +1,5 @@
 .touch/
 *.c
 LastBuildResults
+.idea/
+*.bak

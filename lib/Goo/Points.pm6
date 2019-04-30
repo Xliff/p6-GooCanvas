@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use GTK::Compat::Types;
 use Goo::Raw::Types;
 
@@ -11,13 +13,31 @@ class Goo::Points {
   has gpointer $!points;
   has $.elems;
 
-  submethod BUILD (:$!points, :$!elems) { }
+  submethod BUILD (:$points, :$elems) {
+    $!points = cast(gpointer, $points);
+    $!elems  = $elems // 0;
+  }
 
   method Goo::Raw::Types::GooCanvasPoints
-    #is also<Points>
+    is also<Points>
   { $!points }
 
-  method new (Int() $num_points) {
+  multi method new (
+    GooCanvasPoints $points,
+    $elems? is copy
+  ) {
+    die '$elems must be an Int compatible value!'
+      unless $elems.defined.not || $elems.^can('Int').elems;
+    $elems //= 0;
+    self.bless( :$points, :$elems );
+  }
+  multi method new (@points) {
+    # Remember: 2 entries per point!
+    my $o = samewith(+@points / 2);
+    $o.set_points(@points);
+    $o;
+  }
+  multi method new (Int() $num_points) {
     my gint $np = resolve-int($num_points);
     self.bless(
       points => goo_canvas_points_new($np),
@@ -25,7 +45,7 @@ class Goo::Points {
     );
   }
 
-  method set_points ($points is copy) {
+  method set_points ($points is copy) is also<set-points> {
     die '$points is a { $points.^name }, not an Array' unless $points ~~ Array;
     die '$points must only contain Num compatible objects'
       unless $points.grep({ $_.^can('Num').elems }) == $points.elems;
@@ -36,27 +56,40 @@ class Goo::Points {
       $points = $points[ ^($.elems * 2) ];
     }
     my $idx = 0;
-    self.set_point($idx++, |@($_) ) for $points.rotor(2);
+    for $points.rotor(2) -> ($x, $y) {
+      self.set_point($idx++, $x, $y);
+    }
   }
-  
+
   method set_point (
     Int() $idx,
     Num() $x,
     Num() $y
-  ) {
+  )
+    is also<set-point>
+  {
     my gint $i = resolve-int($idx);
     my gdouble ($xx, $yy) = ($x, $y);
     goo_canvas_points_set_point($!points, $i, $xx, $yy);
   }
 
-  method get_points {
+  method get_points
+    is also<
+      get-points
+      points
+    >
+  {
     my @a;
     @a.append: |self.get_point($_) for ^$.elems;
     @a;
   }
 
+  proto method get_point(|)
+    is also<get-point>
+  { * }
+
   multi method get_point (Int() $idx) {
-    my Num ($x, $y) = 0 xx 2;
+    my Num ($x, $y) = 0e0 xx 2;
     samewith($idx, $x, $y);
   }
   multi method get_point(
@@ -70,7 +103,7 @@ class Goo::Points {
     ($x, $y) = ($xx, $yy);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_points_get_type, $n, $t );
   }

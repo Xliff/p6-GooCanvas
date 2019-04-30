@@ -1,5 +1,6 @@
 use v6.c;
 
+use Method::Also;
 use NativeCall;
 
 use GTK::Compat::Types;
@@ -9,7 +10,6 @@ use GTK::Raw::Utils;
 
 use GTK::Compat::Value;
 use Goo::Group;
-use Goo::CanvasItemSimple;
 
 class Goo::Table is Goo::Group {
   has GooCanvasTable $!t;
@@ -45,7 +45,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method column-spacing is rw  {
+  method column-spacing is rw  is also<column_spacing> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -62,7 +62,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gboolean
-  method homogeneous-columns is rw  {
+  method homogeneous-columns is rw  is also<homogeneous_columns> {
     my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
@@ -79,7 +79,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gboolean
-  method homogeneous-rows is rw  {
+  method homogeneous-rows is rw  is also<homogeneous_rows> {
     my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
@@ -96,7 +96,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method horz-grid-line-width is rw  {
+  method horz-grid-line-width is rw  is also<horz_grid_line_width> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -113,7 +113,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method row-spacing is rw  {
+  method row-spacing is rw  is also<row_spacing> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -130,7 +130,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method vert-grid-line-width is rw  {
+  method vert-grid-line-width is rw  is also<vert_grid_line_width> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -147,7 +147,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method x-border-spacing is rw  {
+  method x-border-spacing is rw  is also<x_border_spacing> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -164,7 +164,7 @@ class Goo::Table is Goo::Group {
   }
 
   # Type: gdouble
-  method y-border-spacing is rw  {
+  method y-border-spacing is rw  is also<y_border_spacing> {
     my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -180,15 +180,40 @@ class Goo::Table is Goo::Group {
     );
   }
 
-  method get_child_property (
+  proto method get_child_property (|)
+    is also<get-child-property>
+  { * }
+
+  multi method get_child_property (
+    GooCanvasItem() $child,
+    Str() $property_name
+  ) {
+    # Set type based on $property_name.
+    my $gv-type = do given $property_name {
+      when   @child-property-bool.any { G_TYPE_BOOLEAN }
+      when   @child-property-uint.any { G_TYPE_UINT    }
+      when @child-property-double.any { G_TYPE_DOUBLE  }
+    }
+
+    my $gv = GTK::Compat::Value.new($gv-type);
+    samewith($child, $property_name, $gv);
+    $gv.value;
+  }
+  multi method get_child_property (
     GooCanvasItem() $child,
     Str() $property_name,
     GValue() $value
   ) {
     die "Invalid child property name '{ $property_name }'!"
       unless $property_name eq @valid-child-properties.any;
-    nextsame;
+    self.Goo::Roles::CanvasItem::get_child_property(
+      $child, $property_name, $value
+    );
   }
+
+  proto method set_child_property (|)
+    is also<set-child-property>
+  { * }
 
   multi method set_child_property (
     GooCanvasItem() $child,
@@ -240,16 +265,30 @@ class Goo::Table is Goo::Group {
         $child, $property_name, $value
       )
     } else {
-      die "Invalid value of type { $value.^name } passed!";
+      die "Invalid value of type { $value.^name } passed for {
+           $property_name }!";
     }
   }
 
-  method get_type {
+  method set_child_properties (
+    GooCanvasItem() $child,
+    *@props
+  )
+    is also<set-child-properties>
+  {
+    die 'Parameters must be a flattened array of (property, value) pairs'
+      unless +@props && @props.elems % 2 == 0;
+    for @props.rotor(2) -> ($p, $v) {
+      self.set_child_property($child, $p, $v);
+    }
+  }
+
+  method get_type is also<get-type> {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_table_get_type, $n, $t);
   }
 
-  method model_get_type {
+  method model_get_type is also<model-get-type> {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_table_model_get_type, $n, $t );
   }

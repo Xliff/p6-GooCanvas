@@ -50,7 +50,7 @@ class Goo::Text is Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('alignment', $gv)
         );
-        PangoAlignment( $gv.uint );
+        PangoAlignment( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
