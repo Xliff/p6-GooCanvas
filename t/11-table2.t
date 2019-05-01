@@ -31,8 +31,9 @@ sub create_item (
 
   $table.set_child_properties($item,
     'row',      $row,      'column',   $column,   'rows',     $rows,
-    'columns',  $columns,  'x-expand', $x_expand, 'x-shrink', $x_shrink,
-    'y-expand', $y_expand, 'y-fill',   $y_fill,   'y-shrink', $y_shrink
+    'columns',  $columns,  'x-expand', $x_expand, 'y-expand', $y_expand,
+    'x-shrink', $x_shrink, 'y-shrink', $y_shrink, 'x-fill',   $x_fill,
+    'y-fill',   $y_fill  
   );
   $item;
 }
