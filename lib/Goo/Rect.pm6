@@ -149,9 +149,4 @@ class Goo::Rect is Goo::CanvasItemSimple {
     unstable_get_type( self.^name, &goo_canvas_rect_get_type, $n, $t );
   }
 
-  method model_get_type {
-    state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_rect_model_get_type, $n, $t );
-  }
-
 }

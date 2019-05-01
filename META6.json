@@ -34,6 +34,9 @@
       "Goo::Ellipse"                    :  "lib/Goo/Ellipse.pm6"                  ,
       "Goo::Group"                      :  "lib/Goo/Group.pm6"                    ,
       "Goo::Image"                      :  "lib/Goo/Image.pm6"                    ,
+      "Goo::Model::Ellipse"             :  "lib/Goo/Model/Ellipse.pm6"            ,
+      "Goo::Model::Group"               :  "lib/Goo/Model/Group.pm6"              ,
+      "Goo::Model::Rect"                :  "lib/Goo/Model/Rect.pm6"               ,
       "Goo::Path"                       :  "lib/Goo/Path.pm6"                     ,
       "Goo::Polyline"                   :  "lib/Goo/Polyline.pm6"                 ,
       "Goo::Rect"                       :  "lib/Goo/Rect.pm6"                     ,
@@ -45,4 +48,5 @@
   "license": "Write me!",
   "source-url": "https://github.com/Xliff/p6-GooCanvas.git"
 }
+
 

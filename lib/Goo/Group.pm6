@@ -102,11 +102,7 @@ class Goo::Group is Goo::CanvasItemSimple {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_group_get_type, $n, $t);
   }
-
-  method model_get_type {
-    state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_group_model_get_type, $n, $t );
-  }
+  
 }
 
 sub goo_canvas_group_new (GooCanvasItem $parent, Str)
@@ -116,12 +112,6 @@ sub goo_canvas_group_new (GooCanvasItem $parent, Str)
   { * }
 
 sub goo_canvas_group_get_type ()
-  returns GType
-  is native(goo)
-  is export
-  { * }
-
-sub goo_canvas_group_model_get_type ()
   returns GType
   is native(goo)
   is export

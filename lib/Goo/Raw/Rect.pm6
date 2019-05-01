@@ -25,9 +25,3 @@ sub goo_canvas_rect_get_type ()
   is native(goo)
   is export
   { * }
-
-sub goo_canvas_rect_model_get_type ()
-  returns GType
-  is native(goo)
-  is export
-  { * }

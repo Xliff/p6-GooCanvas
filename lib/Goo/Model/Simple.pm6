@@ -14,8 +14,14 @@ use Pango::FontDescription;
 class Goo::Model::Simple {
   also does Goo::Roles::CanvasItemModel;
 
-  submethod BUILD {
+  submethod BUILD (:$simple, :@props) {
     self.ADD-PREFIX('Goo::');
+    self.setModelItem(
+      cast( GooCanvasItemModel, $simple )
+    );
+    for @props.rotor(2) -> ($m, $v) {
+      self."$m"() = $v
+    }
   }
 
   # Type: GooCairoAntialias

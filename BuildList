@@ -39,6 +39,9 @@ Goo::CanvasItemSimple
 Goo::Ellipse
 Goo::Group
 Goo::Image
+Goo::Model::Ellipse
+Goo::Model::Group
+Goo::Model::Rect
 Goo::Path
 Goo::Polyline
 Goo::Rect

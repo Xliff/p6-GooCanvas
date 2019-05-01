@@ -9,15 +9,10 @@ use Goo::Model::Simple;
 
 class Goo::Model::Group is Goo::Model::Simple {
 
-  submethod BUILD (:$group) {
-    self.setModelItem(
-      cast( GooCanvasItemModel, $group )
-    );
-  }
-
   method new (GooCanvasItemModel() $parent, *@props) {
-    my $o = self.bless(
-      group => goo_canvas_group_model($parent, Str)
+    self.bless(
+      simple => goo_canvas_group_model_new($parent, Str),
+      props  => @props
     );
   }
 
@@ -89,10 +84,21 @@ class Goo::Model::Group is Goo::Model::Simple {
     );
   }
 
+  method get_type {
+    state ($n, $t);
+    unstable_get_type( self.^name, &goo_canvas_group_model_get_type, $n, $t );
+  }
+
 }
 
-sub goo_canvas_group_model(GooCanvasItemModel $parent, Str)
-  returns GooCanvasGroupModel
+sub goo_canvas_group_model_new(GooCanvasItemModel $parent, Str)
+  returns GooCanvasItemModel
+  is native(goo)
+  is export
+{ * }
+
+sub goo_canvas_group_model_get_type ()
+  returns GType
   is native(goo)
   is export
 { * }
