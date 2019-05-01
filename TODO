@@ -1,0 +1,3 @@
+- Implement *@props on every constructor to emulate the C sub. Constructors would simply do:
+	for @props.rotor(2) -> ($m, $v) { $o."$m"() = $v } 
+  ... where $o is the object being created.

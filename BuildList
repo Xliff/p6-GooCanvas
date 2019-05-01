@@ -1,5 +1,7 @@
 Cairo
+GTK::Compat::GList
 GTK::Compat::RGBA
+GTK::Compat::Roles::ListData
 GTK::Compat::Types
 GTK::Compat::Value
 GTK::Container
@@ -15,6 +17,9 @@ Pango::FontDescription
 Pango::Raw::Types
 Goo::Raw::Types
 Goo::Raw::Enums
+Goo::Model::Raw::Item
+Goo::Model::Roles::Item
+Goo::Raw::Boxed
 Goo::Raw::Canvas
 Goo::Raw::CanvasItem
 Goo::Raw::CanvasItemModel
@@ -26,14 +31,17 @@ Goo::Raw::Text
 Goo::Roles::CanvasItemModel
 Goo::Roles::Signals::Canvas
 Goo::Roles::Signals::CanvasItem
-Goo::Widget
 Goo::Canvas
+Goo::Model::Simple
 Goo::Points
 Goo::Roles::CanvasItem
 Goo::CanvasItemSimple
 Goo::Ellipse
 Goo::Group
+Goo::Image
+Goo::Path
 Goo::Polyline
 Goo::Rect
 Goo::Table
 Goo::Text
+Goo::Widget
