@@ -20,7 +20,7 @@ class Goo::Table is Goo::Group {
     x-align         y-align
   >;
   my @child-property-bool = <
-    x-expand        x-fill        x-shrink 
+    x-expand        x-fill        x-shrink
     y-expand        y-fill        y-shrink
   >;
   my @valid-child-properties = (
@@ -42,6 +42,11 @@ class Goo::Table is Goo::Group {
   }
   multi method new (GooCanvasItem() $parent) {
     self.bless( table => goo_canvas_table_new($parent, Str) )
+  }
+  multi method new (GooCanvasItem() $parent, Int() $width, Int() $height) {
+    my $o = samewith($parent);
+    ($o.width, $o.height) = ($width, $height);
+    $o;
   }
 
   # Type: gdouble

@@ -357,7 +357,16 @@ DIE
     goo_canvas_item_find_child($!ci, $child);
   }
 
-  method get_bounds (GooCanvasBounds() $bounds) is also<get-bounds> {
+  proto method get_bounds (|)
+    is also<get-bounds>
+  { * }
+
+  multi method get_bounds is also<bounds> {
+    my $b = GooCanvasBounds.new;
+    self.get_bounds($b);
+    $b;
+  }
+  multi method get_bounds (GooCanvasBounds() $bounds)  {
     goo_canvas_item_get_bounds($!ci, $bounds);
   }
 
