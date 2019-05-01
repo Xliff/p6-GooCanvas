@@ -33,6 +33,7 @@ Goo::Roles::Signals::Canvas
 Goo::Roles::Signals::CanvasItem
 Goo::Canvas
 Goo::Model::Simple
+Goo::Model::Text
 Goo::Points
 Goo::Roles::CanvasItem
 Goo::CanvasItemSimple
@@ -40,6 +41,7 @@ Goo::Ellipse
 Goo::Group
 Goo::Image
 Goo::Model::Ellipse
+Goo::Model::Grid
 Goo::Model::Group
 Goo::Model::Rect
 Goo::Path

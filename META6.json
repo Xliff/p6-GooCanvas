@@ -28,6 +28,7 @@
       "Goo::Roles::Signals::CanvasItem" :  "lib/Goo/Roles/Signals/CanvasItem.pm6" ,
       "Goo::Canvas"                     :  "lib/Goo/Canvas.pm6"                   ,
       "Goo::Model::Simple"              :  "lib/Goo/Model/Simple.pm6"             ,
+      "Goo::Model::Text"                :  "lib/Goo/Model/Text.pm6"               ,
       "Goo::Points"                     :  "lib/Goo/Points.pm6"                   ,
       "Goo::Roles::CanvasItem"          :  "lib/Goo/Roles/CanvasItem.pm6"         ,
       "Goo::CanvasItemSimple"           :  "lib/Goo/CanvasItemSimple.pm6"         ,
@@ -35,6 +36,7 @@
       "Goo::Group"                      :  "lib/Goo/Group.pm6"                    ,
       "Goo::Image"                      :  "lib/Goo/Image.pm6"                    ,
       "Goo::Model::Ellipse"             :  "lib/Goo/Model/Ellipse.pm6"            ,
+      "Goo::Model::Grid"                :  "lib/Goo/Model/Grid.pm6"               ,
       "Goo::Model::Group"               :  "lib/Goo/Model/Group.pm6"              ,
       "Goo::Model::Rect"                :  "lib/Goo/Model/Rect.pm6"               ,
       "Goo::Path"                       :  "lib/Goo/Path.pm6"                     ,
@@ -48,5 +50,6 @@
   "license": "Write me!",
   "source-url": "https://github.com/Xliff/p6-GooCanvas.git"
 }
+
 
 

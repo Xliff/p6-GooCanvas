@@ -1,44 +1,37 @@
 use v6.c;
 
+use NativeCall;
+
 use Pango::Raw::Types;
+
 use GTK::Compat::Types;
-use Goo::Raw::Types;
-use Goo::Raw::Enums;
+use GTK::Raw::Types;
 
 use GTK::Raw::Utils;
 
-use Goo::Raw::Text;
+use Goo::Raw::Types;
+use Goo::Raw::Enums;
 
-use Goo::CanvasItemSimple;
+use Goo::Model::Simple;
 
-class Goo::Text is Goo::CanvasItemSimple {
-  has GooCanvasText $!t;
+class Goo::Model::Text is Goo::Model::Simple {
 
-  submethod BUILD (:$text) {
-    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!t = $text) )
-  }
-
-  method Goo::Raw::Types::GooCanvasText
-    #is also<Text>
-  { $!t }
-
-  proto method new (|) { * }
-
-  multi method new (GooCanvasText $text) {
-    self.bless($text);
-  }
-  multi method new (
-    GooCanvasItem() $parent,
-    Str() $text,
-    Num() $x,
-    Num() $y,
-    Num() $width,
-    Int() $anchor
+  method new (
+    GooCanvasItemModel() $parent,
+    Str()                $string,
+    Num()                $x,
+    Num()                $y,
+    Num()                $width,
+    Int()                $anchor,
+    *@props
   ) {
-    my gdouble ($xx, $yy, $w) = ($x, $y, $width);
     my guint $a = resolve-uint($anchor);
+    my gdouble ($xx, $yy, $w) = ($x, $y, $width);
     self.bless(
-      text => goo_canvas_text_new($parent, $text, $xx, $yy, $w, $a, Str)
+      simple => goo_canvas_text_model_new(
+        $parent, $string, $xx, $yy, $w, $a, Str
+      ),
+      props  => @props
     );
   }
 
@@ -67,7 +60,7 @@ class Goo::Text is Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('anchor', $gv)
         );
-        GooCanvasAnchorType( $gv.uint );
+        GooCanvasAnchorType( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -84,7 +77,7 @@ class Goo::Text is Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('ellipsize', $gv)
         );
-        PangoEllipsizeMode( $gv.uint );
+        PangoEllipsizeMode( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -169,7 +162,7 @@ class Goo::Text is Goo::CanvasItemSimple {
         $gv = GTK::Compat::Value.new(
           self.prop_get('wrap', $gv)
         );
-        PangoWrapMode( $gv.uint );
+        PangoWrapMode( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -212,16 +205,29 @@ class Goo::Text is Goo::CanvasItemSimple {
     );
   }
 
-  method get_natural_extents (
-    PangoRectangle $ink_rect,
-    PangoRectangle $logical_rect
-  ) {
-    goo_canvas_text_get_natural_extents($!t, $ink_rect, $logical_rect);
-  }
-
   method get_type {
     state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_text_get_type, $n, $t );
+    unstable_get_type( self.^name, &goo_canvas_text_model_get_type, $n, $t );
   }
 
 }
+
+sub goo_canvas_text_model_new (
+  GooCanvasItemModel $parent,
+  Str                $string,
+  gdouble            $x,
+  gdouble            $y,
+  gdouble            $width,
+  uint32             $anchor,
+  Str
+)
+  returns GooCanvasItemModel
+  is native(goo)
+  is export
+{ * }
+
+sub goo_canvas_text_model_get_type ()
+  returns GType
+  is native(goo)
+  is export
+  { * }

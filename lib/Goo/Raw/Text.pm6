@@ -36,9 +36,3 @@ sub goo_canvas_text_get_type ()
   is native(goo)
   is export
   { * }
-
-sub goo_canvas_text_model_get_type ()
-  returns GType
-  is native(goo)
-  is export
-  { * }
