@@ -16,13 +16,15 @@ class GooCanvasGroup      is repr('CPointer') is export does GTK::Roles::Pointer
 class GooCanvasImage      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItem       is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasItemSimple is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasItemModel  is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasPath       is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasPolyline   is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasRect       is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasText       is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasTable      is repr('CPointer') is export does GTK::Roles::Pointers { }
 class GooCanvasWidget     is repr('CPointer') is export does GTK::Roles::Pointers { }
+
+class GooCanvasItemModel  is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasGroupModel is repr('CPointer') is export does GTK::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 

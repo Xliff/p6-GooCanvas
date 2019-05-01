@@ -14,6 +14,10 @@ use Pango::FontDescription;
 class Goo::Model::Simple {
   also does Goo::Roles::CanvasItemModel;
 
+  submethod BUILD {
+    self.ADD-PREFIX('Goo::');
+  }
+
   # Type: GooCairoAntialias
   method antialias is rw  {
     my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
