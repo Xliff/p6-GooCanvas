@@ -38,7 +38,7 @@ role Goo::Model::Roles::Item {
 
   method Goo::Raw::Types::GooCanvasItemModel
     #is also<ItemModel>
-  { * }
+  { $!im }
 
   method parent is rw {
     Proxy.new(
@@ -386,8 +386,9 @@ role Goo::Model::Roles::Item {
     goo_canvas_item_model_stop_animation($!im);
   }
 
-  method translate (gdouble $tx, gdouble $ty) {
-    goo_canvas_item_model_translate($!im, $tx, $ty);
+  method translate (Num() $tx, Num() $ty) {
+    my gdouble ($txx, $tyy) = ($tx, $ty);
+    goo_canvas_item_model_translate($!im, $txx, $tyy);
   }
 
 }

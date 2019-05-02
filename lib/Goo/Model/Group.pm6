@@ -9,9 +9,10 @@ use Goo::Model::Simple;
 
 class Goo::Model::Group is Goo::Model::Simple {
 
-  method new (GooCanvasItemModel() $parent, *@props) {
+  method new (GooCanvasItemModel() $parent = GooCanvasItemModel, *@props) {
+    my $gm = goo_canvas_group_model_new($parent, Str);
     self.bless(
-      simple => goo_canvas_group_model_new($parent, Str),
+      simple => $gm,
       props  => @props
     );
   }

@@ -7,12 +7,12 @@ use GTK::Compat::Types;
 use GTK::Compat::RGBA;
 use Goo::Raw::Types;
 
-use Goo::Roles::CanvasItemModel;
+use Goo::Model::Roles::Item;
 
 use Pango::FontDescription;
 
 class Goo::Model::Simple {
-  also does Goo::Roles::CanvasItemModel;
+  also does Goo::Model::Roles::Item;
 
   submethod BUILD (:$simple, :@props) {
     self.ADD-PREFIX('Goo::');
@@ -63,7 +63,7 @@ class Goo::Model::Simple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn 'clip-path does not allow reading';
+        warn 'clip-path does not allow reading' if $DEBUG;
         '';
       },
       STORE => -> $, Str() $val is copy {
@@ -78,7 +78,7 @@ class Goo::Model::Simple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn 'fill-color does not allow reading';
+        warn 'fill-color does not allow reading' if $DEBUG;
         '';
       },
       STORE => -> $, Str() $val is copy {
@@ -152,7 +152,7 @@ class Goo::Model::Simple {
     my GTK::Compat::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        warn 'fill-pixbuf does not allow reading';
+        warn 'fill-pixbuf does not allow reading' if $DEBUG;
         0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
@@ -341,7 +341,7 @@ class Goo::Model::Simple {
     my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn 'stroke-color does not allow reading';
+        warn 'stroke-color does not allow reading' if $DEBUG;
         '';
       },
       STORE => -> $, Str() $val is copy {
@@ -415,7 +415,7 @@ class Goo::Model::Simple {
     my GTK::Compat::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        warn 'stroke-pixbuf does not allow reading';
+        warn 'stroke-pixbuf does not allow reading' if $DEBUG;
         0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {

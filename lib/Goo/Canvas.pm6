@@ -10,6 +10,7 @@ use Goo::Raw::Canvas;
 use GTK::Compat::Roles::ListData;
 use GTK::Roles::Scrollable;
 use Goo::Roles::Signals::Canvas;
+use Goo::Model::Roles::Item;
 
 use GTK::Compat::GList;
 use GTK::Compat::RGBA;
@@ -81,7 +82,9 @@ class Goo::Canvas is GTK::Container {
   method root_item_model is rw {
     Proxy.new(
       FETCH => sub ($) {
-        goo_canvas_get_root_item_model($!gc);
+        Goo::Model::Roles::Item.new(
+          goo_canvas_get_root_item_model($!gc)
+        );
       },
       STORE => sub ($, GooCanvasItemModel() $model is copy) {
         goo_canvas_set_root_item_model($!gc, $model);

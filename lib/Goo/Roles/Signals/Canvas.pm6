@@ -15,6 +15,7 @@ role Goo::Roles::Signals::Canvas {
     &handler?
   ) {
     my $hid;
+
     %!signals-gc{$signal} //= do {
       my $s = Supplier.new;
       $hid = g-connect-item-created($obj, $signal,
