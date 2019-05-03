@@ -12,9 +12,9 @@ use GTK::Dialog::Message;
 use GTK::Frame;
 
 use Goo::Canvas;
-use Goo::Model::Group;
-use Goo::Model::Rect;
-use Goo::Model::Text;
+use Goo::Group;
+use Goo::Rect;
+use Goo::Text;
 
 use Goo::Rect;
 
@@ -56,10 +56,17 @@ sub get_piece_color ($piece) {
 
 enum Direction <UP DOWN LEFT RIGHT>;
 
+# For non-mv, this is just the item.
+sub get-canvas-model($item) { $item }
+
 sub piece-button-press ($item, $r) {
-  my ($model, $canvas) = ($item.model, $item.canvas);
-  my ($num, $pos) = ( get-data($model, 'num'), get-data($model, 'pos') );
-  my ($x, $y, $text, $move) = ($pos % 4, $pos div 4, $model.text, True);
+  CATCH { default { .message.say } }
+
+  my ($model, $canvas) = (get-canvas-model($item), $item.canvas );
+  my ($num, $pos, $text) = (
+    get-data($model, 'num'), get-data($model, 'pos'), get-data($model, 'text')
+  );
+  my ($x, $y, $move) = ($pos % 4, $pos div 4, True);
   my ($dx, $dy);
 
   if      $y > 0 && @board[$pos - 4].defined.not {
@@ -85,25 +92,39 @@ sub piece-button-press ($item, $r) {
   $r.r = 0;
 }
 
-sub item-created ($i, $m) {
-  say 'Item created';
-  if Goo::Model.new($m).parent.defined {
-    my $item = Goo::CanvasItem.new($i);
+sub create-canvas-root {
+  my $canvas = Goo::Canvas.new;
+  my $root = $canvas.get_root_item;
+  ($canvas, $root);
+}
 
-    $item.enter-notify-event.tap(-> *@a {
-      $item.model.text.fill-color = 'white';
-      @a[*-1].r = 0
-    });
+sub create-piece ($root, $num) {
+  my $piece = Goo::Group.new($root);
+  my $rect  = Goo::Rect.new($piece, 0, 0, PIECE_SIZE, PIECE_SIZE);
+  my $text  = Goo::Text.new(
+    $piece,
+    "{ $num  + 1 }",
+    PIECE_SIZE / 2, PIECE_SIZE / 2,
+    -1, GOO_CANVAS_ANCHOR_CENTER
+  );
 
-    $item.leave-notify-event.tap(-> *@a {
-      $item.model.text.fill-color = 'black';
-      @a[*-1].r = 0
-    });
+  ($piece, $rect, $text);
+}
 
-    $item.button-press-event.tap(-> *@a {
-      piece-button-press( $item, @a[*-1] );
-    });
-  }
+sub setup-signals ($item) {
+  $item.enter-notify-event.tap(-> *@a {
+    get-data($item, 'text').fill-color = 'white';
+    @a[*-1].r = 0
+  });
+
+  $item.leave-notify-event.tap(-> *@a {
+    get-data($item, 'text').fill-color = 'black';
+    @a[*-1].r = 0
+  });
+
+  $item.button-press-event.tap(-> *@a {
+    piece-button-press( $item, @a[*-1] );
+  });
 }
 
 sub scramble {
@@ -147,31 +168,21 @@ sub create_canvas_fifteen {
   $frame.hexpand = $frame.vexpand = True;
   $vbox.pack_start($frame);
 
-  my $canvas = Goo::Canvas.new;
+  my ($canvas, $root) = create-canvas-root;
   (.automatic-bounds, .bounds-from-origin) = (True, False) with $canvas;
-  $canvas.item-created.tap(-> *@a { item-created( $canvas, |@a[1,2] ) });
 
-  my $root = Goo::Model::Group.new;
-  $canvas.root_item_model = $root;
   $canvas.set_size_request(PIECE_SIZE * 4 + 1, PIECE_SIZE * 4 + 1);
   $canvas.set_bounds(0, 0, PIECE_SIZE * 4 + 1, PIECE_SIZE * 4 + 1);
   $frame.add($canvas);
 
   for ^15 {
-    my ($x, $y) = ($_ % 4, $_ div 4);
-    @board[$_] = Goo::Model::Group.new($root);
+    my ($rect, $text);
+    my ($x, $y)  = ($_ % 4, $_ div 4);
+    (@board[$_], $rect, $text) = create-piece($root, $_);
     @board[$_].translate($x * PIECE_SIZE, $y * PIECE_SIZE);
-
-    my $rect = Goo::Model::Rect.new(@board[$_], 0, 0, PIECE_SIZE, PIECE_SIZE);
+    setup-signals(@board[$_]);
     ($rect.line-width, $rect.stroke-color, $rect.fill-color) =
       ( 1, 'black', get_piece_color($_) );
-
-    my $text = Goo::Model::Text.new(
-      @board[$_],
-      "{ $_  + 1 }",
-      PIECE_SIZE / 2, PIECE_SIZE / 2,
-      -1, GOO_CANVAS_ANCHOR_CENTER
-    );
     (.font, .fill-color) = ('Sans bold 24', 'black') with $text;
     set-data(@board[$_], 'text', $text);
     set-data(@board[$_], 'num', $_);
