@@ -1,3 +1,7 @@
 - Implement *@props on every constructor to emulate the C sub. Constructors would simply do:
-	for @props.rotor(2) -> ($m, $v) { $o."$m"() = $v } 
+	for @props.rotor(2) -> ($m, $v) { $o."$m"() = $v }
   ... where $o is the object being created.
+- Refactor ModelItem and CanvasItem properties into associated roles, since
+  there do not seem to be much in the way of differences. If there are,
+	differences in the implementation between model and item, then those should
+	be removed from the role and implemented, separately.
