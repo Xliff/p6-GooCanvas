@@ -50,10 +50,12 @@ Goo::Model::Table
 Goo::Model::Text
 Goo::Points
 Goo::Roles::CanvasItem
+Goo::Roles::Polyline
 Goo::CanvasItemSimple
 Goo::Ellipse
 Goo::Group
 Goo::Image
+Goo::Model::Polyline
 Goo::Path
 Goo::Polyline
 Goo::Rect

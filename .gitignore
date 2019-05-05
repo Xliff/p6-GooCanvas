@@ -4,3 +4,4 @@ LastBuildResults
 .idea/
 *.bak
 *.iml
+.precomp

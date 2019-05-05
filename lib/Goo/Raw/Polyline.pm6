@@ -52,15 +52,9 @@ sub goo_canvas_points_ref (GooCanvasPoints $points)
 sub goo_canvas_points_set_point (
   GooCanvasPoints $points,
   gint $idx,
-  gdouble $x, 
+  gdouble $x,
   gdouble $y
 )
-  is native(goo)
-  is export
-  { * }
-
-sub goo_canvas_polyline_model_get_type ()
-  returns GType
   is native(goo)
   is export
   { * }

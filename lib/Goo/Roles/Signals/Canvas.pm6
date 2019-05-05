@@ -28,7 +28,7 @@ role Goo::Roles::Signals::Canvas {
         },
         Pointer, 0
       );
-      [ $s.Supply, $obj, $hid];
+      [ $s.Supply, $obj, $hid ];
     };
     %!signals-gc{$signal}[0].tap(&handler) with &handler;
     %!signals-gc{$signal}[0];

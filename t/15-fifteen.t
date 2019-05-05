@@ -10,7 +10,6 @@ use GTK::Box;
 use GTK::Button;
 use GTK::Dialog::Message;
 use GTK::Frame;
-
 use Goo::Canvas;
 use Goo::Group;
 use Goo::Rect;

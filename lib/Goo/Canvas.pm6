@@ -16,6 +16,8 @@ use GTK::Compat::GList;
 use GTK::Compat::RGBA;
 use GTK::Container;
 
+use Goo::Roles::CanvasItem;
+
 our subset GooCanvasAncestry is export
   where GooCanvas | GtkScrollable | ContainerAncestry;
 
@@ -555,7 +557,7 @@ class Goo::Canvas is GTK::Container {
   }
 
   method get_root_item {
-    ::('Goo::Roles::CanvasItem').new( goo_canvas_get_root_item($!gc) );
+    Goo::Roles::CanvasItem.new( goo_canvas_get_root_item($!gc) );
   }
 
   method get_type {

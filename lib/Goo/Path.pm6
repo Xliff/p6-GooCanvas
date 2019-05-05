@@ -7,7 +7,11 @@ use Goo::Raw::Types;
 
 use Goo::CanvasItemSimple;
 
+use Goo::Roles::Path;
+
 class Goo::Path is Goo::CanvasItemSimple {
+  also does Goo::Roles::Path;
+
   has GooCanvasPath $!p;
 
   submethod BUILD (:$path) {
@@ -21,97 +25,9 @@ class Goo::Path is Goo::CanvasItemSimple {
     self.bless( path => goo_canvas_path_new($parent, $path_data, Str) );
   }
 
-  # Type: gchar
-  method data is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
-    Proxy.new(
-      FETCH => -> $ {
-        warn 'data does not allow reading' if $DEBUG;
-        ''
-      },
-      STORE => -> $, Str() $val is copy {
-        $gv.string = $val;
-        self.prop_set('data', $gv);
-      }
-    );
-  }
-
-  # Type: gdouble
-  method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
-    Proxy.new(
-      FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('height', $gv)
-        );
-        $gv.double;
-      },
-      STORE => -> $, Num() $val is copy {
-        $gv.double = $val;
-        self.prop_set('height', $gv);
-      }
-    );
-  }
-
-  # Type: gdouble
-  method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
-    Proxy.new(
-      FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('width', $gv)
-        );
-        $gv.double;
-      },
-      STORE => -> $, Num() $val is copy {
-        $gv.double = $val;
-        self.prop_set('width', $gv);
-      }
-    );
-  }
-
-  # Type: gdouble
-  method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
-    Proxy.new(
-      FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('x', $gv)
-        );
-        $gv.double;
-      },
-      STORE => -> $, Num() $val is copy {
-        $gv.double = $val;
-        self.prop_set('x', $gv);
-      }
-    );
-  }
-
-  # Type: gdouble
-  method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
-    Proxy.new(
-      FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
-          self.prop_get('y', $gv)
-        );
-        $gv.double;
-      },
-      STORE => -> $, Num() $val is copy {
-        $gv.double = $val;
-        self.prop_set('y', $gv);
-      }
-    );
-  }
-
   method get_type {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_path_get_type, $n, $t );
-  }
-
-  method model_get_type {
-    state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_path_model_get_type, $n, $t );
   }
 }
 
@@ -126,12 +42,6 @@ sub goo_canvas_path_new (
   { * }
 
 sub goo_canvas_path_get_type ()
-  returns GType
-  is native(goo)
-  is export
-  { * }
-
-sub goo_canvas_path_model_get_type ()
   returns GType
   is native(goo)
   is export

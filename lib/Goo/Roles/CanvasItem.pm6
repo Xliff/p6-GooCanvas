@@ -14,9 +14,8 @@ use GTK::Raw::Utils;
 use Goo::Raw::CanvasItem;
 
 use GTK::Roles::Properties;
+use GTK::Roles::Protection;
 use Goo::Roles::Signals::CanvasItem;
-
-use Goo::Canvas;
 
 role Goo::Roles::CanvasItem {
   also does GTK::Roles::Properties;
@@ -38,7 +37,6 @@ role Goo::Roles::CanvasItem {
   method Goo::Raw::Types::GooCanvasItem
     is also<CanvasItem>
   { $!ci }
-
 
   multi method new (GooCanvasItem $item) {
     self.bless(:$item);
@@ -131,7 +129,7 @@ role Goo::Roles::CanvasItem {
   method canvas is rw {
     Proxy.new(
       FETCH => sub ($) {
-        Goo::Canvas.new( goo_canvas_item_get_canvas($!ci) );
+        ::('Goo::Canvas').new( goo_canvas_item_get_canvas($!ci) );
       },
       STORE => sub ($, GooCanvas() $canvas is copy) {
         goo_canvas_item_set_canvas($!ci, $canvas);
@@ -573,13 +571,15 @@ DIE
     goo_canvas_item_scale($!ci, $sxx, $syy);
   }
 
-  method set_child_property (
+  proto method set_child_property (|)
+    is also<set-child-property>
+  { * }
+
+  multi method set_child_property (
     GooCanvasItem() $child,
     Str() $property_name,
     GValue() $value
-  )
-    is also<set-child-property>
-  {
+  ) {
     goo_canvas_item_set_child_property($!ci, $child, $property_name, $value);
   }
 
