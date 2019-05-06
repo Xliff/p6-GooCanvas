@@ -34,6 +34,10 @@ role Goo::Model::Roles::Item {
     self!setObject($!im = $item);
   }
 
+  multi method new (GooCanvasItemModel $model) {
+    self.bless(:$model);
+  }
+
   method Goo::Raw::Types::GooCanvasItemModel
     is also<
       ItemModel
@@ -240,7 +244,7 @@ role Goo::Model::Roles::Item {
     self.connect-int($!im, 'child-removed');
   }
 
-  method add_child (GooCanvasItemModel() $child, Int() $position)
+  method add_child (GooCanvasItemModel() $child, Int() $position = -1)
     is also<add-child>
   {
     my gint $p = resolve-int($position);
