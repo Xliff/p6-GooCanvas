@@ -3,6 +3,7 @@ GTK::Compat::GList
 GTK::Compat::Pixbuf
 GTK::Compat::RGBA
 GTK::Compat::Roles::ListData
+GTK::Compat::Roles::Object
 GTK::Compat::Types
 GTK::Compat::Value
 GTK::Container
@@ -13,6 +14,7 @@ GTK::Roles::Properties
 GTK::Roles::Protection
 GTK::Roles::Scrollable
 GTK::Roles::Signals::Generic
+GTK::Widget
 Method::Also
 Pango::FontDescription
 Pango::Raw::Types
@@ -37,16 +39,13 @@ Goo::Roles::Grid
 Goo::Roles::Image
 Goo::Roles::Signals::Canvas
 Goo::Roles::Signals::CanvasItem
-Goo::Roles::Table
 Goo::Roles::Text
-Goo::Canvas
 Goo::Model::Ellipse
 Goo::Model::Grid
 Goo::Model::Group
 Goo::Model::Image
 Goo::Model::Path
 Goo::Model::Rect
-Goo::Model::Table
 Goo::Model::Text
 Goo::Points
 Goo::Roles::CanvasItem
@@ -58,7 +57,11 @@ Goo::Image
 Goo::Model::Polyline
 Goo::Path
 Goo::Polyline
+Goo::Raw::ItemOrModel
 Goo::Rect
+Goo::Roles::Table
 Goo::Table
 Goo::Text
 Goo::Widget
+Goo::Canvas
+Goo::Model::Table

@@ -27,9 +27,9 @@ my @valid-child-properties = (
   |@child-property-bool
 );
 
-our subset ItemOrModel        is export of Mu
-    where Goo::Role::CanvasItem | Goo::Model::Roles::Item   |
-          GooCanvasItem         | GooCanvasItemModel        ;
+my subset ItemOrModel
+    where Goo::Roles::CanvasItem | Goo::Model::Roles::Item   |
+          GooCanvasItem          | GooCanvasItemModel        ;
 
 role Goo::Roles::Table {
 
@@ -246,13 +246,25 @@ role Goo::Roles::Table {
       unless $property_name eq @valid-child-properties.any;
     # Force to right method in inheritance chain.
     if $value ~~ (GTK::Compat::Value, GValue).any {
-      #self.Goo::Roles::CanvasItem::set_child_property(
-      # Set type based on $property_name.
       my $c = do given $child {
-        when Goo::Roles::CanvasItem     { .CanvasItem }
-        when Goo::Model::Roles::Item    { .ModelItem  }
+        when Goo::Roles::CanvasItem             { .CanvasItem      }
+        when Goo::Model::Roles::Item            { .CanvasItemModel }
+
+        when GooCanvasItem | GooCanvasItemModel { $_ }
+
+        default {
+          die "Unknown type passed as \$child to{ ''
+               } GTK::Roles::Table.set_child_property: { .^name }";
+        }
       }
-      nextwith($c, $property_name, $value);
+      # nextwith/nextsame isn't doing the job, so it has to be done manually
+      # via a type-check hack.
+      my @args = ($c, $property_name, $value);
+      if $c ~~ GooCanvasItem {
+        self.Goo::Roles::CanvasItem::set_child_property(|@args);
+      } else {
+        self.Goo::Model::Roles::Item::set_child_property(|@args);
+      }
     } else {
       die "Invalid value of type { $value.^name } passed for {
            $property_name }!";

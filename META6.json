@@ -31,16 +31,13 @@
       "Goo::Roles::Image"               :  "lib/Goo/Roles/Image.pm6"              ,
       "Goo::Roles::Signals::Canvas"     :  "lib/Goo/Roles/Signals/Canvas.pm6"     ,
       "Goo::Roles::Signals::CanvasItem" :  "lib/Goo/Roles/Signals/CanvasItem.pm6" ,
-      "Goo::Roles::Table"               :  "lib/Goo/Roles/Table.pm6"              ,
       "Goo::Roles::Text"                :  "lib/Goo/Roles/Text.pm6"               ,
-      "Goo::Canvas"                     :  "lib/Goo/Canvas.pm6"                   ,
       "Goo::Model::Ellipse"             :  "lib/Goo/Model/Ellipse.pm6"            ,
       "Goo::Model::Grid"                :  "lib/Goo/Model/Grid.pm6"               ,
       "Goo::Model::Group"               :  "lib/Goo/Model/Group.pm6"              ,
       "Goo::Model::Image"               :  "lib/Goo/Model/Image.pm6"              ,
       "Goo::Model::Path"                :  "lib/Goo/Model/Path.pm6"               ,
       "Goo::Model::Rect"                :  "lib/Goo/Model/Rect.pm6"               ,
-      "Goo::Model::Table"               :  "lib/Goo/Model/Table.pm6"              ,
       "Goo::Model::Text"                :  "lib/Goo/Model/Text.pm6"               ,
       "Goo::Points"                     :  "lib/Goo/Points.pm6"                   ,
       "Goo::Roles::CanvasItem"          :  "lib/Goo/Roles/CanvasItem.pm6"         ,
@@ -52,15 +49,20 @@
       "Goo::Model::Polyline"            :  "lib/Goo/Model/Polyline.pm6"           ,
       "Goo::Path"                       :  "lib/Goo/Path.pm6"                     ,
       "Goo::Polyline"                   :  "lib/Goo/Polyline.pm6"                 ,
+      "Goo::Raw::ItemOrModel"           :  "lib/Goo/Raw/ItemOrModel.pm6"          ,
       "Goo::Rect"                       :  "lib/Goo/Rect.pm6"                     ,
+      "Goo::Roles::Table"               :  "lib/Goo/Roles/Table.pm6"              ,
       "Goo::Table"                      :  "lib/Goo/Table.pm6"                    ,
       "Goo::Text"                       :  "lib/Goo/Text.pm6"                     ,
-      "Goo::Widget"                     :  "lib/Goo/Widget.pm6"                   
+      "Goo::Widget"                     :  "lib/Goo/Widget.pm6"                   ,
+      "Goo::Canvas"                     :  "lib/Goo/Canvas.pm6"                   ,
+      "Goo::Model::Table"               :  "lib/Goo/Model/Table.pm6"              
     },
   "resources": [],
   "license": "Write me!",
   "source-url": "https://github.com/Xliff/p6-GooCanvas.git"
 }
+
 
 
 

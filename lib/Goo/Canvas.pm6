@@ -17,6 +17,9 @@ use GTK::Compat::GList;
 use GTK::Compat::RGBA;
 use GTK::Container;
 
+# Must use both objects if creating from Goo::Roles::CanvasItem
+use Goo::CanvasItemSimple;
+
 use Goo::Roles::CanvasItem;
 
 our subset GooCanvasAncestry is export
@@ -542,7 +545,7 @@ class Goo::Canvas is GTK::Container {
   }
 
   method get_item (GooCanvasItemModel() $model) is also<get-item> {
-    goo_canvas_get_item($!gc, $model);
+    Goo::Roles::CanvasItem.new( goo_canvas_get_item($!gc, $model) );
   }
 
   method get_item_at (Num() $x, Num() $y, Int() $is_pointer_event)
@@ -550,7 +553,7 @@ class Goo::Canvas is GTK::Container {
   {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean $i = self.RESOLVE-BOOL($is_pointer_event);
-    goo_canvas_get_item_at($!gc, $xx, $yy, $i);
+    Goo::Roles::CanvasItem.new( goo_canvas_get_item_at($!gc, $xx, $yy, $i) );
   }
 
   method get_items_at (
@@ -567,7 +570,7 @@ class Goo::Canvas is GTK::Container {
       goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event)
     ) but GTK::Compat::Roles::ListData[GooCanvasItem];
     $raw ??
-      $l.Array !! $l.Array.map({ ::('Goo::Roles::CanvasItem').new($_) })
+      $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
   }
 
   method get_items_in_area (
