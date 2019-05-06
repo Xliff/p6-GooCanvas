@@ -591,7 +591,13 @@ class Goo::Canvas is GTK::Container {
       $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
   }
 
-  method get_root_item is also<get-root-item> {
+  method get_root_item
+    is also<
+      get-root-item
+      root-item
+      root_item
+    >
+  {
     Goo::Roles::CanvasItem.new( goo_canvas_get_root_item($!gc) );
   }
 

@@ -1,6 +1,7 @@
 .touch/
 *.c
 LastBuildResults
+LastBuildResults.*
 .idea/
 *.bak
 *.iml
