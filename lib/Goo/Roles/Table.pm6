@@ -9,6 +9,9 @@ use GTK::Raw::Utils;
 
 use Goo::Raw::Types;
 
+use Goo::Roles::CanvasItem;
+use Goo::Model::Roles::Item;
+
 my @child-property-uint = <column columns row rows>;
 my @child-property-double = <
   bottom-padding  left-padding  right-padding  top-padding
@@ -23,6 +26,10 @@ my @valid-child-properties = (
   |@child-property-double,
   |@child-property-bool
 );
+
+our subset ItemOrModel        is export of Mu
+    where Goo::Role::CanvasItem | Goo::Model::Roles::Item   |
+          GooCanvasItem         | GooCanvasItemModel        ;
 
 role Goo::Roles::Table {
 
@@ -167,10 +174,13 @@ role Goo::Roles::Table {
   { * }
 
   multi method get_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name
   ) {
-    # Set type based on $property_name.
+    my $c = do given $child {
+      when Goo::Roles::CanvasItem    { .CanvasItem }
+      when Goo::Model::Roles::Item   { .ModelItem  }
+    }
     my $gv-type = do given $property_name {
       when   @child-property-bool.any { G_TYPE_BOOLEAN }
       when   @child-property-uint.any { G_TYPE_UINT    }
@@ -178,23 +188,27 @@ role Goo::Roles::Table {
     }
 
     my $gv = GTK::Compat::Value.new($gv-type);
-    samewith($child, $property_name, $gv);
+    samewith($c, $property_name, $gv);
     $gv.value;
   }
   multi method get_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name,
     GValue() $value
   ) {
     die "Invalid child property name '{ $property_name }'!"
       unless $property_name eq @valid-child-properties.any;
-    self.Goo::Roles::CanvasItem::get_child_property(
-      $child, $property_name, $value
-    );
+
+    my @args = ($child, $property_name, $value);
+    if $child ~~ GooCanvasItem {
+      self.Goo::Roles::CanvasItem::get_child_property(|@args);
+    } else {
+      self.Goo::Model::Roles::Item::get_child_property(|@args);
+    }
   }
 
   multi method set_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name, # where { $_ eq @child-property-uint.any },
     Int $value is copy
   ) {
@@ -207,7 +221,7 @@ role Goo::Roles::Table {
     samewith( $child, $property_name, gv_uint($value.Int) );
   }
   multi method set_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name,
     Bool $value
   ) {
@@ -215,7 +229,7 @@ role Goo::Roles::Table {
     samewith( $child, $property_name, gv_bool($value) );
   }
   multi method set_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name, # where * eq @child-property-double.any,
     Cool $value is copy
   ) {
@@ -224,7 +238,7 @@ role Goo::Roles::Table {
     samewith( $child, $property_name, gv_dbl($value) );
   }
   multi method set_child_property (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     Str() $property_name,
     $value
   ) {
@@ -233,7 +247,12 @@ role Goo::Roles::Table {
     # Force to right method in inheritance chain.
     if $value ~~ (GTK::Compat::Value, GValue).any {
       #self.Goo::Roles::CanvasItem::set_child_property(
-      nextsame;
+      # Set type based on $property_name.
+      my $c = do given $child {
+        when Goo::Roles::CanvasItem     { .CanvasItem }
+        when Goo::Model::Roles::Item    { .ModelItem  }
+      }
+      nextwith($c, $property_name, $value);
     } else {
       die "Invalid value of type { $value.^name } passed for {
            $property_name }!";
@@ -241,7 +260,7 @@ role Goo::Roles::Table {
   }
 
   method set_child_properties (
-    GooCanvasItem() $child,
+    ItemOrModel $child,
     *@props
   )
     is also<set-child-properties>
