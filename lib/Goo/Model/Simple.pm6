@@ -24,6 +24,10 @@ class Goo::Model::Simple {
     }
   }
 
+  multi method new (GooCanvasItemModel $simple) {
+    self.bless(:$simple);
+  }
+
   # Type: GooCairoAntialias
   method antialias is rw  {
     my GTK::Compat::Value $gv .= new( G_TYPE_UINT );

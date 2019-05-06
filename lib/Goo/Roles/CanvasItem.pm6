@@ -13,6 +13,8 @@ use GTK::Raw::Utils;
 
 use Goo::Raw::CanvasItem;
 
+use Goo::Model::Simple;
+
 use GTK::Roles::Properties;
 use GTK::Roles::Protection;
 use Goo::Roles::Signals::CanvasItem;
@@ -39,7 +41,13 @@ role Goo::Roles::CanvasItem {
   { $!ci }
 
   multi method new (GooCanvasItem $item) {
-    self.bless(:$item);
+    my %init;
+    if self ~~ ::('Goo::CanvasItemSimple') {
+      %init<simplecanvas> = cast(GooCanvasItemSimple, $item);
+    } else {
+      %init<item>         = $item;
+    }
+    self.bless(|%init);
   }
 
   # Is originally:
@@ -418,8 +426,13 @@ DIE
       $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) });
   }
 
-  method get_model is also<get-model> {
-    goo_canvas_item_get_model($!ci);
+  method get_model
+    is also<
+      get-model
+      model
+    >
+  {
+    Goo::Model::Simple.new( goo_canvas_item_get_model($!ci) );
   }
 
   method get_n_children is also<

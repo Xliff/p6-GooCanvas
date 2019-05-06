@@ -15,32 +15,29 @@ use Goo::Roles::Polyline;
 class Goo::Model::Polyline is Goo::Model::Simple {
   also does Goo::Roles::Polyline;
 
-  multi method new (
+  method new (
     GooCanvasItemModel() $parent,
-    Int() $close_path,
-    Int() $num_points,
+    Int()                $close_path,
+    Int()                $num_points,
     *@props
   ) {
     my gboolean $cp = resolve-bool($close_path);
     my gint $np = resolve-int($num_points);
     self.bless(
-      simple => goo_canvas_polyline_model_new($parent, $cp, $np),
+      simple => goo_canvas_polyline_model_new($parent, $cp, $np, Str),
       props  => @props
-    )
+    );
   }
 
-  multi method new (
+  multi method new_line (
     GooCanvasItemModel() $parent,
-    Num() $x1,
-    Num() $y1,
-    Num() $x2,
-    Num() $y2,
+    Num()                $x1,
+    Num()                $y1,
+    Num()                $x2,
+    Num()                $y2,
     *@props
   )
-    is also<
-      new_line
-      new-line
-    >
+    is also<new-line>
   {
     my ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
     self.bless(

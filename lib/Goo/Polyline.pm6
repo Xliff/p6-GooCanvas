@@ -16,7 +16,7 @@ use Goo::Roles::Polyline;
 
 class Goo::Polyline is Goo::CanvasItemSimple {
   also does Goo::Roles::Polyline;
-  
+
   has GooCanvasPolyline $!pl;
   has $!num;
 
@@ -31,7 +31,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
   proto method new(|) { * }
 
   multi method new (
-    GooCanvasPolyline $line,
+    GooCanvasItem() $line,
     Int() $num?
   ) {
     self.bless(:$line, :$num);

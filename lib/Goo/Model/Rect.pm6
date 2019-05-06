@@ -3,6 +3,9 @@ use v6.c;
 use NativeCall;
 
 use GTK::Compat::Types;
+
+use GTK::Compat::Roles::Object;
+
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;

@@ -7,6 +7,8 @@ use GTK::Raw::Types;
 use Goo::Raw::Types;
 use Goo::Raw::Enums;
 
+use GTK::Widget;
+
 use Goo::CanvasItemSimple;
 
 class Goo::Widget is Goo::CanvasItemSimple {
@@ -35,7 +37,9 @@ class Goo::Widget is Goo::CanvasItemSimple {
     my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
     my $ww = $widget ~~ GTK::Widget ?? $widget.Widget !! $widget;
     self.bless(
-      widget      => goo_canvas_widget_new($parent, $ww, $xx, $yy, $w, $h, Str),
+      widget      => goo_canvas_widget_new(
+        $parent, $ww, $xx, $yy, $w, $h, Str
+      ),
       gtk_widget  => $widget
     );
   }

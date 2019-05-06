@@ -37,7 +37,7 @@ role Goo::Roles::Signals::Canvas {
 }
 
 # GooCanvas, GooCanvasItem, GooCanvasItemModel, gpointer
-sub g-connect-item-created(
+sub g-connect-item-created (
   Pointer $app,
   Str $name,
   &handler (Pointer, GooCanvasItem, GooCanvasItemModel, Pointer),
