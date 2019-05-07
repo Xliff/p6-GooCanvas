@@ -7,11 +7,11 @@ use GTK::Compat::Types;
 
 use Goo::Raw::Types;
 
-use Goo::Model::Simple;
+use Goo::Model::Group;
 
 use Goo::Roles::Table;
 
-class Goo::Model::Table is Goo::Model::Simple {
+class Goo::Model::Table is Goo::Model::Group {
   also does Goo::Roles::Table;
 
   method new (

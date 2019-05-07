@@ -1,5 +1,6 @@
 use v6.c;
 
+use Method::Also;
 use NativeCall;
 
 use GTK::Compat::Types;
@@ -21,7 +22,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
   has $!num;
 
   method Goo::Raw::Types::GooCanvasPolyline
-    # is also<Polyline>
+    is also<Polyline>
   { $!pl }
 
   submethod BUILD (:$line, :$!num) {
@@ -47,9 +48,10 @@ class Goo::Polyline is Goo::CanvasItemSimple {
     die '@points must contain an even number of elements!'
       unless @points.elems == 0 || @points.elems % 2 == 0;
     my ($c, $n) = ( resolve-bool($close), resolve-int($num_points) );
+
     my $o = self.bless(
-      line => goo_canvas_polyline_new($parent, $c, 0, Str),
-      num  => $num_points
+      line  => goo_canvas_polyline_new($parent, $c, $n, Str),
+      num   => $num_points
     );
     $o.points = @points if +@points;
     $o;
@@ -61,7 +63,9 @@ class Goo::Polyline is Goo::CanvasItemSimple {
     Num() $y1,
     Num() $x2,
     Num() $y2
-  ) {
+  )
+    is also<new-line>
+  {
     my gdouble ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
     self.bless(
       line => goo_canvas_polyline_new_line(
@@ -70,7 +74,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
     );
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
     unstable_get_type( self.^name, &goo_canvas_polyline_get_type, $n, $t);
   }

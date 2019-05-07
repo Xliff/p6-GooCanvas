@@ -178,8 +178,8 @@ role Goo::Roles::Table {
     Str() $property_name
   ) {
     my $c = do given $child {
-      when Goo::Roles::CanvasItem    { .CanvasItem }
-      when Goo::Model::Roles::Item   { .ModelItem  }
+      when Goo::Roles::CanvasItem    { .CanvasItem      }
+      when Goo::Model::Roles::Item   { .CanvasItemModel }
     }
     my $gv-type = do given $property_name {
       when   @child-property-bool.any { G_TYPE_BOOLEAN }

@@ -23,10 +23,13 @@ class Goo::Model::Polyline is Goo::Model::Simple {
   ) {
     my gboolean $cp = resolve-bool($close_path);
     my gint $np = resolve-int($num_points);
-    self.bless(
+    my @points = @props[0] ~~ Str ?? () !! @props.splice(0, $num_points * 2);
+    my $o = self.bless(
       simple => goo_canvas_polyline_model_new($parent, $cp, $np, Str),
       props  => @props
     );
+    $o.points = @points if +@points;
+    $o;
   }
 
   multi method new_line (
