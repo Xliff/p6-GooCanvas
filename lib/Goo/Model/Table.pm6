@@ -18,10 +18,14 @@ class Goo::Model::Table is Goo::Model::Group {
     GooCanvasItemModel() $parent = GooCanvasItemModel,
     *@props
   ) {
-    self.bless(
+    my ($w, $h);
+    ($w, $h) = @props.splice(0, 2) if @props[^2].all !~~ Str;
+    my $o = self.bless(
       simple => goo_canvas_table_model_new($parent, Str),
       props  => @props
     );
+    ($o.width, $o.height) = ($w, $h);
+    $o;
   }
 
   method get_type is also<get-type> {

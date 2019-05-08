@@ -8,8 +8,13 @@ use GTK::Box;
 use GTK::Label;
 use GTK::ScrolledWindow;
 
-use Goo::Rect;
-use Goo::Table;
+use Goo::Canvas;
+
+use Goo::Model::Group;
+
+unit package Demo::Table11;
+
+my %globals;
 
 sub create_item (
   $table,
@@ -26,20 +31,20 @@ sub create_item (
   $y_shrink,
   $y_fill
 ) {
-  my $item = Goo::Rect.new($table, 0, 0, $width, $height);
+  my $item = %globals<rect-obj>.new($table, 0, 0, $width, $height);
   (.stroke-color, .fill-color) = <black red> with $item;
 
   $table.set_child_properties($item,
     'row',      $row,      'column',   $column,   'rows',     $rows,
     'columns',  $columns,  'x-expand', $x_expand, 'y-expand', $y_expand,
     'x-shrink', $x_shrink, 'y-shrink', $y_shrink, 'x-fill',   $x_fill,
-    'y-fill',   $y_fill  
+    'y-fill',   $y_fill
   );
   $item;
 }
 
 sub create_table ($opt, $parent, $x, $y, $w, $h, $l) {
-  my $table = Goo::Table.new($parent, $w, $h);
+  my $table = %globals<table-obj>.new($parent, $w, $h);
   $table.translate($x, $y);
 
   if $l {
@@ -78,7 +83,9 @@ sub create_table ($opt, $parent, $x, $y, $w, $h, $l) {
 
   $i = 0;
   for @items {
-    my $b = .bounds;
+    my $b = (
+      %globals<model-mode> ?? %globals<canvas>.get_item($_) !! $_
+    ).bounds;
     say "Item #{$i++}: { ($b.x1 - $x).fmt('%.2f') }, {
                          ($b.y1 - $y).fmt('%.2f') } - {
                          ($b.x2 - $x).fmt('%.2f') }, {
@@ -86,8 +93,10 @@ sub create_table ($opt, $parent, $x, $y, $w, $h, $l) {
   }
 }
 
-sub setup_canvas ($canvas) {
-  my $root = $canvas.get_root_item;
+sub setup_canvas {
+  my $root = %globals<model-mode> ??
+    Goo::Model::Group.new !! %globals<canvas>.get_root_item;
+  %globals<canvas>.root-item-model = $root if %globals<model-mode>;
 
   say "\nTable at default size...";
   create_table(1, $root, 50, 50, -1, -1, False);
@@ -123,21 +132,29 @@ sub create_canvas ($text, :$int = False) {
   $sw.halign  = $sw.valign  = GTK_ALIGN_FILL;
   $sw.hexpand = $sw.vexpand = True;
 
-  my $canvas = Goo::Canvas.new;
-  $canvas.integer-layout = $int;
-  $canvas.set_size_request(600, 250);
-  $canvas.set_bounds(0, 0, 1000, 1000);
+  %globals<canvas> = Goo::Canvas.new;
+  %globals<canvas>.integer-layout = $int;
+  %globals<canvas>.set_size_request(600, 250);
+  %globals<canvas>.set_bounds(0, 0, 1000, 1000);
   $sw.set_size_request(600, 250);
-  $sw.add($canvas);
+  $sw.add(%globals<canvas>);
 
   say "\n\n{ $text }...";
-  setup_canvas($canvas);
+  setup_canvas;
 
   $sw;
 }
 
-sub MAIN {
-  my $app = GTK::Application.new( title => 'org.genex.goo.table_two' );
+sub setupObjects($rect-obj, $table-obj) is export {
+  %globals<rect-obj table-obj> = ($rect-obj, $table-obj);
+  %globals<model-mode> = $rect-obj.^name.contains('::Model');
+  %globals.gist.say;
+}
+
+sub Table_11_MAIN ($title, $rect-obj, $table-obj) is export {
+  my $app = GTK::Application.new( :$title );
+
+  setupObjects($rect-obj, $table-obj);
 
   $app.activate.tap({
     $app.wait-for-init;
@@ -159,5 +176,5 @@ sub MAIN {
     $app.window.show-all;
   });
 
-  $app.run;
+  $app;
 }
