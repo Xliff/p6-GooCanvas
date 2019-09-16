@@ -8,6 +8,9 @@ use GTK::Raw::Types;
 
 unit package Goo::Raw::Types;
 
+# Number of times a forced recompile was deemed necessary.
+constant forced = 0;
+
 constant goo is export = 'goocanvas-2.0',v9;
 
 class GooCanvas           is repr('CPointer') is export does GTK::Roles::Pointers { }
