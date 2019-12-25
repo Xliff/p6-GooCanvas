@@ -7,6 +7,7 @@ use GTK::Raw::Types;
 use Goo::Raw::Types;
 use Goo::Raw::Enums;
 
+use GLib::Value;
 use GTK::Widget;
 
 use Goo::CanvasItemSimple;
@@ -46,10 +47,10 @@ class Goo::Widget is Goo::CanvasItemSimple {
 
   # Type: GooCanvasAnchorType
   method anchor is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
         GooCanvasAnchorType( $gv.enum );
@@ -63,10 +64,10 @@ class Goo::Widget is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
         $gv.double;
@@ -80,7 +81,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
 
   # Type: GtkWidget
   method widget is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
         # In this situation, we leave the creation logic to the caller.
@@ -100,10 +101,10 @@ D
 
   # Type: gdouble
   method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
         $gv.double;
@@ -117,10 +118,10 @@ D
 
   # Type: gdouble
   method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
         $gv.double;
@@ -134,10 +135,10 @@ D
 
   # Type: gdouble
   method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
         $gv.double;

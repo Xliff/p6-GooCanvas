@@ -7,17 +7,17 @@ use GTK::Compat::Types;
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;
 
+use GLib::Value;
 use GTK::Compat::Pixbuf;
-use GTK::Compat::Value;
 
 role Goo::Roles::Image {
 
   # Type: gdouble
   method alpha is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('alpha', $gv)
         );
         $gv.double;
@@ -31,10 +31,10 @@ role Goo::Roles::Image {
 
   # Type: gdouble
   method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
         $gv.double;
@@ -48,10 +48,10 @@ role Goo::Roles::Image {
 
   # Type: GooCairoPattern
   method pattern is rw  {
-    my GTK::Compat::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
+    my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('pattern', $gv)
         );
         cast(cairo_pattern_t, $gv.boxed);
@@ -66,7 +66,7 @@ role Goo::Roles::Image {
 
   # Type: GdkPixbuf
   method pixbuf is rw  {
-    my GTK::Compat::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'pixbuf does not allow reading' if $DEBUG;
@@ -81,10 +81,10 @@ role Goo::Roles::Image {
 
   # Type: gboolean
   method scale-to-fit is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('scale-to-fit', $gv)
         );
         $gv.boolean;
@@ -98,10 +98,10 @@ role Goo::Roles::Image {
 
   # Type: gdouble
   method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
         $gv.double;
@@ -115,10 +115,10 @@ role Goo::Roles::Image {
 
   # Type: gdouble
   method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
         $gv.double;
@@ -132,10 +132,10 @@ role Goo::Roles::Image {
 
   # Type: gdouble
   method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
         $gv.double;

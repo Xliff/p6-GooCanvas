@@ -10,9 +10,9 @@ use Goo::Raw::Types;
 use Goo::Raw::Enums;
 
 use GTK::Raw::Utils;
-
 use Goo::Raw::CanvasItem;
 
+use GLib::Value;
 use Goo::Model::Simple;
 
 use GTK::Roles::Properties;
@@ -170,10 +170,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: gboolean
   method can-focus is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('can-focus', $gv)
         );
         $gv.boolean;
@@ -187,10 +187,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: gchar
   method description is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('description', $gv)
         );
         $gv.string;
@@ -204,10 +204,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: GooCanvasPointerEvents
   method pointer-events is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('pointer-events', $gv)
         );
         GooCanvasPointerEvents( $gv.enum );
@@ -221,10 +221,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: gchar
   method title is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('title', $gv)
         );
         $gv.string;
@@ -238,10 +238,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: gchar
   method tooltip is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('tooltip', $gv)
         );
         $gv.string;
@@ -255,10 +255,10 @@ role Goo::Roles::CanvasItem {
 
   # Type: GooCairoMatrix
   method transform is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('transform', $gv)
         );
         Cairo::Matrix.new( cast(cairo_matrix_t, $gv.pointer) );
@@ -278,10 +278,10 @@ DIE
 
   # Type: GooCanvasItemVisibility
   method visibility is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('visibility', $gv)
         );
         GooCanvasItemVisibility( $gv.enum );
@@ -295,10 +295,10 @@ DIE
 
   # Type: gdouble
   method visibility-threshold is also<visibility_threshold> is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('visibility-threshold', $gv)
         );
         $gv.double;

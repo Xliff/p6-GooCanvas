@@ -1,16 +1,17 @@
 use v6.c;
 
 use GTK::Compat::Types;
-use GTK::Compat::Value;
+
+use GLib::Value;
 
 role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method center-x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('center-x', $gv)
         );
         $gv.double;
@@ -24,10 +25,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method center-y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('center-y', $gv)
         );
         $gv.double;
@@ -41,10 +42,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
         $gv.double;
@@ -58,10 +59,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method radius-x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('radius-x', $gv)
         );
         $gv.double;
@@ -75,10 +76,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method radius-y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('radius-y', $gv)
         );
         $gv.double;
@@ -92,10 +93,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
         $gv.double;
@@ -109,10 +110,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
         $gv.double;
@@ -126,10 +127,10 @@ role Goo::Roles::Ellipse {
 
   # Type: gdouble
   method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
         $gv.double;

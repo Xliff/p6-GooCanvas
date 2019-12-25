@@ -11,7 +11,7 @@ use GTK::Raw::Utils;
 
 use Goo::Raw::CanvasItemSimple;
 
-use GTK::Compat::Value;
+use GLib::Value;
 use Pango::FontDescription;
 
 use GTK::Roles::Protection;
@@ -38,10 +38,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoAntialias
   method antialias is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('antialias', $gv)
         );
         cairo_antialias_t( $gv.enum );
@@ -55,10 +55,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoFillRule
   method clip-fill-rule is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
         cairo_fill_rule_t( $gv.enum );
@@ -72,7 +72,7 @@ class Goo::CanvasItemSimple {
 
   # Type: gchar
   method clip-path is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn "'clip-path' does not allow reading" if $DEBUG;
@@ -87,7 +87,7 @@ class Goo::CanvasItemSimple {
 
   # Type: gchar
   method fill-color is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn "'fill-color' does not allow reading" if $DEBUG;
@@ -102,10 +102,10 @@ class Goo::CanvasItemSimple {
 
   # Type: guint
   method fill-color-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-color-rgba', $gv)
         );
         $gv.uint;
@@ -119,10 +119,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoPattern
   method fill-pattern is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
         cast(cairo_pattern_t, $gv.pointer);
@@ -137,7 +137,7 @@ class Goo::CanvasItemSimple {
 
   # Type: GdkPixbuf
   method fill-pixbuf is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
         warn "'fill-pixbuf' does not allow reading" if $DEBUG;
@@ -152,10 +152,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoFillRule
   method fill-rule is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-rule', $gv)
         );
         cairo_fill_rule_t( $gv.enum );
@@ -169,10 +169,10 @@ class Goo::CanvasItemSimple {
 
   # Type: gchar
   method font is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('font', $gv)
         );
         $gv.string;
@@ -186,10 +186,10 @@ class Goo::CanvasItemSimple {
 
   # Type: PangoFontDescription
   method font-desc is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
         Pango::FontDescription(
@@ -205,10 +205,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoHintMetrics
   method hint-metrics is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
         cairo_hint_metrics_t( $gv.enum );
@@ -222,10 +222,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoLineCap
   method line-cap is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-cap', $gv)
         );
         cairo_line_cap_t( $gv.enum );
@@ -239,10 +239,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCanvasLineDash
   method line-dash is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-dash', $gv)
         );
         cast(GooCanvasLineDash, $gv.pointer);
@@ -256,10 +256,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoLineJoin
   method line-join is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-join', $gv)
         );
         cairo_line_join_t( $gv.enum );
@@ -273,10 +273,10 @@ class Goo::CanvasItemSimple {
 
   # Type: gdouble
   method line-join-miter-limit is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-join-miter-limit', $gv)
         );
         $gv.double;
@@ -290,10 +290,10 @@ class Goo::CanvasItemSimple {
 
   # Type: gdouble
   method line-width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-width', $gv)
         );
         $gv.double;
@@ -307,10 +307,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoOperator
   method operator is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('operator', $gv)
         );
         cairo_operator_t( $gv.enum );
@@ -324,7 +324,7 @@ class Goo::CanvasItemSimple {
 
   # Type: gchar
   method stroke-color is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn "'stroke-color' does not allow reading" if $DEBUG;
@@ -339,10 +339,10 @@ class Goo::CanvasItemSimple {
 
   # Type: guint
   method stroke-color-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('stroke-color-rgba', $gv)
         );
         $gv.uint;
@@ -356,10 +356,10 @@ class Goo::CanvasItemSimple {
 
   # Type: GooCairoPattern
   method stroke-pattern is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
         cast(GooCairoPattern, $gv.pointer);
@@ -373,7 +373,7 @@ class Goo::CanvasItemSimple {
 
   # Type: GdkPixbuf
   method stroke-pixbuf is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
         warn "'stroke-pixbuf' does not allow reading" if $DEBUG;

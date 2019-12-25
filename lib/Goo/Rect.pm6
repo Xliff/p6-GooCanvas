@@ -5,7 +5,7 @@ use Goo::Raw::Types;
 
 use Goo::Raw::Rect;
 
-use GTK::Compat::Value;
+use GLib::Value;
 
 use Goo::CanvasItemSimple;
 
@@ -44,10 +44,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
         $gv.double;
@@ -61,10 +61,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method radius-x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('radius-x', $gv)
         );
         $gv.double;
@@ -78,10 +78,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method radius-y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('radius-y', $gv)
         );
         $gv.double;
@@ -95,10 +95,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
         $gv.double;
@@ -112,10 +112,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
         $gv.double;
@@ -129,10 +129,10 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   # Type: gdouble
   method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
         $gv.double;

@@ -8,7 +8,7 @@ use Goo::Raw::Types;
 
 use GTK::Raw::Utils;
 
-use GTK::Compat::Value;
+use GLib::Value;
 use Goo::Group;
 
 use Goo::Roles::Table;

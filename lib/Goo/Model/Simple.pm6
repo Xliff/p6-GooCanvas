@@ -9,6 +9,7 @@ use Goo::Raw::Types;
 
 use Goo::Model::Roles::Item;
 
+use GLib::Value;
 use Pango::FontDescription;
 
 class Goo::Model::Simple {
@@ -30,10 +31,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoAntialias
   method antialias is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('antialias', $gv)
         );
         Cairo::cairo_antialias_t( $gv.enum );
@@ -47,10 +48,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoFillRule
   method clip-fill-rule is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
         Cairo::FillRule( $gv.enum );
@@ -64,7 +65,7 @@ class Goo::Model::Simple {
 
   # Type: gchar
   method clip-path is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn 'clip-path does not allow reading' if $DEBUG;
@@ -79,7 +80,7 @@ class Goo::Model::Simple {
 
   # Type: gchar
   method fill-color is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn 'fill-color does not allow reading' if $DEBUG;
@@ -94,10 +95,10 @@ class Goo::Model::Simple {
 
   # Type: GdkRGBA
   method fill-color-gdk-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-color-gdk-rgba', $gv)
         );
         cast(GTK::Compat::RGBA, $gv.pointer)
@@ -111,10 +112,10 @@ class Goo::Model::Simple {
 
   # Type: guint
   method fill-color-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-color-rgba', $gv)
         );
         $gv.uint;
@@ -128,12 +129,12 @@ class Goo::Model::Simple {
 
   # Type: GooCairoPattern
   method fill-pattern is rw  {
-    my GTK::Compat::Value $gv .= new(
+    my GLib::Value $gv .= new(
       Goo::Raw::Boxed.pattern_get_type()
     );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
         $gv.boxed.defined ??
@@ -153,7 +154,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method fill-pixbuf is rw  {
-    my GTK::Compat::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'fill-pixbuf does not allow reading' if $DEBUG;
@@ -168,10 +169,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoFillRule
   method fill-rule is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('fill-rule', $gv)
         );
         Cairo::FillRule( $gv.enum )
@@ -185,10 +186,10 @@ class Goo::Model::Simple {
 
   # Type: gchar
   method font is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('font', $gv)
         );
         $gv.string;
@@ -202,10 +203,10 @@ class Goo::Model::Simple {
 
   # Type: PangoFontDescription
   method font-desc is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
         Pango::FontDescription.new(
@@ -221,10 +222,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoHintMetrics
   method hint-metrics is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
         Cairo::cairo_hint_metrics_t( $gv.enum );
@@ -238,10 +239,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoLineCap
   method line-cap is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-cap', $gv)
         );
         Cairo::cairo_line_cap( $gv.enum );
@@ -255,12 +256,12 @@ class Goo::Model::Simple {
 
   # Type: GooCanvasLineDash
   method line-dash is rw  {
-    my GTK::Compat::Value $gv .= new(
+    my GLib::Value $gv .= new(
       Goo::Raw::Boxed.line_dash_get_type()
     );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-dash', $gv)
         );
         cast(GooCanvasLineDash, $gv.boxed);
@@ -274,10 +275,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoLineJoin
   method line-join is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-join', $gv)
         );
         Cairo::cairo_line_join_t( $gv.enum );
@@ -291,10 +292,10 @@ class Goo::Model::Simple {
 
   # Type: gdouble
   method line-join-miter-limit is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-join-miter-limit', $gv)
         );
         $gv.double;
@@ -308,10 +309,10 @@ class Goo::Model::Simple {
 
   # Type: gdouble
   method line-width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('line-width', $gv)
         );
         $gv.double;
@@ -325,10 +326,10 @@ class Goo::Model::Simple {
 
   # Type: GooCairoOperator
   method operator is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('operator', $gv)
         );
         cairo_operator_t( $gv.enum );
@@ -342,7 +343,7 @@ class Goo::Model::Simple {
 
   # Type: gchar
   method stroke-color is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn 'stroke-color does not allow reading' if $DEBUG;
@@ -357,10 +358,10 @@ class Goo::Model::Simple {
 
   # Type: GdkRGBA
   method stroke-color-gdk-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_POINTER );
+    my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('stroke-color-gdk-rgba', $gv)
         );
         cast(GTK::Compat::RGBA, $gv.pointer);
@@ -374,10 +375,10 @@ class Goo::Model::Simple {
 
   # Type: guint
   method stroke-color-rgba is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('stroke-color-rgba', $gv)
         );
         $gv.uint;
@@ -391,12 +392,12 @@ class Goo::Model::Simple {
 
   # Type: GooCairoPattern
   method stroke-pattern is rw  {
-    my GTK::Compat::Value $gv .= new(
+    my GLib::Value $gv .= new(
       Goo::Raw::Boxed.pattern_get_type()
     );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
         $gv.boxed.defined ??
@@ -416,7 +417,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method stroke-pixbuf is rw  {
-    my GTK::Compat::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'stroke-pixbuf does not allow reading' if $DEBUG;

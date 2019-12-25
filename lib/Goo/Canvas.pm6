@@ -13,6 +13,7 @@ use GTK::Compat::Roles::ListData;
 use GTK::Roles::Scrollable;
 use Goo::Roles::Signals::Canvas;
 
+use GLib::Value;
 use GTK::Compat::GList;
 use GTK::Compat::RGBA;
 use GTK::Container;
@@ -140,10 +141,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: GooCanvasAnchorType
   method anchor is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
         GooCanvasAnchorType( $gv.enum );
@@ -157,10 +158,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gboolean
   method automatic-bounds is rw  is also<automatic_bounds> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('automatic-bounds', $gv)
         );
         $gv.boolean;
@@ -174,7 +175,7 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gchar
   method background-color is rw  is also<background_color> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_STRING );
+    my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
         warn "background-color does not allow reading"
@@ -188,7 +189,7 @@ class Goo::Canvas is GTK::Container {
 
   # Type: GdkRGBA
   method background-color-gdk-rgba is rw  is also<background_color_gdk_rgba> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_OBJECT );
+    my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
       FETCH => -> $ {
         warn "background-color-gdk-rgba does not allow reading"
@@ -202,7 +203,7 @@ class Goo::Canvas is GTK::Container {
 
   # Type: guint
   method background-color-rgb is rw  is also<background_color_rgb> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
         warn "background-color-rgb does not allow reading"
@@ -216,10 +217,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gboolean
   method bounds-from-origin is rw  is also<bounds_from_origin> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('bounds-from-origin', $gv)
         );
         $gv.boolean;
@@ -233,10 +234,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method bounds-padding is rw  is also<bounds_padding> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('bounds-padding', $gv)
         );
         $gv.double;
@@ -250,10 +251,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gboolean
   method clear-background is rw  is also<clear_background> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('clear-background', $gv)
         );
         $gv.boolean;
@@ -267,10 +268,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gboolean
   method integer-layout is rw  is also<integer_layout> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('integer-layout', $gv)
         );
         $gv.boolean;
@@ -284,10 +285,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gboolean
   method redraw-when-scrolled is rw  is also<redraw_when_scrolled> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('redraw-when-scrolled', $gv)
         );
         $gv.boolean;
@@ -301,10 +302,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method resolution-x is rw  is also<resolution_x> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('resolution-x', $gv)
         );
         $gv.double;
@@ -318,10 +319,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method resolution-y is rw  is also<resolution_y> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('resolution-y', $gv)
         );
         $gv.double;
@@ -335,10 +336,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method scale-x is rw  is also<scale_x> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('scale-x', $gv)
         );
         $gv.double;
@@ -352,10 +353,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method scale-y is rw  is also<scale_y> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('scale-y', $gv)
         );
         $gv.double;
@@ -369,10 +370,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: GtkUnit
   method units is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_UINT );
+    my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('units', $gv)
         );
         GtkUnit( $gv.uint )
@@ -386,10 +387,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method x1 is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x1', $gv)
         );
         $gv.double;
@@ -403,10 +404,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method x2 is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x2', $gv)
         );
         $gv.double;
@@ -420,10 +421,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method y1 is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y1', $gv)
         );
         $gv.double;
@@ -437,10 +438,10 @@ class Goo::Canvas is GTK::Container {
 
   # Type: gdouble
   method y2 is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y2', $gv)
         );
         $gv.double;

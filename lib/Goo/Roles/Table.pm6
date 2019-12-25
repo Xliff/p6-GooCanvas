@@ -3,11 +3,11 @@ use v6.c;
 use Method::Also;
 
 use GTK::Compat::Types;
-use GTK::Compat::Value;
+use Goo::Raw::Types;
 
 use GTK::Raw::Utils;
 
-use Goo::Raw::Types;
+use GLib::Value;
 
 use Goo::Roles::CanvasItem;
 use Goo::Model::Roles::Item;
@@ -35,10 +35,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method column-spacing is rw  is also<column_spacing> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('column-spacing', $gv)
         );
         $gv.double;
@@ -52,10 +52,10 @@ role Goo::Roles::Table {
 
   # Type: gboolean
   method homogeneous-columns is rw  is also<homogeneous_columns> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('homogeneous-columns', $gv)
         );
         $gv.boolean;
@@ -69,10 +69,10 @@ role Goo::Roles::Table {
 
   # Type: gboolean
   method homogeneous-rows is rw  is also<homogeneous_rows> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('homogeneous-rows', $gv)
         );
         $gv.boolean;
@@ -86,10 +86,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method horz-grid-line-width is rw  is also<horz_grid_line_width> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-width', $gv)
         );
         $gv.double;
@@ -103,10 +103,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method row-spacing is rw  is also<row_spacing> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('row-spacing', $gv)
         );
         $gv.double;
@@ -120,10 +120,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method vert-grid-line-width is rw  is also<vert_grid_line_width> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-width', $gv)
         );
         $gv.double;
@@ -137,10 +137,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method x-border-spacing is rw  is also<x_border_spacing> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x-border-spacing', $gv)
         );
         $gv.double;
@@ -154,10 +154,10 @@ role Goo::Roles::Table {
 
   # Type: gdouble
   method y-border-spacing is rw  is also<y_border_spacing> {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y-border-spacing', $gv)
         );
         $gv.double;
@@ -187,7 +187,7 @@ role Goo::Roles::Table {
       when @child-property-double.any { G_TYPE_DOUBLE  }
     }
 
-    my $gv = GTK::Compat::Value.new($gv-type);
+    my $gv = GLib::Value.new($gv-type);
     samewith($c, $property_name, $gv);
     $gv.value;
   }
@@ -245,7 +245,7 @@ role Goo::Roles::Table {
     die "Invalid child property name '{ $property_name }'!"
       unless $property_name eq @valid-child-properties.any;
     # Force to right method in inheritance chain.
-    if $value ~~ (GTK::Compat::Value, GValue).any {
+    if $value ~~ (GLib::Value, GValue).any {
       my $c = do given $child {
         when Goo::Roles::CanvasItem             { .CanvasItem      }
         when Goo::Model::Roles::Item            { .CanvasItemModel }

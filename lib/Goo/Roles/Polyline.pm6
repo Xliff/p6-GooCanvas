@@ -3,18 +3,17 @@ use v6.c;
 use GTK::Compat::Types;
 use Goo::Raw::Types;
 
-use GTK::Compat::Value;
-
+use GLib::Value;
 use Goo::Points;
 
 role Goo::Roles::Polyline {
 
   # Type: gdouble
   method arrow-length is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('arrow-length', $gv)
         );
         $gv.double;
@@ -28,10 +27,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method arrow-tip-length is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('arrow-tip-length', $gv)
         );
         $gv.double;
@@ -45,10 +44,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method arrow-width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('arrow-width', $gv)
         );
         $gv.double;
@@ -62,10 +61,10 @@ role Goo::Roles::Polyline {
 
   # Type: gboolean
   method close-path is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('close-path', $gv)
         );
         $gv.boolean;
@@ -79,10 +78,10 @@ role Goo::Roles::Polyline {
 
   # Type: gboolean
   method end-arrow is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('end-arrow', $gv)
         );
         $gv.boolean;
@@ -96,10 +95,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method height is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
         $gv.double;
@@ -113,7 +112,7 @@ role Goo::Roles::Polyline {
 
   # Type: GooCanvasPoints
   method points is rw  {
-    my GTK::Compat::Value $gv .= new( Goo::Points.get_type() );
+    my GLib::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv.boxed.defined ??
@@ -138,10 +137,10 @@ role Goo::Roles::Polyline {
 
   # Type: gboolean
   method start-arrow is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_BOOLEAN );
+    my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('start-arrow', $gv)
         );
         $gv.boolean;
@@ -155,10 +154,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method width is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
         $gv.double;
@@ -172,10 +171,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method x is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
         $gv.double;
@@ -189,10 +188,10 @@ role Goo::Roles::Polyline {
 
   # Type: gdouble
   method y is rw  {
-    my GTK::Compat::Value $gv .= new( G_TYPE_DOUBLE );
+    my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
-        $gv = GTK::Compat::Value.new(
+        $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
         $gv.double;
