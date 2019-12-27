@@ -9,12 +9,12 @@ use Goo::Raw::Enums;
 
 use Goo::Raw::Canvas;
 
-use GTK::Compat::Roles::ListData;
+use GLib::Roles::ListData;
 use GTK::Roles::Scrollable;
 use Goo::Roles::Signals::Canvas;
 
 use GLib::Value;
-use GTK::Compat::GList;
+use GLib::GList;
 use GTK::Compat::RGBA;
 use GTK::Container;
 
@@ -567,9 +567,9 @@ class Goo::Canvas is GTK::Container {
   {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean $i = self.RESOLVE-BOOL($is_pointer_event);
-    my $l = GTK::Compat::GList.new(
+    my $l = GLib::GList.new(
       goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event)
-    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    ) but GLib::Roles::ListData[GooCanvasItem];
     $raw ??
       $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
   }
@@ -588,9 +588,9 @@ class Goo::Canvas is GTK::Container {
       $allow_overlaps,
       $include_containers
     );
-    my $l = GTK::Compat::GList.new(
+    my $l = GLib::GList.new(
       goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic)
-    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    ) but GLib::Roles::ListData[GooCanvasItem];
     $raw ??
       $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
   }

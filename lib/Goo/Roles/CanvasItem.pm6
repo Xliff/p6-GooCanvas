@@ -421,7 +421,7 @@ DIE
     $cr .= context if $cr ~~ Cairo::Context;
     my $l = GTK::Compat::List.new(
       goo_canvas_item_get_items_at($!ci, $x, $y, $cr, $i, $p, $found_items)
-    ) but GTK::Compat::Roles::ListData[GooCanvasItem];
+    ) but GLib::Roles::ListData[GooCanvasItem];
     $raw ??
       $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) });
   }
