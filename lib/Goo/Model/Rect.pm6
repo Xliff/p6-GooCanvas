@@ -4,7 +4,7 @@ use NativeCall;
 
 use GTK::Compat::Types;
 
-use GTK::Compat::Roles::Object;
+use GLib::Roles::Object;
 
 use Goo::Raw::Types;
 

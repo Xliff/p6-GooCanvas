@@ -1,10 +1,10 @@
 Cairo
 GLib::GList
 GLib::Roles::ListData
+GLib::Roles::Object
 GLib::Value
 GTK::Compat::Pixbuf
 GTK::Compat::RGBA
-GTK::Compat::Roles::Object
 GTK::Compat::Types
 GTK::Container
 GTK::Raw::ReturnedValue

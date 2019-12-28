@@ -29,7 +29,7 @@ enum DemoItemType (
 my (%data, %globals);
 
 our subset ObjectOrPointer of Mu where * ~~ (
-  GTK::Compat::Roles::Object,
+  GLib::Roles::Object,
   GTK::Roles::Pointers,
   GTK::Roles::Properties
 ).any;
@@ -37,14 +37,14 @@ our subset ObjectOrPointer of Mu where * ~~ (
 sub get-data (ObjectOrPointer $i is copy, $k) {
   return unless $i.defined;
   $i .= GObject
-    if $i ~~ (GTK::Compat::Roles::Object, GTK::Roles::Properties).any;
+    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
   %data{+$i.p}{$k};
 }
 sub set-data (ObjectOrPointer $i is copy, $k, $v) {
   return unless $i.defined;
   $i = %globals<canvas>.get_item($i) if %globals<model-mode>;
   $i .= GObject
-    if $i ~~ (GTK::Compat::Roles::Object, GTK::Roles::Properties).any;
+    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
   %data{+$i.p}{$k} = $v;
 }
 
