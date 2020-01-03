@@ -6,6 +6,8 @@ use Cairo;
 use GTK::Compat::Types;
 use GTK::Raw::Types;
 
+use GLib::Roles::Pointers;
+
 unit package Goo::Raw::Types;
 
 # Number of times a forced recompile was deemed necessary.
@@ -13,21 +15,21 @@ constant forced = 0;
 
 constant goo is export = 'goocanvas-2.0',v9;
 
-class GooCanvas           is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasEllipse    is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasGroup      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasImage      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasItem       is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasItemSimple is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasPath       is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasPolyline   is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasRect       is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasText       is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasTable      is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasWidget     is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvas           is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasEllipse    is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasGroup      is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasImage      is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasItem       is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasItemSimple is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasPath       is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasPolyline   is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasRect       is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasText       is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasTable      is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasWidget     is repr('CPointer') is export does GLib::Roles::Pointers { }
 
-class GooCanvasItemModel  is repr('CPointer') is export does GTK::Roles::Pointers { }
-class GooCanvasGroupModel is repr('CPointer') is export does GTK::Roles::Pointers { }
+class GooCanvasItemModel  is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasGroupModel is repr('CPointer') is export does GLib::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 
@@ -44,25 +46,25 @@ our subset CairoMatrixObject  is export of Mu
 
 constant GooCairoPattern is export := CairoPatternObject;
 
-class GooCanvasBounds is repr('CStruct') is export does GTK::Roles::Pointers {
+class GooCanvasBounds is repr('CStruct') is export does GLib::Roles::Pointers {
   has gdouble $.x1 is rw;
   has gdouble $.y1 is rw;
   has gdouble $.x2 is rw;
   has gdouble $.y2 is rw;
 }
 
-class GooCanvasPoints is repr('CStruct') is export does GTK::Roles::Pointers {
+class GooCanvasPoints is repr('CStruct') is export does GLib::Roles::Pointers {
   has CArray[num64] $.coords;
   has gint          $num_points;
   has gint          $ref_count;
 }
 
-class GooCanvasStyle is repr('CStruct') is export does GTK::Roles::Pointers {
+class GooCanvasStyle is repr('CStruct') is export does GLib::Roles::Pointers {
   has GooCanvasStyle $.parent;
   has GArray         $.properties;
 }
 
-class GooCanvasLineDash is repr('CStruct') is export does GTK::Roles::Pointers {
+class GooCanvasLineDash is repr('CStruct') is export does GLib::Roles::Pointers {
   has gint    $.ref_count;
   has gint    $.num_dashes;
   has gdouble $.dashes;
@@ -80,7 +82,7 @@ my enum CanvasDataBitmask (
   TOOLTIP     => (0b0001,  0)
 );
 
-class GooCanvasItemSimpleData is repr('CStruct') is export does GTK::Roles::Pointers {
+class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Pointers {
   has GooCanvasStyle  $.style;
   has cairo_matrix_t  $.transform;
   has GArray          $.clip_path_commands;
@@ -181,7 +183,7 @@ my enum SimpleCanvasBitmask (
   SIMPLE_NEED_ENTIRE   => 0
 );
 
-# class GooCanvasItemModelSimple is repr('CStruct') is export does GTK::Roles::Pointers {
+# class GooCanvasItemModelSimple is repr('CStruct') is export does GLib::Roles::Pointers {
 #   HAS GObject                 $!parent_object;
 #   has GooCanvasItemModel      $.parent;
 #   HAS GooCanvasItemSimpleData $.simple_data;
@@ -189,7 +191,7 @@ my enum SimpleCanvasBitmask (
 #   has Str                     $!description;
 # };
 
-# class GooCanvasItemSimple is repr('CStruct') is export does GTK::Roles::Pointers {
+# class GooCanvasItemSimple is repr('CStruct') is export does GLib::Roles::Pointers {
 #   HAS GObject                  $!parent_object;
 #
 #   has GooCanvas                $.canvas;
