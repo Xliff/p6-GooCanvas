@@ -1,7 +1,6 @@
 use v6.c;
 
-
-
+use Goo::Raw::Types;
 use GLib::Value;
 
 role Goo::Roles::Path {
