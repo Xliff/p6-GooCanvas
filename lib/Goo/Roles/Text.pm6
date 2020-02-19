@@ -1,8 +1,8 @@
 use v6.c;
 
 use Pango::Raw::Types;
-use GTK::Compat::Types;
-use Goo::Raw::Enums;
+
+
 
 use GLib::Value;
 

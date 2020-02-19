@@ -4,10 +4,10 @@ use Method::Also;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+
+
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
+
 
 use GTK::Raw::Utils;
 

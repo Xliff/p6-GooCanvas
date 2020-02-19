@@ -3,8 +3,8 @@ use v6.c;
 use Cairo;
 
 use Pango::Raw::Types;
-use GTK::Compat::Types;
-use GTK::Compat::RGBA;
+
+use GDK::RGBA;
 use Goo::Raw::Types;
 
 use Goo::Model::Roles::Item;

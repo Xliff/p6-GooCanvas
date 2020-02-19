@@ -2,7 +2,7 @@ use v6.c;
 
 use NativeCall;
 
-use GTK::Compat::Types;
+
 use Goo::Raw::Types;
 
 unit package Goo::Raw::Rect;

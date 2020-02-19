@@ -4,13 +4,13 @@ use NativeCall;
 
 use Pango::Raw::Types;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+
+
 
 use GTK::Raw::Utils;
 
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
+
 
 use Goo::Model::Simple;
 

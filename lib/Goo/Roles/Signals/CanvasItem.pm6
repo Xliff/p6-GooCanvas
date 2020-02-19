@@ -2,8 +2,8 @@ use v6.c;
 
 use NativeCall;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+
+
 use Goo::Raw::Types;
 
 use GTK::Raw::ReturnedValue;

@@ -3,8 +3,8 @@ use v6.c;
 use NativeCall;
 
 use Cairo;
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+
+
 
 use GLib::Roles::Pointers;
 

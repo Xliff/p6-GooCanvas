@@ -2,7 +2,7 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
+
 
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;

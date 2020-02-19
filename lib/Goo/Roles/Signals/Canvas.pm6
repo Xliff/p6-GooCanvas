@@ -2,7 +2,7 @@ use v6.c;
 
 use NativeCall;
 
-use GTK::Compat::Types;
+
 use Goo::Raw::Types;
 
 role Goo::Roles::Signals::Canvas {
