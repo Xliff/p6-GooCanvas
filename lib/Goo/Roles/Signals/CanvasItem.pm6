@@ -2,16 +2,14 @@ use v6.c;
 
 use NativeCall;
 
-
-
 use Goo::Raw::Types;
 
-use GTK::Raw::ReturnedValue;
+use GLib::Raw::ReturnedValue;
 
-use GTK::Roles::Signals::Generic;
+use GLib::Roles::Signals::Generic;
 
 role Goo::Roles::Signals::CanvasItem {
-  also does GTK::Roles::Signals::Generic;
+  also does GLib::Roles::Signals::Generic;
 
   has %!signals-ci;
 
