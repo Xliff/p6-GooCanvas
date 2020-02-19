@@ -1,7 +1,5 @@
 use v6.c;
 
-
-
 use GLib::Value;
 
 role Goo::Roles::Ellipse {
