@@ -2,8 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-
-
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;
@@ -18,14 +16,14 @@ class Goo::Model::Path is Goo::Model::Simple {
     Str() $path_data,
     *@props
   ) {
-    self.bless(
-      simple => goo_canvas_path_model_new($parent, $path_data, Str),
-      props  => @props
-    );
+    my $simple = goo_canvas_path_model_new($parent, $path_data, Str);
+
+    $simple ?? self.bless(simple =>$simple, props  => @props) !! Nil;
   }
 
   method get_type {
     state ($n, $t);
+    
     unstable_get_type( self.^name, &goo_canvas_path_model_get_type, $n, $t );
   }
 
