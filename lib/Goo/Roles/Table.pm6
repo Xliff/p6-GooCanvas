@@ -2,10 +2,7 @@ use v6.c;
 
 use Method::Also;
 
-
 use Goo::Raw::Types;
-
-use GTK::Raw::Utils;
 
 use GLib::Value;
 
@@ -210,15 +207,14 @@ role Goo::Roles::Table {
   multi method set_child_property (
     ItemOrModel $child,
     Str() $property_name, # where { $_ eq @child-property-uint.any },
-    Int $value is copy
+    Int() $value is copy
   ) {
     my ($is-uint, $is-bool) = (
       ($property_name eq @child-property-uint.any).so,
       ($property_name eq @child-property-bool.any).so
     );
     nextsame unless $is-uint || $is-bool;
-    $value = $is-bool ?? resolve-bool($value) !! resolve-int($value);
-    samewith( $child, $property_name, gv_uint($value.Int) );
+    samewith( $child, $property_name, gv_uint($value) );
   }
   multi method set_child_property (
     ItemOrModel $child,
@@ -254,7 +250,7 @@ role Goo::Roles::Table {
 
         default {
           die "Unknown type passed as \$child to{ ''
-               } GTK::Roles::Table.set_child_property: { .^name }";
+              } Goo::Roles::Table.set_child_property: { .^name }";
         }
       }
       # nextwith/nextsame isn't doing the job, so it has to be done manually
