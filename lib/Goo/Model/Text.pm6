@@ -2,15 +2,7 @@ use v6.c;
 
 use NativeCall;
 
-use Pango::Raw::Types;
-
-
-
-
-use GTK::Raw::Utils;
-
 use Goo::Raw::Types;
-
 
 use Goo::Model::Simple;
 
@@ -28,14 +20,19 @@ class Goo::Model::Text is Goo::Model::Simple {
     Int()                $anchor,
     *@props
   ) {
-    my guint $a = resolve-uint($anchor);
+    my guint $a = $anchor;
     my gdouble ($xx, $yy, $w) = ($x, $y, $width);
-    self.bless(
-      simple => goo_canvas_text_model_new(
-        $parent, $string, $xx, $yy, $w, $a, Str
-      ),
-      props  => @props
+    my $simple = goo_canvas_text_model_new(
+      $parent,
+      $string,
+      $xx,
+      $yy,
+      $w,
+      $a,
+      Str
     );
+
+    $simple ?? self.bless( :$simple, props  => @props ) !! Nil
   }
 
   method get_type {
