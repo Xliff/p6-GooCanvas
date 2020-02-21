@@ -15,7 +15,7 @@ use Goo::Model::Roles::Item;
 class Goo::Model::Simple {
   also does Goo::Model::Roles::Item;
 
-  multi submethod BUILD (:$simple is required, :@props) {
+  submethod BUILD (:$simple, :@props) {
     #self.ADD-PREFIX('Goo::');
     self.setModelItem(
       cast( GooCanvasItemModel, $simple )
@@ -155,7 +155,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method fill-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'fill-pixbuf does not allow reading' if $DEBUG;
@@ -423,7 +423,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method stroke-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'stroke-pixbuf does not allow reading' if $DEBUG;
