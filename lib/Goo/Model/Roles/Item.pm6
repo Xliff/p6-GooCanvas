@@ -13,25 +13,8 @@ use GLib::Roles::Object;
 use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
-  also does GLib::Roles::Object;
-  also does GLib::Roles::Signals::Generic;
-
   has GooCanvasItemModel $!im;
-
-  multi submethod BUILD (:$model is required) {
-    #self.ADD-PREFIX('Goo::');
-    self.setModelItem($model);
-  }
-
-  method setModelItem ($item) {
-    self.IS-PROTECTED;
-    self!setObject($!im = $item);
-  }
-
-  multi method new-goocanvasitem-obj (GooCanvasItemModel $model) {
-    $model ?? self.bless(:$model) !! Nil;
-  }
-
+  
   method Goo::Raw::Types::GooCanvasItemModel
     is also<
       ItemModel
