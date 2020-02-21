@@ -13,21 +13,21 @@ constant forced = 0;
 
 constant goo is export = 'goocanvas-2.0',v9;
 
-class GooCanvas           is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasEllipse    is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasGroup      is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasImage      is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasItem       is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasItemSimple is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasPath       is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasPolyline   is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasRect       is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasText       is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasTable      is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasWidget     is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvas           is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasEllipse    is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasGroup      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasImage      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasItem       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasItemSimple is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasPath       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasPolyline   is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasRect       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasText       is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasTable      is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasWidget     is repr<CPointer> is export does GLib::Roles::Pointers { }
 
-class GooCanvasItemModel  is repr('CPointer') is export does GLib::Roles::Pointers { }
-class GooCanvasGroupModel is repr('CPointer') is export does GLib::Roles::Pointers { }
+class GooCanvasItemModel  is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasGroupModel is repr<CPointer> is export does GLib::Roles::Pointers { }
 
 our subset BooleanValue is export where True | False | 1 | 0;
 

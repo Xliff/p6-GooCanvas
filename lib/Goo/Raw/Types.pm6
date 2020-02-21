@@ -33,6 +33,7 @@ need GDK::Raw::Structs;
 need GDK::Raw::Subs;
 need GTK::Raw::Definitions;
 need GTK::Raw::Enums;
+need GTK::Raw::Requisition;
 need GTK::Raw::Structs;
 need GTK::Raw::Subs;
 need GTK::Raw::Requisition;
