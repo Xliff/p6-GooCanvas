@@ -1,13 +1,10 @@
 use v6.c;
 
-
-
-use GLib::Value;
-
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;
 
-use GTK::Compat::Pixbuf;
+use GLib::Value;
+use GDK::RGBA;
 
 role Goo::Roles::Grid {
 
@@ -34,9 +31,12 @@ role Goo::Roles::Grid {
         $gv = GLib::Value.new(
           self.prop_get('border-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('border-color-gdk-rgba', $gv);
       }
@@ -61,16 +61,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method border-pattern is rw  {
+  method border-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('border-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ CairoPatternObject;
@@ -82,7 +85,7 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method border-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'border-pixbuf does not allow reading';
@@ -151,9 +154,12 @@ role Goo::Roles::Grid {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA;
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('horz-grid-line-color-gdk-rgba', $gv);
       }
@@ -178,16 +184,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method horz-grid-line-pattern is rw  {
+  method horz-grid-line-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
@@ -199,7 +208,7 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method horz-grid-line-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'horz-grid-line-pixbuf does not allow reading';
@@ -285,9 +294,12 @@ role Goo::Roles::Grid {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA;
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('vert-grid-line-color-gdk-rgba', $gv);
       }
@@ -312,16 +324,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method vert-grid-line-pattern is rw  {
+  method vert-grid-line-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(Cairo::cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(Cairo::cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
@@ -333,7 +348,7 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method vert-grid-line-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'vert-grid-line-pixbuf does not allow reading'
