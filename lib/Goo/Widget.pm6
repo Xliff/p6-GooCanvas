@@ -20,7 +20,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!gw = $widget) )
   }
 
-  method Goo::Raw::Types::GooCanvasWidget
+  method Goo::Raw::Definitions::GooCanvasWidget
     #is also<GooWidget>
   { $!gw }
 

@@ -15,7 +15,7 @@ use GLib::Roles::Signals::Generic;
 role Goo::Model::Roles::Item {
   has GooCanvasItemModel $!im;
   
-  method Goo::Raw::Types::GooCanvasItemModel
+  method Goo::Raw::Definitions::GooCanvasItemModel
     is also<
       ItemModel
       CanvasItemModel

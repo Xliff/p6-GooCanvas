@@ -22,7 +22,7 @@ class Goo::Table is Goo::Group {
     self.setGroup( cast(GooCanvasGroup, $!t = $table) )
   }
 
-  method Goo::Raw::Types::GooCanvasTable
+  method Goo::Raw::Definitions::GooCanvasTable
     #is also<Table>
   { $!t }
 

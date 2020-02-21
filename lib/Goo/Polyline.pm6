@@ -21,7 +21,7 @@ class Goo::Polyline is Goo::CanvasItemSimple {
   has GooCanvasPolyline $!pl;
   has $!num;
 
-  method Goo::Raw::Types::GooCanvasPolyline
+  method Goo::Raw::Definitions::GooCanvasPolyline
     is also<Polyline>
   { $!pl }
 

@@ -24,7 +24,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
     );
   }
 
-  method Goo::Raw::Types::GooCanvasRect
+  method Goo::Raw::Definitions::GooCanvasRect
     is also<GooCanvasRect>
   { $!r }
 

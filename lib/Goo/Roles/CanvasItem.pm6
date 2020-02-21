@@ -36,7 +36,7 @@ role Goo::Roles::CanvasItem {
     self!setObject($!ci = cast(GooCanvasItem, $item));
   }
 
-  method Goo::Raw::Types::GooCanvasItem
+  method Goo::Raw::Definitions::GooCanvasItem
     is also<CanvasItem>
   { $!ci }
 

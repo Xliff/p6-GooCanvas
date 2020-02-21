@@ -18,7 +18,7 @@ class Goo::Points {
     $!elems  = $elems // 0;
   }
 
-  method Goo::Raw::Types::GooCanvasPoints
+  method Goo::Raw::Definitions::GooCanvasPoints
     is also<Points>
   { $!points }
 

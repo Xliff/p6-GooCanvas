@@ -23,7 +23,7 @@ class Goo::Group is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!g = $group) )
   }
 
-  method Goo::Raw::Types::GooGroup
+  method Goo::Raw::Definitions::GooGroup
     #is also<Group>
   { $!g }
 

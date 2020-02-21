@@ -23,7 +23,7 @@ class Goo::Text is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!t = $text) )
   }
 
-  method Goo::Raw::Types::GooCanvasText
+  method Goo::Raw::Definitions::GooCanvasText
     is also<GooCanvasText>
   { $!t }
 

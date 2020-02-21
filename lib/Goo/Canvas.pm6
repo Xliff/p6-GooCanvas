@@ -62,7 +62,7 @@ class Goo::Canvas is GTK::Container {
     }
   }
 
-  method Goo::Raw::Types::GooCanvas
+  method Goo::Raw::Definitions::GooCanvas
     is also<Canvas>
   { $!gc }
 

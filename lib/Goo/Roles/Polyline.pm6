@@ -126,7 +126,7 @@ role Goo::Roles::Polyline {
             $val = Goo::Points.new($val).Points;
           }
           when Goo::Points {
-            $val = Goo::Raw::Types::GooCanvasPoints($val);
+            $val = Goo::Raw::Definitions::GooCanvasPoints($val);
           }
         }
         $gv.boxed = $val;
