@@ -28,6 +28,7 @@ class Goo::Model::Rect is Goo::Model::Simple {
 
   method get_type {
     state ($n, $t);
+    
     unstable_get_type( self.^name, &goo_canvas_rect_model_get_type, $n, $t );
   }
 }

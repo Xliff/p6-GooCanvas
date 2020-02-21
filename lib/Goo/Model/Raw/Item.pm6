@@ -4,7 +4,6 @@ use NativeCall;
 
 use Cairo;
 
-
 use Goo::Raw::Types;
 
 unit package Goo::Model::Raw::Item;
