@@ -4,51 +4,32 @@ use Method::Also;
 
 use Cairo;
 
-
-
 use Goo::Raw::Types;
-
-
-use GTK::Raw::Utils;
 use Goo::Raw::CanvasItem;
 
 use GLib::Value;
 use Goo::Model::Simple;
 
-use GTK::Roles::Properties;
-use GTK::Roles::Protection;
+use GLib::Roles::Object;
 use Goo::Roles::Signals::CanvasItem;
 
 role Goo::Roles::CanvasItem {
-  also does GTK::Roles::Properties;
-  also does GTK::Roles::Protection;
+  also does GLib::Roles::Object;
   also does Goo::Roles::Signals::CanvasItem;
 
   has GooCanvasItem $!ci;
 
-  submethod BUILD (:$item) {
-    self.ADD-PREFIX('Goo::');
-    self.setCanvasItem($item) if $item.defined;
-  }
-
   method setCanvasItem ($item) {
-    self.IS-PROTECTED;
+    #self.IS-PROTECTED;
     self!setObject($!ci = cast(GooCanvasItem, $item));
   }
 
   method Goo::Raw::Definitions::GooCanvasItem
-    is also<CanvasItem>
+    is also<
+      CanvasItem
+      GooCanvasItem
+    >
   { $!ci }
-
-  multi method new (GooCanvasItem $item) {
-    my %init;
-    if self ~~ ::('Goo::CanvasItemSimple') {
-      %init<simplecanvas> = cast(GooCanvasItemSimple, $item);
-    } else {
-      %init<item>         = $item;
-    }
-    self.bless(|%init);
-  }
 
   # Is originally:
   # GooCanvasItem, gboolean, gpointer --> void
@@ -134,10 +115,15 @@ role Goo::Roles::CanvasItem {
     self.connect-canvas-event($!ci, 'scroll-event');
   }
 
-  method canvas is rw {
+  method canvas (:$raw = False) is rw {
     Proxy.new(
       FETCH => sub ($) {
-        ::('Goo::Canvas').new( goo_canvas_item_get_canvas($!ci) );
+        my $c = goo_canvas_item_get_canvas($!ci);
+
+        $c ??
+          ( $raw ?? $c !! ::('Goo::Canvas').new($c) )
+          !!
+          Nil;
       },
       STORE => sub ($, GooCanvas() $canvas is copy) {
         goo_canvas_item_set_canvas($!ci, $canvas);
@@ -151,7 +137,8 @@ role Goo::Roles::CanvasItem {
         so goo_canvas_item_get_is_static($!ci);
       },
       STORE => sub ($, Int() $is_static is copy) {
-        my gboolean $i = resolve-bool($is_static);
+        my gboolean $i = $is_static.so.Int;
+
         goo_canvas_item_set_is_static($!ci, $i);
       }
     );
@@ -162,7 +149,7 @@ role Goo::Roles::CanvasItem {
       FETCH => sub ($) {
         goo_canvas_item_get_style($!ci);
       },
-      STORE => sub ($, $style is copy) {
+      STORE => sub ($, GooCanvasStyle $style is copy) {
         goo_canvas_item_set_style($!ci, $style);
       }
     );
@@ -210,7 +197,7 @@ role Goo::Roles::CanvasItem {
         $gv = GLib::Value.new(
           self.prop_get('pointer-events', $gv)
         );
-        GooCanvasPointerEvents( $gv.enum );
+        GooCanvasPointerEventsEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -254,21 +241,21 @@ role Goo::Roles::CanvasItem {
   }
 
   # Type: GooCairoMatrix
-  method transform is rw  {
+  method transform (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('transform', $gv)
         );
-        Cairo::Matrix.new( cast(cairo_matrix_t, $gv.pointer) );
-      },
-      STORE => -> $, $val is copy {
-        die qq:to/DIE/.chomp unless $val ~~ (Cairo::Matrix, cairo_matrix_t).any;
-Invalid type for .transform. Will only accept a cairo_matrix_t compatible{ ''
-} value.
-DIE
 
+        return cairo_matrix_t unless $gv.pointer;
+
+        my $m = cast(cairo_matrix_t, $gv.pointer);
+
+        $raw ?? $m !! Cairo::Matrix.new($m);
+      },
+      STORE => -> $, CairoMatrixObject $val is copy {
         $val .= matrix if $val ~~ Cairo::Matrix;
         $gv.pointer = $val;
         self.prop_set('transform', $gv);
@@ -284,7 +271,7 @@ DIE
         $gv = GLib::Value.new(
           self.prop_get('visibility', $gv)
         );
-        GooCanvasItemVisibility( $gv.enum );
+        GooCanvasItemVisibilityEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -313,7 +300,8 @@ DIE
   method add_child (GooCanvasItem() $child, Int() $position = -1)
     is also<add-child>
   {
-    my gint $p = resolve-int($position);
+    my gint $p = $position;
+
     goo_canvas_item_add_child($!ci, $child, $p);
   }
 
@@ -327,6 +315,7 @@ DIE
     is also<allocate-area>
   {
     my gdouble ($xo, $yo) = ($x_offset, $y_offset);
+
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_allocate_area(
       $!ci,
@@ -349,9 +338,10 @@ DIE
     Int() $type
   ) {
     my gdouble ($xx, $yy, $s, $d) = ($x, $y, $scale, $degrees);
-    my guint $t = resolve-uint($type);
-    my gboolean $a = resolve-bool($absolute);
-    my gint ($dur, $st) = resolve-int($duration, $step_time);
+    my guint $t = $type;
+    my gboolean $a = $absolute.so.Int;
+    my gint ($dur, $st) = ($duration, $step_time);
+
     goo_canvas_item_animate($!ci, $xx, $yy, $s, $d, $a, $dur, $st, $t);
   }
 
@@ -377,7 +367,8 @@ DIE
   }
 
   method get_child (Int() $child_num) is also<get-child> {
-    my gint $c = resolve-int($child_num);
+    my gint $c = $child_num;
+
     goo_canvas_item_get_child($!ci, $c);
   }
 
@@ -391,7 +382,6 @@ DIE
     goo_canvas_item_get_child_property($!ci, $child, $property_name, $value);
   }
 
-
   proto method get_items_at
     is also<get-items-at>
   { * }
@@ -402,10 +392,21 @@ DIE
     CairoContextObject $cr is copy,
     Int() $is_pointer_event,
     Int() $parent_is_visible,
+    :$glist = False;
     :$raw = False
   ) {
     my $fi = GList.new;
-    samewith($x, $y, $cr, $is_pointer_event, $parent_is_visible, $fi, :$raw);
+
+    samewith(
+      $x,
+      $y,
+      $cr,
+      $is_pointer_event,
+      $parent_is_visible,
+      GList,
+      :$glist,
+      :$raw
+    );
   }
   multi method get_items_at (
     Num() $x,
@@ -414,25 +415,43 @@ DIE
     Int() $is_pointer_event,
     Int() $parent_is_visible,
     GList() $found_items,
+    :$glist = False,
     :$raw = False
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    my gboolean ($i, $p) = resolve-bool($is_pointer_event, $parent_is_visible);
+    my gboolean ($i, $p) =
+      ($is_pointer_event, $parent_is_visible).map( *.so.Int );
+
     $cr .= context if $cr ~~ Cairo::Context;
-    my $l = GTK::Compat::List.new(
-      goo_canvas_item_get_items_at($!ci, $x, $y, $cr, $i, $p, $found_items)
-    ) but GLib::Roles::ListData[GooCanvasItem];
-    $raw ??
-      $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) });
+    my $cil = goo_canvas_item_get_items_at(
+      $!ci,
+      $x,
+      $y,
+      $cr,
+      $i,
+      $p,
+      $found_items
+    );
+
+    return GList unless $cil;
+    return $cil  if $glist;
+
+    my $l = GLib::List.new($cil) but GLib::Roles::ListData[GooCanvasItem];
+    $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) });
   }
 
-  method get_model
+  method get_model (:$raw = False)
     is also<
       get-model
       model
     >
   {
-    Goo::Model::Simple.new( goo_canvas_item_get_model($!ci) );
+    my $sm = goo_canvas_item_get_model($!ci);
+
+    $sm ??
+      ( $raw ?? $sm !! Goo::Model::Simple.new($sm) )
+      !!
+      GooCanvasItemModel;
   }
 
   method get_n_children is also<
@@ -444,7 +463,7 @@ DIE
     goo_canvas_item_get_n_children($!ci);
   }
 
-  method get_parent
+  method get_parent (:$raw = False)
     is also<
       get-parent
       parent
@@ -452,7 +471,12 @@ DIE
   {
     # Determine a method that will allow an object to keep a copy of its
     # parent for the lifetime of the actual backing pointer.
-    Goo::Roles::CanvasItem.new( goo_canvas_item_get_parent($!ci) );
+    my $p = goo_canvas_item_get_parent($!ci);
+
+    $p ??
+      ( $raw ?? $p !! Goo::CanvasItem.new($p) )
+      !!
+      Nil;
   }
 
   method get_requested_area (
@@ -473,6 +497,7 @@ DIE
     is also<get-requested-area-for-width>
   {
     my gdouble $w = $width;
+
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_get_requested_area_for_width(
       $!ci,
@@ -489,20 +514,28 @@ DIE
     is also<get-requested-height>
   {
     my gdouble $w = $width;
+
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_get_requested_height($!ci, $cr, $w);
   }
 
-  method get_simple_transform (
-    Num() $x,
-    Num() $y,
-    Num() $scale,
-    Num() $rotation
-  )
+  proto method get_simple_transform (|)
     is also<get-simple-transform>
-  {
-    my gdouble ($xx, $yy, $s, $r) = ($x, $y, $scale, $rotation);
+  { * }
+
+  multi method get_simple_transform {
+    samewith($, $, $, $);
+  }
+  multi method get_simple_transform (
+    $x        is rw,
+    $y        is rw,
+    $scale    is rw,
+    $rotation is rw
+  ) {
+    my gdouble ($xx, $yy, $s, $r) = 0e0 xx 4;
+
     goo_canvas_item_get_simple_transform($!ci, $xx, $yy, $s, $r);
+    ($x, $y, $scale, $rotation) = ($xx, $yy, $s, $r);
   }
 
   method get_transform (CairoMatrixObject $transform is copy)
@@ -524,11 +557,13 @@ DIE
 
   method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_item_get_type, $n, $t );
   }
 
   method goo_canvas_bounds_get_type is also<goo-canvas-bounds-get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_bounds_get_type, $n, $t );
   }
 
@@ -543,7 +578,8 @@ DIE
   method move_child (Int() $old_position, Int() $new_position)
     is also<move-child>
   {
-    my gint ($op, $np) = resolve-int($old_position, $new_position);
+    my gint ($op, $np) = ($old_position, $new_position);
+
     goo_canvas_item_move_child($!ci, $op, $np);
   }
 
@@ -566,7 +602,8 @@ DIE
   }
 
   method remove_child (Int() $child_num) is also<remove-child> {
-    my gint $c = resolve-int($child_num);
+    my gint $c = $child_num;
+
     goo_canvas_item_remove_child($!ci, $c);
   }
 
@@ -576,11 +613,13 @@ DIE
 
   method rotate (Num() $degrees, Num() $cx, Num() $cy) {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_rotate($!ci, $d, $cxx, $cyy);
   }
 
   method scale (Num() $sx, Num() $sy) {
     my gdouble ($sxx, $syy) = ($sx, $sy);
+
     goo_canvas_item_scale($!ci, $sxx, $syy);
   }
 
@@ -605,6 +644,7 @@ DIE
     is also<set-simple-transform>
   {
     my gdouble ($xx, $yy, $s, $r) = ($x, $y, $scale, $rotation);
+
     goo_canvas_item_set_simple_transform($!ci, $xx, $yy, $s, $r);
   }
 
@@ -615,11 +655,13 @@ DIE
 
   method skew_x (Num() $degrees, Num() $cx, Num() $cy) is also<skew-x> {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_skew_x($!ci, $degrees, $cx, $cy);
   }
 
   method skew_y (Num() $degrees, Num() $cx, Num() $cy) is also<skew-y> {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_skew_y($!ci, $degrees, $cx, $cy);
   }
 
@@ -629,6 +671,7 @@ DIE
 
   method translate (Num() $tx, Num() $ty) {
     my gdouble ($txx, $tyy) = ($tx, $ty);
+
     goo_canvas_item_translate($!ci, $txx, $tyy);
   }
 
