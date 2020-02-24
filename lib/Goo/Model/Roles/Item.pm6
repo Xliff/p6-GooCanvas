@@ -14,7 +14,7 @@ use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
   has GooCanvasItemModel $!im;
-  
+
   method Goo::Raw::Definitions::GooCanvasItemModel
     is also<
       ItemModel
@@ -28,9 +28,9 @@ role Goo::Model::Roles::Item {
         my $p = goo_canvas_item_model_get_parent($!im);
 
         $p ??
-          ( $raw ?? $p !! Goo::Model::Roles::Item.new-goocanvasitem-obj($p) )
+          ( $raw ?? $p !! Goo::Model::CanvasItem.new$p) )
           !!
-          Nil;
+          GooCanvasItemModel;
       },
       STORE => sub ($, GooCanvasItemModel() $parent is copy) {
         goo_canvas_item_model_set_parent($!im, $parent);
@@ -43,7 +43,7 @@ role Goo::Model::Roles::Item {
       FETCH => sub ($) {
         my $s = goo_canvas_item_model_get_style($!im);
 
-        return Nil unless $s;
+        return GooCanvasStyle unless $s;
 
         $s = cast(GooCanvasStyle, $s);
         $raw ?? $s !! Goo::Style.new($s);
@@ -96,7 +96,7 @@ role Goo::Model::Roles::Item {
         $gv = GLib::Value.new(
           self.prop_get('pointer-events', $gv)
         );
-        GooCanvasPointerEvents( $gv.enum );
+        GooCanvasPointerEventsEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -148,7 +148,7 @@ role Goo::Model::Roles::Item {
           self.prop_get('transform', $gv)
         );
 
-        return Nil unless $gv.pointer;
+        return GooCairoMatrix unless $gv.pointer;
 
         my $m = cast(cairo_matrix_t, $gv.pointer);
 
