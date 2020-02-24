@@ -10,23 +10,38 @@ use Pango::FontDescription;
 
 use Goo::Roles::CanvasItem;
 
+our subset GooCanvasItemSimpleAncestry is export of Mu
+  where GooCanvasItem | GooCanvasItemSimple;
+
 class Goo::CanvasItemSimple {
   also does Goo::Roles::CanvasItem;
 
   has GooCanvasItemSimple $!gc;
 
-  multi submethod BUILD (:$simplecanvas is required) {
+  submethod BUILD (:$simplecanvas) {
     #self.ADD-PREFIX('Goo::');
     self.setSimpleCanvasItem($simplecanvas) if $simplecanvas.defined;
   }
 
-  method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
+  method setSimpleCanvasItem (GooCanvasItemSimpleAncestry $_) {
     #self.IS-PROTECTED;
-    self.setCanvasItem($!gc = $simplecanvas);
+    my $to-parent;
+    $!gc = do {
+      when GooCanvasItemSimple {
+        $to-parent = cast(GooCanvasItem, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(GooCanvasItemSimple, $_);
+      }
+    }
+    self.setCanvasItem($to-parent);
   }
 
-  multi method new (GooCanvasItemSimple $simplecanvas) {
-    $simplecanvas ?? self.bless(:$simplecanvas) !! Nil;
+  multi method new (GooCanvasItemSimpleAncestry $simplecanvas) {
+    $simplecanvas ?? self.bless(:$simplecanvas) !! GooCanvasItemSimple;
   }
 
   # Type: GooCairoAntialias
