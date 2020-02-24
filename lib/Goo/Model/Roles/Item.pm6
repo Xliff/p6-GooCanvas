@@ -28,7 +28,7 @@ role Goo::Model::Roles::Item {
         my $p = goo_canvas_item_model_get_parent($!im);
 
         $p ??
-          ( $raw ?? $p !! Goo::Model::CanvasItem.new$p) )
+          ( $raw ?? $p !! Goo::Model::CanvasItem.new($p) )
           !!
           GooCanvasItemModel;
       },
@@ -148,7 +148,7 @@ role Goo::Model::Roles::Item {
           self.prop_get('transform', $gv)
         );
 
-        return GooCairoMatrix unless $gv.pointer;
+        return cairo_matrix_t unless $gv.pointer;
 
         my $m = cast(cairo_matrix_t, $gv.pointer);
 
