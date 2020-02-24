@@ -25,11 +25,16 @@ role Goo::Roles::CanvasItem {
   }
 
   method Goo::Raw::Definitions::GooCanvasItem
-    is also<
-      CanvasItem
-      GooCanvasItem
-    >
+    # is also<
+    #   CanvasItem
+    #   GooCanvasItem
+    # >
   { $!ci }
+
+  # These are here due to a bug in rakudo and Method::Also, please remove
+  # them, when rectified.
+  method CanvasItem    { $!ci }
+  method GooCanvasItem { $!ci }
 
   # Is originally:
   # GooCanvasItem, gboolean, gpointer --> void
