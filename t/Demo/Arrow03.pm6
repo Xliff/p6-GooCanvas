@@ -336,7 +336,7 @@ LABEL
     CATCH { default { .message.say } }
     if Goo::Model::Rect.is_type( @a[2] ) {
       set_events(
-        Goo::CanvasItemSimple.new( cast(GooCanvasItemSimple, @a[1]) )
+        Goo::CanvasItemSimple.new( @a[1] )
       );
     }
   }) if %globals<model-mode>;
