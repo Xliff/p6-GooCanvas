@@ -2,10 +2,7 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
 
 use GTK::Application;
 use GTK::Box;
@@ -21,9 +18,9 @@ sub on-button-press ($event, $id, $r) {
   my $be = cast(GdkEventButton, $event);
 
   say qq:to/SAY/.chomp;
-{ $id } received 'button-press' signal at { $be.x }, { $be.y } (root: {
-  $be.x_root }, { $be.y_root }
-SAY
+    { $id } received 'button-press' signal at { $be.x }, { $be.y } (root: {
+      $be.x_root }, { $be.y_root })
+    SAY
 
   $r.r = 1;
 }
