@@ -1,6 +1,5 @@
 use v6.c;
 
-
 use Goo::Raw::Types;
 
 use GLib::Value;
@@ -115,21 +114,18 @@ role Goo::Roles::Polyline {
     my GLib::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        $gv.boxed.defined ??
-          Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) ) !! 0;
+        $gv.boxed ?? Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) )
+                  !! GooCanvasPoints;
       },
       STORE => -> $, $val is copy {
         die "Invalid value of type '{ $val.^name }' passed."
           unless $val ~~ (Array, GooCanvasPoints, Goo::Points).any;
-        given $val {
-          when Array {
-            $val = Goo::Points.new($val).Points;
-          }
-          when Goo::Points {
-            $val = Goo::Raw::Definitions::GooCanvasPoints($val);
-          }
+
+        $gv.boxed = do given $val {
+          when Array       { $_ = Goo::Points.new($val); proceed }
+          when Goo::Points { $val.GooCanvasPoints                }
         }
-        $gv.boxed = $val;
+        
         self.prop_set('points', $gv);
       }
     );
