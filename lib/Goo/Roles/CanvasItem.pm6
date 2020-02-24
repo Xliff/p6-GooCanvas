@@ -13,15 +13,30 @@ use Goo::Model::Simple;
 use GLib::Roles::Object;
 use Goo::Roles::Signals::CanvasItem;
 
+our subset GooCanvasItemAncestry is export of Mu
+  where GooCanvasItem | GObject;
+
 role Goo::Roles::CanvasItem {
   also does GLib::Roles::Object;
   also does Goo::Roles::Signals::CanvasItem;
 
   has GooCanvasItem $!ci;
 
-  method setCanvasItem ($item) {
+  method setCanvasItem (GooCanvasItemAncestry $_) {
     #self.IS-PROTECTED;
-    self!setObject($!ci = cast(GooCanvasItem, $item));
+    my $to-parent;
+    $!ci = do {
+      when GooCanvasItem {
+        $to-parent = cast(GObject, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(GooCanvasItem, $_);
+      }
+    }
+    self!setObject($to-parent);
   }
 
   method Goo::Raw::Definitions::GooCanvasItem
