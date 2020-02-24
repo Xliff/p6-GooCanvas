@@ -4,11 +4,9 @@ use NativeCall;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
 
+use GDK::Cursor;
 use Goo::Canvas;
 use Goo::Points;
 
@@ -207,7 +205,7 @@ sub button_press ($item, $target, $event, $r) {
   CATCH { default { .message.say; $app.exit; } }
 
   my $canvas = $item.canvas;
-  my $fleur = GTK::Compat::Cursor.new_for_display($canvas.display, GDK_FLEUR);
+  my $fleur = GDK::Cursor.new_for_display($canvas.display, GDK_FLEUR);
   my $mask = GDK_POINTER_MOTION_MASK +|
              GDK_POINTER_MOTION_HINT_MASK +|
              GDK_BUTTON_RELEASE_MASK;
@@ -233,7 +231,7 @@ sub on_motion ($item, $target, $event, $r) {
   my ($p, $width, $change) = (
     +(%globals<model-mode> ??
       Goo::CanvasItemSimple.new($target).model.CanvasItemModel !!
-      $item.CanvasItem
+      $item.GooCanvasItem
     ).p,
     Nil,
     False
