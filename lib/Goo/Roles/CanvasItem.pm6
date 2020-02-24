@@ -479,7 +479,7 @@ role Goo::Roles::CanvasItem {
     my $p = goo_canvas_item_get_parent($!ci);
 
     $p ??
-      ( $raw ?? $p !! Goo::CanvasItem.new($p) )
+      ( $raw ?? $p !! ::('Goo::CanvasItem').new($p) )
       !!
       Nil;
   }
