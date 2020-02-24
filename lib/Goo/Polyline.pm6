@@ -3,11 +3,7 @@ use v6.c;
 use Method::Also;
 use NativeCall;
 
-
 use Goo::Raw::Types;
-
-use GTK::Raw::Utils;
-
 use Goo::Raw::Polyline;
 
 use Goo::CanvasItemSimple;
@@ -15,27 +11,51 @@ use Goo::Points;
 
 use Goo::Roles::Polyline;
 
+our subset GooPolylineAncestry is export of Mu
+  where GooCanvasPolyline | GooCanvasItemSimpleAncestry;
+
 class Goo::Polyline is Goo::CanvasItemSimple {
   also does Goo::Roles::Polyline;
 
   has GooCanvasPolyline $!pl;
   has $!num;
 
-  method Goo::Raw::Definitions::GooCanvasPolyline
-    is also<Polyline>
-  { $!pl }
+  submethod BUILD (:$line, :$num) {
+    $!num = $num // 0;
+    given $line {
+      when GooPolylineAncestry {
+        my $to-parent;
+        $!pl = do {
+          when GooCanvasPolyline {
+            $to-parent = cast(GooCanvasItemSimple, $_);
+            $_;
+          }
 
-  submethod BUILD (:$line, :$!num) {
-    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!pl = $line) )
+          default {
+            $to-parent = $_;
+            cast(GooCanvasPolyline, $_);
+          }
+        }
+        self.setSimpleCanvasItem($to-parent)
+      }
+    }
   }
 
-  proto method new(|) { * }
+  method Goo::Raw::Definitions::GooCanvasPolyline
+    is also<
+      Polyline
+      GooPolyline
+    >
+  { $!pl }
+
+  proto method new(|)
+  { * }
 
   multi method new (
     GooCanvasItem() $line,
     Int() $num?
   ) {
-    self.bless(:$line, :$num);
+    $line ?? self.bless(:$line, :$num) !! $line;
   }
   multi method new (
     GooCanvasItem() $parent,
@@ -47,12 +67,14 @@ class Goo::Polyline is Goo::CanvasItemSimple {
       unless @points.map( *.Num ).all ~~ Num;
     die '@points must contain an even number of elements!'
       unless @points.elems == 0 || @points.elems % 2 == 0;
-    my ($c, $n) = ( resolve-bool($close), resolve-int($num_points) );
 
-    my $o = self.bless(
-      line  => goo_canvas_polyline_new($parent, $c, $n, Str),
-      num   => $num_points
-    );
+    my gboolean $c = $close.so.Int;
+    my gint $num   = $num_points;
+    my $line       = goo_canvas_polyline_new($parent, $c, $num, Str);
+
+    return GooCanvasPoints unless $line;
+
+    my $o = self.bless(:$line, :$num);
     $o.points = @points if +@points;
     $o;
   }
@@ -67,17 +89,22 @@ class Goo::Polyline is Goo::CanvasItemSimple {
     is also<new-line>
   {
     my gdouble ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
-    self.bless(
-      line => goo_canvas_polyline_new_line(
-        $parent, $xx1, $yy1, $xx2, $yy2, Str
-      )
+    my $line = goo_canvas_polyline_new_line(
+      $parent,
+      $xx1,
+      $yy1,
+      $xx2,
+      $yy2,
+      Str
     );
+
+    $line ?? self.bless(:$line) !! GooCanvasPolyline;
   }
 
   method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_polyline_get_type, $n, $t);
   }
-
 
 }
