@@ -1,7 +1,5 @@
 use v6.c;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
 
 use GTK::Application;
@@ -16,9 +14,13 @@ use Goo::Model::Group;
 
 my (%globals, %data, $app);
 
+# Consider moving to GLib::Roles::Object for RAKU values.
 sub get-data (GObject() $i, $k) {
   %data{+$i.p}{$k};
 }
+# Consider moving to GLib::Roles::Object for RAKU values.
+# Thought bomb: When attempting to set an id for an integer value,
+# use uint for 0 .. 65535, and int for anything negative.
 sub set-data (GObject() $i, $k, $v) {
   %data{+$i.p}{$k} = $v;
 }
