@@ -2,9 +2,7 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
-use Goo::Raw::Enums;
+use Goo::Raw::Types;
 
 use GTK::Adjustment;
 use GTK::Application;
@@ -19,24 +17,24 @@ use Goo::Image;
 use Goo::Rect;
 use Goo::Text;
 
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
+
 my (%data, $app, $flower-pattern);
 
 our subset ObjectOrPointer of Mu where * ~~ (
   GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
+  GLib::Roles::Pointers
 ).any;
 
 sub get-data (ObjectOrPointer $i is copy, $k) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k};
 }
 sub set-data (ObjectOrPointer $i is copy, $k, $v) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k} = $v;
 }
 
@@ -44,9 +42,9 @@ sub on_motion_notify ($item, $r) {
   CATCH { default { .message.say } }
 
   say qq:to/SAY/.chomp;
-{ get-data($item, 'id') // '<Unknown>'
-} item received 'motion-notify' signal;
-SAY
+    { get-data($item, 'id') // '<Unknown>'
+    } item received 'motion-notify' signal;
+    SAY
 
   $r.r = 0;
 }
@@ -143,7 +141,7 @@ sub MAIN {
     $flower-pattern = Cairo::Pattern::Surface.create($surface.surface);
 
     my @labels;
-    for (GTK_UNIT_PIXELS, GTK_UNIT_POINTS, GTK_UNIT_INCH, GTK_UNIT_MM) {
+    for GTK_UNIT_PIXELS, GTK_UNIT_POINTS, GTK_UNIT_INCH, GTK_UNIT_MM {
       @labels.push: GTK::Label.new(
         my $name = do {
           when GTK_UNIT_PIXELS { 'Pixels'      }
