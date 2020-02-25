@@ -2,8 +2,6 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
 
 use GTK::Application;
@@ -15,24 +13,24 @@ use Goo::Canvas;
 
 use Goo::Model::Group;
 
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
+
 my (%data, %globals, $app, $path1);
 
 our subset ObjectOrPointer of Mu where * ~~ (
   GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
+  GLib::Roles::Pointers
 ).any;
 
 sub get-data (ObjectOrPointer $i is copy, $k) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k};
 }
 sub set-data (ObjectOrPointer $i is copy, $k, $v) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k} = $v;
 }
 
