@@ -1,7 +1,6 @@
 use v6.c;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+use Goo::Raw::Types;
 
 use GTK::Application;
 use GTK::Box;
@@ -83,9 +82,11 @@ sub create_table ($opt, $parent, $x, $y, $w, $h, $l) {
 
   $i = 0;
   for @items {
+    # ,get_bounds can really be .bounds at this level, however upstream issues
+    # prevent the latter from working.
     my $b = (
       %globals<model-mode> ?? %globals<canvas>.get_item($_) !! $_
-    ).bounds;
+    ).get_bounds;
     say "Item #{$i++}: { ($b.x1 - $x).fmt('%.2f') }, {
                          ($b.y1 - $y).fmt('%.2f') } - {
                          ($b.x2 - $x).fmt('%.2f') }, {
