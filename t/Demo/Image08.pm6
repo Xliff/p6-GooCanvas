@@ -26,7 +26,7 @@ sub create_canvas_scalability {
   die 'SORRY! The demo image file cannot be found!'
     unless $demo_img.IO.e;
 
-  my $pixbuf  = GTK::Compat::Pixbuf.new_from_file($demo_img);
+  my $pixbuf  = GDK::Pixbuf.new_from_file($demo_img);
   my ($width, $height) = ($pixbuf.width + 3, $pixbuf.height + 1);
 
   my $canvas = Goo::Canvas.new;
