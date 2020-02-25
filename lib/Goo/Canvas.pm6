@@ -465,6 +465,12 @@ class Goo::Canvas is GTK::Container {
     );
   }
 
+  method root-item (:$raw = False) is also<root_item> {
+    Proxy.new:
+      FETCH => -> $                     { self.get_root_item(:$raw) },
+      STORE => -> $, GooCanvasItem() \i { self.set_root_item(i)     };
+  }
+
   method convert_bounds_to_item_space (
     GooCanvasItem() $item,
     GooCanvasBounds() $bounds
@@ -658,19 +664,17 @@ class Goo::Canvas is GTK::Container {
     $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
   }
 
-  method get_root_item (:$raw = False)
-    is also<
-      get-root-item
-      root-item
-      root_item
-    >
-  {
+  method get_root_item (:$raw = False) is also<get-root-item> {
     my $c = goo_canvas_get_root_item($!gc);
 
     $c ??
       ( $raw ?? $c !! Goo::CanvasItem.new($c) )
       !!
       GooCanvasItem;
+  }
+
+  method set_root_item (GooCanvasItem() $item) {
+    goo_canvas_set_root_item($!gc, $item);
   }
 
   method get_type is also<get-type> {
