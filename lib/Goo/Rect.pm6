@@ -10,7 +10,7 @@ use GLib::Value;
 use Goo::CanvasItemSimple;
 
 our subset GooRectAncestry is export of Mu
-  where GooCanvasRect | GooCanvasItem;
+  where GooCanvasRect | GooCanvasItemSimpleAncestry;
 
 class Goo::Rect is Goo::CanvasItemSimple {
   has GooCanvasRect $!r;
@@ -62,7 +62,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   }
 
   # Type: gdouble
-  method radius-x is rw  is also<radius_x> {
+  method radius-x is rw is also<radius_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -79,7 +79,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   }
 
   # Type: gdouble
-  method radius-y is rw  is also<radius_y> {
+  method radius-y is rw is also<radius_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
       FETCH => -> $ {
@@ -148,7 +148,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
 
   method get_type is also<get-type> {
     state ($n, $t);
-    
+
     unstable_get_type( self.^name, &goo_canvas_rect_get_type, $n, $t );
   }
 
