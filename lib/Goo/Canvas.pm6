@@ -617,16 +617,19 @@ class Goo::Canvas is GTK::Container {
     Num() $x,
     Num() $y,
     Int() $is_pointer_event = False,
+    :$glist = False,
     :$raw = False
   )
     is also<get-items-at>
   {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean $i = $is_pointer_event.so.Int;
-    my $l = GLib::GList.new(
-      goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event)
-    ) but GLib::Roles::ListData[GooCanvasItem];
+    my $l = goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event);
 
+    return Nil unless $l;
+    return $l if $glist;
+
+    $l = GLib::GList.new($l) but GLib::Roles::ListData[GooCanvasItem];
     $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
   }
 
@@ -635,6 +638,7 @@ class Goo::Canvas is GTK::Container {
     Int() $inside_area,
     Int() $allow_overlaps,
     Int() $include_containers,
+    :$glist = False,
     :$raw = False
   )
     is also<get-items-in-area>
@@ -645,12 +649,13 @@ class Goo::Canvas is GTK::Container {
       $include_containers
     ).map( *.so.Int );
 
-    my $l = GLib::GList.new(
-      goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic)
-    ) but GLib::Roles::ListData[GooCanvasItem];
+    my $l = goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic);
 
-    $raw ??
-      $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
+    return Nil unless $l;
+    return $l if $glist;
+
+    $l = GLib::GList.new($l) but GLib::Roles::ListData[GooCanvasItem];
+    $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
   }
 
   method get_root_item (:$raw = False)
