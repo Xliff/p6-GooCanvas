@@ -21,10 +21,11 @@ constant SCRAMBLE_MOVES = 256;
 
 my (%data, @board);
 
-
 sub test_win {
-  for @board {
-    return False if .defined.not || get-data($_, 'num') != 1
+  # Should not return True unless board has been scrambled!
+  for @board.reverse.skip(1).reverse.kv -> $k, $v {
+    return False if $v.defined.not;
+    return False unless $v.get-data('num') == $k;
   }
   True;
 }
@@ -45,7 +46,7 @@ sub piece-button-press ($item, $r) {
 
   my ($model, $canvas) = (get-canvas-model($item), $item.canvas );
   my ($num, $pos, $text) = (
-    get-data($model, 'num'), get-data($model, 'pos'), get-data($model, 'text')
+    $model.get-data('num'), $model.get-data('pos'), $model.get-data('text')
   );
   my ($x, $y, $move) = ($pos % 4, $pos div 4, True);
   my ($dx, $dy);
@@ -65,9 +66,9 @@ sub piece-button-press ($item, $r) {
   if $move {
     my $newpos = $y * 4 + $x;
     @board[$pos, $newpos] = (Nil, $model);
-    set-data($model, 'pos', $newpos);
+    $model.set-data('pos', $newpos);
     $model.translate($dx * PIECE_SIZE, $dy * PIECE_SIZE);
-    test_win;
+    say 'You win!' if test_win;
   }
 
   $r.r = 0;
@@ -94,12 +95,12 @@ sub create-piece ($root, $num) {
 
 sub setup-signals ($item) {
   $item.enter-notify-event.tap(-> *@a {
-    get-data($item, 'text').fill-color = 'white';
+    $item.get-data('text').fill-color = 'white';
     @a[*-1].r = 0
   });
 
   $item.leave-notify-event.tap(-> *@a {
-    get-data($item, 'text').fill-color = 'black';
+    $item.get-data('text').fill-color = 'black';
     @a[*-1].r = 0
   });
 
@@ -133,7 +134,7 @@ sub scramble {
     my $oldpos = $pos + $y * 4 + $x;
     @board[$pos] = @board[$oldpos];
     @board[$oldpos] = Nil;
-    set-data( @board[$pos], 'pos', $pos );
+    @board[$pos].set-data('pos', $pos);
     @board[$pos].translate(-$x * PIECE_SIZE, -$y * PIECE_SIZE);
     $pos = $oldpos;
   }
@@ -156,18 +157,20 @@ sub create_canvas_fifteen {
   $canvas.set_bounds(0, 0, PIECE_SIZE * 4 + 1, PIECE_SIZE * 4 + 1);
   $frame.add($canvas);
 
-  for ^15 {
+  for ^15 -> $i {
     my ($rect, $text);
-    my ($x, $y)  = ($_ % 4, $_ div 4);
-    (@board[$_], $rect, $text) = create-piece($root, $_);
-    @board[$_].translate($x * PIECE_SIZE, $y * PIECE_SIZE);
-    setup-signals(@board[$_]);
-    ($rect.line-width, $rect.stroke-color, $rect.fill-color) =
-      ( 1, 'black', get_piece_color($_) );
+    my ($x, $y)  = ($i % 4, $i div 4);
+    (@board[$i], $rect, $text) = create-piece($root, $i);
     (.font, .fill-color) = ('Sans bold 24', 'black') given $text;
-    set-data(@board[$_], 'text', $text);
-    set-data(@board[$_], 'num', $_);
-    set-data(@board[$_], 'pos', $_);
+    ($rect.line-width, $rect.stroke-color, $rect.fill-color) =
+      ( 1, 'black', get_piece_color($i) );
+    given @board[$i] {
+      setup-signals($_);
+      .translate($x * PIECE_SIZE, $y * PIECE_SIZE);
+      .set-data('text', $text);
+      .set-data('num', $i);
+      .set-data('pos', $i);
+    }
   }
 
   # Scramble button
