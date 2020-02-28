@@ -1,9 +1,6 @@
 use v6.c;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
-
-use Goo::Raw::Enums;
+use Goo::Raw::Types;
 
 use GTK::Application;
 use GTK::Box;
@@ -14,31 +11,16 @@ use Goo::Canvas;
 use Goo::Group;
 use Goo::Rect;
 use Goo::Text;
-
 use Goo::Rect;
+
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
 
 constant PIECE_SIZE     = 50;
 constant SCRAMBLE_MOVES = 256;
 
 my (%data, @board);
-our subset ObjectOrPointer of Mu where * ~~ (
-  GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
-).any;
 
-sub get-data (ObjectOrPointer $i is copy, $k) {
-  return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k};
-}
-sub set-data (ObjectOrPointer $i is copy, $k, $v) {
-  return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k} = $v;
-}
 
 sub test_win {
   for @board {
@@ -68,13 +50,13 @@ sub piece-button-press ($item, $r) {
   my ($x, $y, $move) = ($pos % 4, $pos div 4, True);
   my ($dx, $dy);
 
-  if      $y > 0 && @board[$pos - 4].defined.not {
+  if      $y > 0 && @board[$pos - 4].not {
     ($dx, $dy) = ( 0, -1); $y--;
-  } elsif $y < 3 && @board[$pos + 4].defined.not {
+  } elsif $y < 3 && @board[$pos + 4].not {
     ($dx, $dy) = ( 0,  1); $y++;
-  } elsif $x > 0 && @board[$pos - 1].defined.not {
+  } elsif $x > 0 && @board[$pos - 1].not {
     ($dx, $dy) = (-1,  0); $x--;
-  } elsif $x < 3 && @board[$pos + 1].defined.not {
+  } elsif $x < 3 && @board[$pos + 1].not {
     ($dx, $dy) = ( 1,  0); $x++;
   } else {
     $move .= not;
@@ -129,7 +111,7 @@ sub setup-signals ($item) {
 sub scramble {
   my $pos = 0;
 
-  while @board[$pos].defined && $pos < 16 { $pos++ }
+  while @board[$pos] && $pos < 16 { $pos++ }
 
   # Move the blank spot around in ordefr to scramble the pieces;
   for ^SCRAMBLE_MOVES {
@@ -168,7 +150,7 @@ sub create_canvas_fifteen {
   $vbox.pack_start($frame);
 
   my ($canvas, $root) = create-canvas-root;
-  (.automatic-bounds, .bounds-from-origin) = (True, False) with $canvas;
+  (.automatic-bounds, .bounds-from-origin) = (True, False) given $canvas;
 
   $canvas.set_size_request(PIECE_SIZE * 4 + 1, PIECE_SIZE * 4 + 1);
   $canvas.set_bounds(0, 0, PIECE_SIZE * 4 + 1, PIECE_SIZE * 4 + 1);
@@ -182,7 +164,7 @@ sub create_canvas_fifteen {
     setup-signals(@board[$_]);
     ($rect.line-width, $rect.stroke-color, $rect.fill-color) =
       ( 1, 'black', get_piece_color($_) );
-    (.font, .fill-color) = ('Sans bold 24', 'black') with $text;
+    (.font, .fill-color) = ('Sans bold 24', 'black') given $text;
     set-data(@board[$_], 'text', $text);
     set-data(@board[$_], 'num', $_);
     set-data(@board[$_], 'pos', $_);
