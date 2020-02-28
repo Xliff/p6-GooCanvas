@@ -24,24 +24,7 @@ enum DemoItemType (
 );
 
 # Aren't these already a part of GObject? If not, they REALLY SHOULD BE!
-my (%data, %globals);
-
-our subset ObjectOrPointer of Mu where * ~~ (
-  GLib::Roles::Object,
-  GLib::Roles::Pointers
-).any;
-
-sub get-data (ObjectOrPointer $i is copy, $k) {
-  return unless $i.defined;
-  $i .= GObject if $i ~~ GLib::Roles::Object;
-  %data{+$i.p}{$k};
-}
-sub set-data (ObjectOrPointer $i is copy, $k, $v) {
-  return unless $i.defined;
-  $i = %globals<canvas>.get_item($i) if %globals<model-mode>;
-  $i .= GObject if $i ~~ GLib::Roles::Object;
-  %data{+$i.p}{$k} = $v;
-}
+my %globals;
 
 sub button-press ($item, $evt, $r) {
   CATCH { default { .message.say; } }
@@ -49,7 +32,7 @@ sub button-press ($item, $evt, $r) {
   my $event = cast(GdkEventButton, $evt);
 
   say qq:to/SAY/.chomp;
-    { get-data($item, 'id') // '<unknown>' } received 'button-press' signal at {
+    { $item.get-data('id') // '<unknown>' } received 'button-press' signal at {
       $event.x_root }, { $event.y_root }
     SAY
 
@@ -109,7 +92,7 @@ sub create_demo_item (
   warn "Got bad row setting: { $new_row } should be: { $row }"
     unless $new_row == $row;
 
-  set-data($item, 'id', $text);
+  $item.set-data('id', $text);
 
   # Insure we are woring with a CanvasItem, not a canvasItemModel when
   # dealing with events.
@@ -267,16 +250,18 @@ sub create_demo_table ($root, $x, $y, $w, $h) {
     with $table;
   $table.translate($x, $y);
 
-  my $square = %globals<rect-obj>.new($table, 0, 0, 50, 50);
-  $square.fill-color = 'red';
-  set-data($square, 'id', 'Red square');
+  given ( my $square = %globals<rect-obj>.new($table, 0, 0, 50, 50) ) {
+    .fill-color = 'red';
+    .set-data('id', 'Red square');
+  }
   $table.set_child_properties($square,
     'row', 0, 'column', 0, 'x-shrink', True
   );
 
-  my $circle = %globals<ellipse-obj>.new($table, 0, 0, 25, 25);
-  $circle.fill-color = 'blue';
-  set-data($circle, 'id', 'Blue circle');
+  given ( my $circle = %globals<ellipse-obj>.new($table, 0, 0, 25, 25) ) {
+    .fill-color = 'blue';
+    .set-data('id', 'Blue circle');
+  }
 
   $table.set_child_properties($circle,
     'row', 0, 'column', 1, 'x-shrink', True
@@ -291,7 +276,7 @@ sub create_demo_table ($root, $x, $y, $w, $h) {
     50, 50
   );
   $triangle.fill-color = 'yellow';
-  set-data($triangle, 'id', 'Yellow triangle');
+  $triangle.set-data('id', 'Yellow triangle');
 
   $table.set_child_properties($triangle,
     'row', 0, 'column', 2, 'x-shrink', True
@@ -337,7 +322,7 @@ sub create_width_for_height_table (
     'row',      1,    'column',   0,     'x-expand', True, 'x-fill', True,
     'x-shrink', True, 'y-expand', True,  'y-fill',   True
   );
-  set-data($item, 'id', 'Text Item');
+  $item.set-data('id', 'Text Item');
 
   # Rather than reuse $item and confuse thing, we use a new lexical to
   # clarify the fact that this MAY be a different thing.
