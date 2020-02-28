@@ -20,29 +20,13 @@ use Goo::Text;
 use GLib::Roles::Object;
 use GLib::Roles::Pointers;
 
-my (%data, $app, $flower-pattern);
-
-our subset ObjectOrPointer of Mu where * ~~ (
-  GLib::Roles::Object,
-  GLib::Roles::Pointers
-).any;
-
-sub get-data (ObjectOrPointer $i is copy, $k) {
-  return unless $i.defined;
-  $i .= GObject if $i ~~ GLib::Roles::Object;
-  %data{+$i.p}{$k};
-}
-sub set-data (ObjectOrPointer $i is copy, $k, $v) {
-  return unless $i.defined;
-  $i .= GObject if $i ~~ GLib::Roles::Object;
-  %data{+$i.p}{$k} = $v;
-}
+my ($app, $flower-pattern);
 
 sub on_motion_notify ($item, $r) {
   CATCH { default { .message.say } }
 
   say qq:to/SAY/.chomp;
-    { get-data($item, 'id') // '<Unknown>'
+    { $item.get-data('id') // '<Unknown>'
     } item received 'motion-notify' signal;
     SAY
 
@@ -65,7 +49,7 @@ sub setup_canvas ($canvas, $units, $unit_name) {
   my $root = $canvas.get_root_item;
   with Goo::Rect.new( $root, |@d[^4] ) {
     .motion-notify-event.tap(-> *@a { on_motion_notify( $_, @a[*-1] ) });
-    set-data($_, 'id', "{ $unit_name }-Rectangle");
+    .set-data('id', "{ $unit_name }-Rectangle");
   }
 
   my $t1 = Goo::Text.new(
@@ -150,6 +134,7 @@ sub MAIN {
           when GTK_UNIT_MM     { 'Millimeters' }
         }
       );
+
       $notebook.append_page( create_canvas($_, $name), @labels[*-1] );
     }
 
