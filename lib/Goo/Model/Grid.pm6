@@ -2,7 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;
@@ -26,17 +25,27 @@ class Goo::Model::Grid is Goo::Model::Simple {
   ) {
     my gdouble ($xx, $yy, $w,   $h) = ($x, $y, $width, $height);
     my gdouble ($xs, $ys, $xo, $yo) = ($x_step, $y_step, $x_offset, $y_offset);
-    self.bless(
-      simple => goo_canvas_grid_model_new(
-        $parent, $xx, $yy, $w, $h, $xs, $ys, $xo, $yo, Str
-      ),
-      props  => @props
+    my $simple = goo_canvas_grid_model_new(
+      $parent,
+      $xx, $yy,
+      $w, $h,
+      $xs, $ys,
+      $xo, $yo,
+      Str
     );
+
+    $simple ?? self.bless(:$simple, :@props) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_grid_model_get_type, $n, $t );
+
+    unstable_get_type(
+      self.^name,
+      &goo_canvas_grid_model_get_type,
+      $n,
+      $t
+    );
   }
 
 }
