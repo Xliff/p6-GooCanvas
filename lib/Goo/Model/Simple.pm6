@@ -20,6 +20,7 @@ class Goo::Model::Simple {
     self.setModelItem(
       cast( GooCanvasItemModel, $simple )
     );
+    
     for @props.rotor(2) -> ($m, $v) {
       self."$m"() = $v
     }
