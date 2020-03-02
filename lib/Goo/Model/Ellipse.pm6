@@ -27,7 +27,7 @@ class Goo::Model::Ellipse is Goo::Model::Simple {
       Str
     );
 
-    $simple ?? self.bless(:$simple, :@props) !! Nil;
+    $simple ?? self.bless(:$simple, :@props) !! GooCanvasItemModel;
   }
 
   method get_type {

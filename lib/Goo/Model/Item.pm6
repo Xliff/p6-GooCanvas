@@ -17,7 +17,7 @@ role Goo::Model::Roles::ItemObject {
   }
 
   multi method new (GooCanvasItemModel $model) {
-    $model ?? self.bless(:$model) !! Nil;
+    $model ?? self.bless(:$model) !! GooCanvasItemModel;
   }
 
 }
