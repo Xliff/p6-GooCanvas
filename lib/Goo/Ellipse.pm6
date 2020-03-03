@@ -2,28 +2,52 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::CanvasItemSimple;
 
 use Goo::Roles::Ellipse;
 
+our subset GooCanvasEllipseAncestry is export of Mu
+  where GooCanvasEllipse | GooCanvasItemSimpleAncestry;
+
 class Goo::Ellipse is Goo::CanvasItemSimple {
   also does Goo::Roles::Ellipse;
-  
+
   has GooCanvasEllipse $!e;
 
   submethod BUILD (:$ellipse) {
-    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!e = $ellipse) )
+    given $ellipse {
+      when GooCanvasEllipseAncestry {
+        my $to-parent;
+        $!e = do {
+          when GooCanvasEllipse {
+            $to-parent = cast(GooCanvasItemSimple, $_);
+            $_;
+          }
+
+          default {
+            $to-parent = $_;
+            cast(GooCanvasEllipse, $_);
+          }
+        }
+        self.setSimpleCanvasItem($to-parent)
+      }
+
+      when Goo::Ellipse {
+      }
+
+      default {
+      }
+    }
   }
 
   method Goo::Raw::Definitions::GooCanvasEllipse
     #is also<Ellipse>
   { $!e }
 
-  multi method new (GooCanvasEllipse $ellipse) {
-    self.bless( :$ellipse );
+  multi method new (GooCanvasEllipseAncestry $ellipse) {
+    $ellipse ?? self.bless( :$ellipse ) !! GooCanvasEllipse;
   }
   multi method new (
     GooCanvasItem() $parent,
@@ -34,13 +58,14 @@ class Goo::Ellipse is Goo::CanvasItemSimple {
   ) {
     my gdouble ($cx, $cy, $rx, $ry) =
       ($center_x, $center_y, $radius_x, $radius_y);
-    self.bless(
-      ellipse => goo_canvas_ellipse_new($parent, $cx, $cy, $rx, $ry, Str)
-    );
+    my $ellipse = goo_canvas_ellipse_new($parent, $cx, $cy, $rx, $ry, Str);
+
+    $ellipse ?? self.bless( :$ellipse ) !! GooCanvasEllipse;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_ellipse_get_type, $n, $t );
   }
 
