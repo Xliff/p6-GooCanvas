@@ -52,14 +52,14 @@ class Goo::Image is Goo::CanvasItemSimple {
     Num()           $y
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    $image => goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str);
+    my $image = goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str);
 
     $image ?? self.bless(:$image) !! GooCanvasImage;
   }
 
   method get_type {
     state ($n, $t);
-    
+
     unstable_get_type( self.^name, &goo_canvas_image_get_type, $n, $t );
   }
 
