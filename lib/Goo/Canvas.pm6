@@ -11,6 +11,7 @@ use GDK::RGBA;
 use GTK::Container;
 use Goo::CanvasItem;
 use Goo::CanvasItemSimple;
+use Goo::Model::Item;
 
 use GLib::Roles::ListData;
 use GTK::Roles::Scrollable;
