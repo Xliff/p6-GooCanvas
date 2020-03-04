@@ -2,7 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;
