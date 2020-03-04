@@ -7,13 +7,15 @@ use Goo::Model::Raw::Item;
 use GLib::Roles::Object;
 use Goo::Model::Roles::Item;
 
-role Goo::Model::Roles::ItemObject {
+class Goo::Model::Item {
   also does GLib::Roles::Object;
   also does Goo::Model::Roles::Item;
 
   submethod BUILD (:$model) {
     #self.ADD-PREFIX('Goo::');
     self.setModelItem($model);
+
+    self.roleInit-Object;
   }
 
   multi method new (GooCanvasItemModel $model) {
