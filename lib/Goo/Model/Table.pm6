@@ -3,8 +3,6 @@ use v6.c;
 use NativeCall;
 use Method::Also;
 
-
-
 use Goo::Raw::Types;
 
 use Goo::Model::Group;
@@ -20,16 +18,17 @@ class Goo::Model::Table is Goo::Model::Group {
   ) {
     my ($w, $h);
     ($w, $h) = @props.splice(0, 2) if @props[^2].all !~~ Str;
-    my $o = self.bless(
-      simple => goo_canvas_table_model_new($parent, Str),
-      props  => @props
-    );
+
+    my $simple = goo_canvas_table_model_new($parent, Str);
+    my $o = self.bless( :$simple, :@props );
+
     ($o.width, $o.height) = ($w, $h);
     $o;
   }
 
   method get_type is also<get-type> {
     state ($n, $t);
+    
     unstable_get_type( self.^name, &goo_canvas_table_model_get_type, $n, $t );
   }
 }

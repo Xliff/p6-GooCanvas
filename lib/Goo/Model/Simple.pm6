@@ -20,14 +20,14 @@ class Goo::Model::Simple {
     self.setModelItem(
       cast( GooCanvasItemModel, $simple )
     );
-    
+
     for @props.rotor(2) -> ($m, $v) {
       self."$m"() = $v
     }
   }
 
   multi method new (GooCanvasItemModel $simple) {
-    $simple ?? self.bless(:$simple) !! Nil;
+    $simple ?? self.bless(:$simple) !! GooCanvasItemModel;
   }
 
   # Type: GooCairoAntialias

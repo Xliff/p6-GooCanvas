@@ -23,12 +23,12 @@ class Goo::Model::Rect is Goo::Model::Simple {
     my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
     my $simple = goo_canvas_rect_model_new($parent, $xx, $yy, $w, $h, Str);
 
-    $simple ?? self.bless( :$simple, props  => @props ) !! Nil;
+    $simple ?? self.bless( :$simple, :@props ) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
-    
+
     unstable_get_type( self.^name, &goo_canvas_rect_model_get_type, $n, $t );
   }
 }

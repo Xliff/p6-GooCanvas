@@ -20,14 +20,14 @@ class Goo::Model::Image is Goo::Model::Simple {
     *@props
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    self.bless(
-      simple => goo_canvas_image_model_new($parent, $pixbuf, $xx, $yy, Str),
-      props  => @props
-    );
+    my $simple = goo_canvas_image_model_new($parent, $pixbuf, $xx, $yy, Str);
+
+    $simple ?? self.bless( :$simple, :@props ) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_image_model_get_type, $n, $t );
   }
 }
