@@ -13,7 +13,11 @@ use GLib::Roles::Object;
 use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
-  has GooCanvasItemModel $!im;
+  has GooCanvasItemModel $!im is implementor;
+
+  method setModelItem (GooCanvasItemModel $item) {
+    $!im = $item;
+  }
 
   method Goo::Raw::Definitions::GooCanvasItemModel
     is also<
