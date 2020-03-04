@@ -13,6 +13,8 @@ use GLib::Roles::Object;
 use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
+  also does GLib::Roles::Signals::Generic;
+
   has GooCanvasItemModel $!im is implementor;
 
   method setModelItem (GooCanvasItemModel $item) {
@@ -203,13 +205,15 @@ role Goo::Model::Roles::Item {
   # Is originally:
   # GooCanvasItemModel, gboolean, gpointer --> void
   method animation-finished is also<animation_finished> {
-    self.connect-bool($!im, 'animation-finished');
+    # Bool
+    self.connect-uint($!im, 'animation-finished');
   }
 
   # Is originally:
   # GooCanvasItemModel, gboolean, gpointer --> void
   method changed {
-    self.connect-bool($!im, 'changed');
+    # Bool
+    self.connect-uint($!im, 'changed');
   }
 
   # Is originally:
