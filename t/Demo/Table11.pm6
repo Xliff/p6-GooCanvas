@@ -149,7 +149,6 @@ sub create_canvas ($text, :$int = False) {
 sub setupObjects($rect-obj, $table-obj) is export {
   %globals<rect-obj table-obj> = ($rect-obj, $table-obj);
   %globals<model-mode> = $rect-obj.^name.contains('::Model');
-  %globals.gist.say;
 }
 
 sub Table_11_MAIN ($title, $rect-obj, $table-obj) is export {
