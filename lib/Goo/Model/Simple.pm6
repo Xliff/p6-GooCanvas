@@ -10,9 +10,11 @@ use Goo::Raw::Types;
 use GLib::Value;
 use Pango::FontDescription;
 
+use GLib::Roles::Object;
 use Goo::Model::Roles::Item;
 
 class Goo::Model::Simple {
+  also does GLib::Roles::Object;
   also does Goo::Model::Roles::Item;
 
   submethod BUILD (:$simple, :@props) {
@@ -24,6 +26,8 @@ class Goo::Model::Simple {
     for @props.rotor(2) -> ($m, $v) {
       self."$m"() = $v
     }
+
+    self.roleInit-Object;
   }
 
   multi method new (GooCanvasItemModel $simple) {
