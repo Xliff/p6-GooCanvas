@@ -230,14 +230,15 @@ sub on_motion ($item, $target, $event, $r) {
 
   my ($p, $width, $change) = (
     +(%globals<model-mode> ??
-      Goo::CanvasItemSimple.new($target).model.CanvasItemModel !!
+      Goo::CanvasItemSimple.new($target).get_model.GooCanvasItemModel !!
       $item.GooCanvasItem
     ).p,
     Nil,
     False
   );
 
-  my $meth-name = %globals<model-mode> ?? 'CanvasItemModel' !! 'CanvasItem';
+  my $meth-name = %globals<model-mode> ?? 'GooCanvasItemModel'
+                                       !! 'GooCanvasItem';
 
   if $p == +%data<canvas><width_drag_box>."$meth-name"().p {
     my $y     = $button_event.y;
@@ -280,14 +281,14 @@ sub set_events ($item) {
   $item.enter-notify-event.tap(-> *@a {
     CATCH { default { .message.say } }
     my $i = $item;
-    $i .= model if %globals<model-mode>;
+    $i .= get_model if %globals<model-mode>;
     $i.fill-color = 'red'; @a[*-1].r = 1
   });
 
   $item.leave-notify-event.tap(-> *@a {
     CATCH { default { .message.say } }
     my $i = $item;
-    $i .= model if %globals<model-mode>;
+    $i .= get_model if %globals<model-mode>;
     $i.fill-color = 'black'; @a[*-1].r = 1
   });
 
