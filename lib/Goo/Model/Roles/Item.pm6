@@ -25,8 +25,15 @@ role Goo::Model::Roles::Item {
     is also<
       ItemModel
       CanvasItemModel
+      GooCanvasItemModel
     >
   { $!im }
+
+  # Remove when Method::Also has been fixed!
+  method GooCanvasItemModel { $!im }
+
+  # Need .get_parent to achieve parity with the non-model version!
+  method get_parent (:$raw = False) { self.parent( :$raw ) }
 
   method parent (:$raw = False) is rw {
     Proxy.new(
@@ -34,7 +41,7 @@ role Goo::Model::Roles::Item {
         my $p = goo_canvas_item_model_get_parent($!im);
 
         $p ??
-          ( $raw ?? $p !! Goo::Model::CanvasItem.new($p) )
+          ( $raw ?? $p !! ::('Goo::Model::Item').new($p) )
           !!
           GooCanvasItemModel;
       },
