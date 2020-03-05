@@ -18,7 +18,7 @@ sub on_focus_in ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
+  $i .= get_model if %globals<model-mode>;
   my $id = $i.get-data('id');
 
   say "{ $id // '<unknown>' } received focus-in event";
@@ -31,7 +31,7 @@ sub on_focus_out ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
+  $i .= get_model if %globals<model-mode>;
   my $id = $i.get-data('id');
 
   say "{ $id // '<unknown>' } received focus-out event";
@@ -48,7 +48,7 @@ sub on_button_press ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
+  $i .= get_model if %globals<model-mode>;
   my $id = $i.get-data('id');
 
   say "{ $id // 'unknwon' } received button-press event";
@@ -60,7 +60,7 @@ sub on_key_press ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
+  $i .= get_model if %globals<model-mode>;
   my $id = $i.get-data('id');
 
   say "{ $id // 'unknown' } received key-press event";

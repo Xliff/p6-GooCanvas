@@ -41,7 +41,7 @@ sub set-data (ObjectOrPointer $i is copy, $k, $v) {
 sub button-press ($item, $event, $r) {
   CATCH { default { .message.say; $app.exit } }
 
-  my $i = %globals<model-mode> ?? $item.model !! $item;
+  my $i = %globals<model-mode> ?? $item.get_model !! $item;
 
   return ($r.r = 0) unless get-data($i, 'parent1');
 
