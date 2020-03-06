@@ -30,7 +30,10 @@ class Goo::Text is Goo::CanvasItemSimple {
   proto method new (|) { * }
 
   multi method new (GooCanvasTextAncestry $text) {
-    $text ?? self.bless($text) !! $text;
+    $text ?? self.bless($text) !! GooCanvasText;
+  }
+  multi method new (GooCanvasItem() $parent) {
+    samewith($parent, Str, 0, 0, -1, 0);
   }
   multi method new (
     GooCanvasItem() $parent,

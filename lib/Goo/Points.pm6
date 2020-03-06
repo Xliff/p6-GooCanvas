@@ -25,6 +25,8 @@ class Goo::Points {
     GooCanvasPoints $points,
     $elems? is copy
   ) {
+    return GooCanvasPoints unless $points;
+
     die '$elems must be an Int compatible value!'
       unless $elems.defined.not || $elems.^lookup('Int');
     $elems //= 0;
@@ -38,9 +40,9 @@ class Goo::Points {
   }
   multi method new (Int() $num_points) {
     my gint $np = $num_points // 0;
-    my $points = goo_canvas_points_new($np);
+    my $elems = goo_canvas_points_new($np);
 
-    $points ?? self.bless(:$points, elems  => $num_points) !! GooCanvasPoints;
+    $points ?? self.bless( :$points, :$elems ) !! GooCanvasPoints;
   }
 
   method set_points ($points is copy) is also<set-points> {

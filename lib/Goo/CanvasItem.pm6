@@ -29,7 +29,7 @@ class Goo::CanvasItem {
     # } else {
     #   %init<item>         = $item;
     # }
-    $item ?? self.bless(:$item) !! Nil;
+    $item ?? self.bless(:$item) !! GooCanvasItem;
   }
 
 }

@@ -29,7 +29,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   { $!r }
 
   multi method new (GooRectAncestry $rect) {
-    $rect ?? self.bless(:$rect) !! Nil;
+    $rect ?? self.bless(:$rect) !! GooCanvasRect;
   }
   multi method new (
     GooCanvasItem() $parent,

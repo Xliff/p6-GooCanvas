@@ -74,7 +74,7 @@ class Goo::Canvas is GTK::Container {
   { $!gc }
 
   multi method new (GooCanvasAncestry $canvas, :$ref = True) {
-    return Nil unless $canvas;
+    return GooCanvas unless $canvas;
 
     my $o = self.bless(:$canvas);
     $o.ref if $ref;
@@ -83,7 +83,7 @@ class Goo::Canvas is GTK::Container {
   multi method new {
     my $canvas = goo_canvas_new();
 
-    $canvas ?? self.bless(:$canvas) !! Nil;
+    $canvas ?? self.bless(:$canvas) !! GooCanvas;
   }
 
   # Is originally:
