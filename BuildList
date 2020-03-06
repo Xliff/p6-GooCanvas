@@ -62,6 +62,7 @@ Goo::Raw::Boxed
 Goo::Raw::Canvas
 Goo::Raw::CanvasItem
 Goo::Raw::CanvasItemSimple
+Goo::Raw::Grid
 Goo::Raw::Points
 Goo::Raw::Polyline
 Goo::Raw::Rect
@@ -73,6 +74,7 @@ Goo::Roles::Table
 Goo::CanvasItem
 Goo::CanvasItemSimple
 Goo::Ellipse
+Goo::Grid
 Goo::Group
 Goo::Image
 Goo::Model::Ellipse

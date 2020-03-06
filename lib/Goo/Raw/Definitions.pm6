@@ -15,6 +15,7 @@ constant goo is export = 'goocanvas-2.0',v9;
 
 class GooCanvas           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasEllipse    is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasGrid       is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasGroup      is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasImage      is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasItem       is repr<CPointer> is export does GLib::Roles::Pointers { }
