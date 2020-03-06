@@ -39,8 +39,8 @@ class Goo::Points {
     $o;
   }
   multi method new (Int() $num_points) {
-    my gint $np = $num_points // 0;
-    my $elems = goo_canvas_points_new($np);
+    my gint $elems = $num_points // 0;
+    my $points = goo_canvas_points_new($elems);
 
     $points ?? self.bless( :$points, :$elems ) !! GooCanvasPoints;
   }
