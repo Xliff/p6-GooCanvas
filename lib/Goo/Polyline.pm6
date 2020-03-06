@@ -60,6 +60,13 @@ class Goo::Polyline is Goo::CanvasItemSimple {
   multi method new (
     GooCanvasItem() $parent,
     Int() $close,
+    @points
+  ) {
+    samewith($parent, $close, @points.elems, |@points);
+  }
+  multi method new (
+    GooCanvasItem() $parent,
+    Int() $close,
     Int() $num_points,
     *@points
   ) {
