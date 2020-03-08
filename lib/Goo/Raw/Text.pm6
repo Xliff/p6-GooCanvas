@@ -20,7 +20,7 @@ sub goo_canvas_text_new (
   returns GooCanvasText
   is native(goo)
   is export
-  { * }
+{ * }
 
 sub goo_canvas_text_get_natural_extents (
   GooCanvasText $text,
@@ -29,10 +29,10 @@ sub goo_canvas_text_get_natural_extents (
 )
   is native(goo)
   is export
-  { * }
+{ * }
 
 sub goo_canvas_text_get_type ()
   returns GType
   is native(goo)
   is export
-  { * }
+{ * }
