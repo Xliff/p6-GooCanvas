@@ -14,24 +14,24 @@ sub goo_canvas_points_get_type ()
   { * }
 
 sub goo_canvas_points_new (gint $num_points)
+  returns GooCanvasPoints
+  is native(goo)
+  is export
+  { * }
+
+sub goo_canvas_points_ref (GooCanvasPoints $points)
   returns Pointer
   is native(goo)
   is export
   { * }
 
-sub goo_canvas_points_ref (Pointer $points)
-  returns Pointer
-  is native(goo)
-  is export
-  { * }
-
-sub goo_canvas_points_unref (Pointer $points)
+sub goo_canvas_points_unref (GooCanvasPoints $points)
   is native(goo)
   is export
   { * }
 
 sub goo_canvas_points_set_point(
-  Pointer $points,
+  GooCanvasPoints $points,
   gint    $idx,
   gdouble $x,
   gdouble $y
@@ -41,7 +41,7 @@ sub goo_canvas_points_set_point(
   { * }
 
 sub goo_canvas_points_get_point(
-  Pointer $points,
+  GooCanvasPoints $points,
   gint    $idx,
   gdouble $x is rw,
   gdouble $y is rw
