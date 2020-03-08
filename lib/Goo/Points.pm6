@@ -6,11 +6,13 @@ use Goo::Raw::Types;
 use Goo::Raw::Points;
 
 class Goo::Points {
-  has gpointer $!points;
+  also does Positional;
+
+  has GooCanvasPoints $!points;
   has $.elems;
 
   submethod BUILD (:$points, :$elems) {
-    $!points = cast(gpointer, $points);
+    $!points = $points;
     $!elems  = $elems // 0;
   }
 
@@ -111,5 +113,17 @@ class Goo::Points {
 
     unstable_get_type( self.^name, &goo_canvas_points_get_type, $n, $t );
   }
+
+  # Positional
+  method AT-POS (\p) is rw {
+    die "Invalid position { p }! Size is only { $.elems }!"
+      if p > $.elems;
+
+    Proxy.new:
+      FETCH => -> $,          { self.get-point(p)        },
+      STORE => -> $, Num() $v { self.set-point(p, p, $v) };
+  }
+
+  method EXISTS-POS (\p) { p <= $!elems      }
 
 }
