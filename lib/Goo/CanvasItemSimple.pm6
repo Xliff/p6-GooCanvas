@@ -376,7 +376,7 @@ class Goo::CanvasItemSimple {
   method stroke-pattern (:$raw = False) is rw  is also<stroke_pattern> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
