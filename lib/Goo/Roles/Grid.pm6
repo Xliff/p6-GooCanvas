@@ -13,7 +13,7 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn 'border-color does not allow reading';
+        warn 'border-color does not allow reading' if $DEBUG;
         '';
       },
       STORE => -> $, Str() $val is copy {
@@ -88,7 +88,7 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        warn 'border-pixbuf does not allow reading';
+        warn 'border-pixbuf does not allow reading' if $DEBUG;
         0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
@@ -137,7 +137,8 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "horz-grid-line-color does not allow reading"
+        warn 'horz-grid-line-color does not allow reading' if $DEBUG;
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -211,8 +212,9 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        warn 'horz-grid-line-pixbuf does not allow reading';
-        0;
+        warn 'horz-grid-line-pixbuf does not allow reading' if $DEBUG;
+
+        GdkPixbuf;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;
@@ -277,7 +279,9 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
       FETCH => -> $ {
-        warn "vert-grid-line-color does not allow reading"
+        warn 'vert-grid-line-color does not allow reading' if $DEBUG;
+
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -351,9 +355,10 @@ role Goo::Roles::Grid {
     my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
-        warn 'vert-grid-line-pixbuf does not allow reading'
+        warn 'vert-grid-line-pixbuf does not allow reading' if $DEBUG;
+
+        GdkPixbuf;
       },
-        0;
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;
         self.prop_set('vert-grid-line-pixbuf', $gv);
