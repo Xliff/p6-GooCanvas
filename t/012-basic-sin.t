@@ -6,6 +6,7 @@ use v6.c;
 use Goo::Raw::Types;
 
 use GDK::RGBA;
+use GDK::Event;
 use Goo::Canvas;
 use Goo::Grid;
 use Goo::Group;
@@ -50,9 +51,9 @@ $app.activate.tap({
   }
 
   my $n = 2 * (my $az = 100) - 1;
-  my $fx = %c<GridW> / $n - 1;
+  my $fx = %c<GridW> / ($n - 1);
   my ($sx, $dx) = ( ($az - 1) / π, 0.25 * %c<GridW> );
-  my $oy = %c<GridY> + 0.5 * (my $fy = %c<GridH> * 0.45);
+  my ($oy, $fy) = ( %c<GridY> + 0.5 * %c<GridH>, %c<GridH> * 0.45 );
 
   my $grid = Goo::Grid.new($group,
     %c<GridX>, %c<GridY>, %c<GridW>, %c<GridH>,
@@ -65,13 +66,9 @@ $app.activate.tap({
   }
 
   my $CanPoi = Goo::Points.new($az);
+  $CanPoi[$_] = ( %c<GridX> + 2 * $_ * $fx, $oy - (2 * $_ / $sx).sin * $fy )
+    for ^$az;
 
-  #for 0, 2 ... ($n - 1) {
-  for ^$az {
-    #$CanPoi[$_    ] = %c<GridX> + $_ * $fx;
-    #$CanPoi[$_ + 1] = $oy - ($_ / $sx).sin * $fy;
-    $CanPoi[$_] = $oy - ($_ / $sx).sin * $fy;
-  }
   given ( my $poly = Goo::Polyline.new($group, False, $CanPoi.points) ) {
     .stroke-color = 'red';
     .line-width = %c<line-group> * 4;
@@ -79,9 +76,9 @@ $app.activate.tap({
   }
 
   my $ox    = %c<GridX> - 8 * %c<line-group>;
-  my $one   = Goo::Text.new($group,  '1', $ox, $oy - $fy, -1, GTK_ANCHOR_E);
-  my $n-one = Goo::Text.new($group, '-1', $ox, $oy + $fy, -1, GTK_ANCHOR_E);
-  my $z     = Goo::Text.new($group,  '0', $ox,       $oy, -1, GTK_ANCHOR_E);
+  my $one   = Goo::Text.new($group,  '1', $ox - 20, $oy - $fy, -1, GTK_ANCHOR_E);
+  my $n-one = Goo::Text.new($group, '-1', $ox - 20, $oy + $fy, -1, GTK_ANCHOR_E);
+  my $z     = Goo::Text.new($group,  '0', $ox - 20,       $oy, -1, GTK_ANCHOR_E);
   my %text;
 
   $fy /= 2;
@@ -89,20 +86,24 @@ $app.activate.tap({
   ( %text{$_} = Goo::Text.new($group) for <+½ -½ p ½-π φ 1½-π click-me> )
     .map({ .use-markup = True });
 
+  # Until the problem is determined, $ox has a manually added fudge to
+  # make it readable.
+  # ↓
   given %text<+½> {
     .text = '<small>0.5</small>';
-    (.x, .y, .width, .anchor) = ($ox, $oy - $fy, -1, GTK_ANCHOR_E);
+    (.x, .y, .width, .anchor) = ($ox - 20, $oy - $fy, -1, GTK_ANCHOR_E);
   }
   given %text<-½> {
     .text = '<small>-0.5</small>';
-    (.x, .y, .width, .anchor) = ($ox, $oy + $fy, -1, GTK_ANCHOR_E);
+    (.x, .y, .width, .anchor) = ($ox - 20, $oy + $fy, -1, GTK_ANCHOR_E);
   }
 
   given %text<p> {
     .text = 'f(<i>φ</i>) = sin(<i>φ</i>)';
-    (.x, .y, .width, .anchor) = ($ox, ($oy -= 35), -1, GTK_ANCHOR_S);
-    .rotate(-90, $ox, $oy);
+    (.x, .y, .width, .anchor) = ($ox - 60, ($oy -= 35), -1, GTK_ANCHOR_S);
+    .rotate(-90, $ox - 60, $oy);
   }
+  # ↑
 
   ($ox, $oy) = (%c<GridX>, %c<GridY> + %c<GridH> + 8 * %c<line-group>);
   my $z = Goo::Text.new($group, '0', $ox, $oy, -1, GTK_ANCHOR_N);
@@ -137,31 +138,32 @@ $app.activate.tap({
   }
 
   $group.button-press-event.tap(-> *@a {
+    CATCH { default { .message.say; $app.exit } }
     state $mo = 0;
     my $e = GDK::Event.new( @a[2] ).get-typed-event;
 
     @a[* - 1].r = 1;
     if $e.button == 2 {
-      $title.stop-animation;
-      $title.set-simple-transform(0, 0, 1, 0);
-      $group.stop-animation;
-      $group.set-simple-transform(0, 0, 1, 0);
+      $title.stop_animation;
+      $title.set_simple_transform(0, 0, 1, 0);
+      #$group.stop_animation;
+      #$group.set_simple_transform(0, 0, 1, 0);
       $mo = 0;
     } elsif $mo.not {
       $title.animate(
         %c<GridX> + 0.5 * %c<GridW>, %c<GridY> - 25,
         %c<Smin>, -7,
-        False, 8 * 40, 40, GOO_CANVAS_ANIMATE_BOUNCE;
+        False, 8 * 40, 40, GOO_CANVAS_ANIMATE_BOUNCE
       );
-      $group.animate(
-        %c<Xmax>, %c<Ymax>, %c<Smin>, 90, False, $e.button * 50 * 40, 40,
-        GOO_CANVAS_ANIMATE_BOUNCE
-      );
+      # $group.animate(
+      #   %c<Xmax>, %c<Ymax>, %c<Smin>, 90, False, $e.button * 50 * 40, 40,
+      #   GOO_CANVAS_ANIMATE_BOUNCE
+      # );
       $mo = 1;
     } else {
-      $title.stop-animation;
-      $title.set-simple-transform(0, 0, 1, 0);
-      $group.stop-animation;
+      $title.stop_animation;
+      $title.set_simple_transform(0, 0, 1, 0);
+      #$group.stop-animation;
       $mo = 0;
     }
   });
