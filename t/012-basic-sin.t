@@ -18,7 +18,8 @@ use GTK::ScrolledWindow;
 
 my %c = (
   Xmax  => 1000, Ymax  => 1000, Smin  => 0.1,
-  GridX => 100,  GridY => 100,  GridW => 400, GridH => 300, line-group => 0.8
+  GridX => 100,  GridY => 100,
+  GridW => 400,  GridH => 300, line-group => 0.8
 );
 
 my $app = GTK::Application.new( title => 'org.genex.basic-sine' );
@@ -39,7 +40,9 @@ $app.activate.tap({
   my $root = $canvas.get_root_item;
   given ( my $title = Goo::Text.new($root) ) {
     .text = '<span size="xx-large">GooCanvas Raku Example</span>';
-    .use-markup = True;
+    .x = %c<GridX> + 0.5 * %c<GridW>;
+    .y = %c<GridY> - 25;
+    (.width, .anchor, .use-markup) = ( -1, GTK_ANCHOR_S, True);
     .font = 'Times bold 14';
   }
   given ( my $group = Goo::Group.new($root) ) {
@@ -47,7 +50,8 @@ $app.activate.tap({
   }
 
   my $n = 2 * (my $az = 100) - 1;
-  my ($sx, $dx) = ( ($az - 1) / π, 0.25 * (my $fx = %c<GridW> / $n - 1) );
+  my $fx = %c<GridW> / $n - 1;
+  my ($sx, $dx) = ( ($az - 1) / π, 0.25 * %c<GridW> );
   my $oy = %c<GridY> + 0.5 * (my $fy = %c<GridH> * 0.45);
 
   my $grid = Goo::Grid.new($group,
@@ -75,25 +79,28 @@ $app.activate.tap({
   }
 
   my $ox    = %c<GridX> - 8 * %c<line-group>;
-  my $one   = Goo::Text.new($group,  '1', $ox, $oy + $fy, -1, GTK_ANCHOR_E);
-  my $n-one = Goo::Text.new($group, '-1', $ox, $oy - $fy, -1, GTK_ANCHOR_E);
+  my $one   = Goo::Text.new($group,  '1', $ox, $oy - $fy, -1, GTK_ANCHOR_E);
+  my $n-one = Goo::Text.new($group, '-1', $ox, $oy + $fy, -1, GTK_ANCHOR_E);
+  my $z     = Goo::Text.new($group,  '0', $ox,       $oy, -1, GTK_ANCHOR_E);
   my %text;
 
   $fy /= 2;
-  ( %text{$_} = Goo::Text.new($group) for <+h -h p ½-π φ 1½-π click-me> )
+
+  ( %text{$_} = Goo::Text.new($group) for <+½ -½ p ½-π φ 1½-π click-me> )
     .map({ .use-markup = True });
 
-  given %text<+h> {
+  given %text<+½> {
     .text = '<small>0.5</small>';
     (.x, .y, .width, .anchor) = ($ox, $oy - $fy, -1, GTK_ANCHOR_E);
   }
-  given %text<-h> {
+  given %text<-½> {
     .text = '<small>-0.5</small>';
     (.x, .y, .width, .anchor) = ($ox, $oy + $fy, -1, GTK_ANCHOR_E);
   }
+
   given %text<p> {
     .text = 'f(<i>φ</i>) = sin(<i>φ</i>)';
-    (.x, .y, .width, .anchor) = ($ox, $oy, -1, GTK_ANCHOR_S);
+    (.x, .y, .width, .anchor) = ($ox, ($oy -= 35), -1, GTK_ANCHOR_S);
     .rotate(-90, $ox, $oy);
   }
 

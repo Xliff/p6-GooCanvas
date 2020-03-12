@@ -1,5 +1,5 @@
-#INCLUDE ONCE "gtk/GTK-2.22.0_TJF.bi"
-#INCLUDE ONCE "TJF/goocanvas-2.0.0.bi"
+#INCLUDE ONCE "Gir/Gtk-2.0.bi"
+#INCLUDE ONCE "Gir/GooCanvas-2.0.bi"
 
 ' Some variables and types
 CONST Xmax = 1000, Ymax = 1000, Smin = 0.1
