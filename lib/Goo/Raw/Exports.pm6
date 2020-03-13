@@ -1,6 +1,6 @@
 use v6.c;
 
-unit package GTK::Raw::Exports;
+unit package Goo::Raw::Exports;
 
 our @goo-exports is export;
 
