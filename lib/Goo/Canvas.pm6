@@ -156,7 +156,7 @@ class Goo::Canvas is GTK::Container {
   method anchor is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
@@ -173,7 +173,7 @@ class Goo::Canvas is GTK::Container {
   method automatic-bounds is rw  is also<automatic_bounds> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('automatic-bounds', $gv)
         );
@@ -190,7 +190,7 @@ class Goo::Canvas is GTK::Container {
   method background-color is rw  is also<background_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'background-color does not allow reading'
       },
       STORE => -> $, Str() $val is copy {
@@ -204,7 +204,7 @@ class Goo::Canvas is GTK::Container {
   method background-color-gdk-rgba is rw  is also<background_color_gdk_rgba> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'background-color-gdk-rgba does not allow reading'
       },
       STORE => -> $, GdkRGBA() $val is copy {
@@ -218,7 +218,7 @@ class Goo::Canvas is GTK::Container {
   method background-color-rgb is rw  is also<background_color_rgb> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'background-color-rgb does not allow reading'
       },
       STORE => -> $, Int() $val is copy {
@@ -232,7 +232,7 @@ class Goo::Canvas is GTK::Container {
   method bounds-from-origin is rw  is also<bounds_from_origin> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('bounds-from-origin', $gv)
         );
@@ -249,7 +249,7 @@ class Goo::Canvas is GTK::Container {
   method bounds-padding is rw  is also<bounds_padding> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('bounds-padding', $gv)
         );
@@ -266,7 +266,7 @@ class Goo::Canvas is GTK::Container {
   method clear-background is rw  is also<clear_background> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('clear-background', $gv)
         );
@@ -283,7 +283,7 @@ class Goo::Canvas is GTK::Container {
   method integer-layout is rw  is also<integer_layout> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('integer-layout', $gv)
         );
@@ -300,7 +300,7 @@ class Goo::Canvas is GTK::Container {
   method redraw-when-scrolled is rw  is also<redraw_when_scrolled> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('redraw-when-scrolled', $gv)
         );
@@ -317,7 +317,7 @@ class Goo::Canvas is GTK::Container {
   method resolution-x is rw  is also<resolution_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('resolution-x', $gv)
         );
@@ -334,7 +334,7 @@ class Goo::Canvas is GTK::Container {
   method resolution-y is rw  is also<resolution_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('resolution-y', $gv)
         );
@@ -351,7 +351,7 @@ class Goo::Canvas is GTK::Container {
   method scale-x is rw  is also<scale_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('scale-x', $gv)
         );
@@ -368,7 +368,7 @@ class Goo::Canvas is GTK::Container {
   method scale-y is rw  is also<scale_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('scale-y', $gv)
         );
@@ -385,7 +385,7 @@ class Goo::Canvas is GTK::Container {
   method units is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('units', $gv)
         );
@@ -402,7 +402,7 @@ class Goo::Canvas is GTK::Container {
   method x1 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x1', $gv)
         );
@@ -419,7 +419,7 @@ class Goo::Canvas is GTK::Container {
   method x2 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x2', $gv)
         );
@@ -436,7 +436,7 @@ class Goo::Canvas is GTK::Container {
   method y1 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y1', $gv)
         );
@@ -453,7 +453,7 @@ class Goo::Canvas is GTK::Container {
   method y2 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y2', $gv)
         );
@@ -468,7 +468,7 @@ class Goo::Canvas is GTK::Container {
 
   method root-item (:$raw = False) is also<root_item> {
     Proxy.new:
-      FETCH => -> $                     { self.get_root_item(:$raw) },
+      FETCH => sub ($)                     { self.get_root_item(:$raw) },
       STORE => -> $, GooCanvasItem() \i { self.set_root_item(i)     };
   }
 

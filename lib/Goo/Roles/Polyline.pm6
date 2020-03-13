@@ -11,7 +11,7 @@ role Goo::Roles::Polyline {
   method arrow-length is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-length', $gv)
         );
@@ -28,7 +28,7 @@ role Goo::Roles::Polyline {
   method arrow-tip-length is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-tip-length', $gv)
         );
@@ -45,7 +45,7 @@ role Goo::Roles::Polyline {
   method arrow-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-width', $gv)
         );
@@ -62,7 +62,7 @@ role Goo::Roles::Polyline {
   method close-path is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('close-path', $gv)
         );
@@ -79,7 +79,7 @@ role Goo::Roles::Polyline {
   method end-arrow is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('end-arrow', $gv)
         );
@@ -96,7 +96,7 @@ role Goo::Roles::Polyline {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -113,7 +113,7 @@ role Goo::Roles::Polyline {
   method points is rw  {
     my GLib::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv.boxed ?? Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) )
                   !! GooCanvasPoints;
       },
@@ -135,7 +135,7 @@ role Goo::Roles::Polyline {
   method start-arrow is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('start-arrow', $gv)
         );
@@ -152,7 +152,7 @@ role Goo::Roles::Polyline {
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -169,7 +169,7 @@ role Goo::Roles::Polyline {
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -186,7 +186,7 @@ role Goo::Roles::Polyline {
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );

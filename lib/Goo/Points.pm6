@@ -120,8 +120,16 @@ class Goo::Points {
       if p > $.elems;
 
     Proxy.new:
-      FETCH => -> $,          { self.get-point(p)        },
-      STORE => -> $, Num() $v { self.set-point(p, p, $v) };
+      FETCH => sub ($)  { self.get-point(p)        },
+      STORE => -> $, @v {
+        die 'Value is not a point.' unless @v.elems == 2;
+        @v.map({
+          die 'All elements of value must be Num-compatible'
+            unless (my $m = .^lookup('Num') );
+          $m($_)
+        });
+        self.set-point(p, @v[0], @v[1])
+      };
   }
 
   method EXISTS-POS (\p) { p <= $!elems      }

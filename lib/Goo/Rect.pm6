@@ -48,7 +48,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -65,7 +65,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method radius-x is rw is also<radius_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('radius-x', $gv)
         );
@@ -82,7 +82,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method radius-y is rw is also<radius_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('radius-y', $gv)
         );
@@ -99,7 +99,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -116,7 +116,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -133,7 +133,7 @@ class Goo::Rect is Goo::CanvasItemSimple {
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );

@@ -59,7 +59,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   method anchor is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
@@ -76,7 +76,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -93,7 +93,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   method widget is rw  {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         # In this situation, we leave the creation logic to the caller.
         $!gtk_widget;
       },
@@ -114,7 +114,7 @@ D
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -131,7 +131,7 @@ D
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -148,7 +148,7 @@ D
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );

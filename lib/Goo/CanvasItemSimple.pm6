@@ -50,7 +50,7 @@ class Goo::CanvasItemSimple {
   method antialias is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('antialias', $gv)
         );
@@ -67,7 +67,7 @@ class Goo::CanvasItemSimple {
   method clip-fill-rule is rw  is also<clip_fill_rule> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
@@ -84,7 +84,7 @@ class Goo::CanvasItemSimple {
   method clip-path is rw  is also<clip_path> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'clip-path' does not allow reading" if $DEBUG;
         ''
       },
@@ -99,7 +99,7 @@ class Goo::CanvasItemSimple {
   method fill-color is rw  is also<fill_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'fill-color' does not allow reading" if $DEBUG;
         '';
       },
@@ -114,7 +114,7 @@ class Goo::CanvasItemSimple {
   method fill-color-rgba is rw  is also<fill_color_rgba> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-color-rgba', $gv)
         );
@@ -131,7 +131,7 @@ class Goo::CanvasItemSimple {
   method fill-pattern (:$raw = False) is rw  is also<fill_pattern> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
@@ -154,7 +154,7 @@ class Goo::CanvasItemSimple {
   method fill-pixbuf is rw  is also<fill_pixbuf> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'fill-pixbuf' does not allow reading" if $DEBUG;
         0;
       },
@@ -169,7 +169,7 @@ class Goo::CanvasItemSimple {
   method fill-rule is rw  is also<fill_rule> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-rule', $gv)
         );
@@ -186,7 +186,7 @@ class Goo::CanvasItemSimple {
   method font is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font', $gv)
         );
@@ -203,7 +203,7 @@ class Goo::CanvasItemSimple {
   method font-desc (:$raw = False) is rw  is also<font_desc> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
@@ -225,7 +225,7 @@ class Goo::CanvasItemSimple {
   method hint-metrics is rw  is also<hint_metrics> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
@@ -242,7 +242,7 @@ class Goo::CanvasItemSimple {
   method line-cap is rw  is also<line_cap> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-cap', $gv)
         );
@@ -259,7 +259,7 @@ class Goo::CanvasItemSimple {
   method line-dash is rw  is also<line_dash> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-dash', $gv)
         );
@@ -276,7 +276,7 @@ class Goo::CanvasItemSimple {
   method line-join is rw  is also<line_join> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join', $gv)
         );
@@ -293,7 +293,7 @@ class Goo::CanvasItemSimple {
   method line-join-miter-limit is rw  is also<line_join_miter_limit> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join-miter-limit', $gv)
         );
@@ -310,7 +310,7 @@ class Goo::CanvasItemSimple {
   method line-width is rw  is also<line_width> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-width', $gv)
         );
@@ -327,7 +327,7 @@ class Goo::CanvasItemSimple {
   method operator is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('operator', $gv)
         );
@@ -344,7 +344,7 @@ class Goo::CanvasItemSimple {
   method stroke-color is rw  is also<stroke_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'stroke-color' does not allow reading" if $DEBUG;
         '';
       },
@@ -359,7 +359,7 @@ class Goo::CanvasItemSimple {
   method stroke-color-rgba is rw  is also<stroke_color_rgba> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-color-rgba', $gv)
         );
@@ -399,7 +399,7 @@ class Goo::CanvasItemSimple {
   method stroke-pixbuf is rw  is also<stroke_pixbuf> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'stroke-pixbuf' does not allow reading" if $DEBUG;
         0;
       },

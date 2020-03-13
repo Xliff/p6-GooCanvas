@@ -68,7 +68,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method visibility is rw {
     Proxy.new:
-      FETCH => -> $ { ($!mask +& VISIBILITY[0]) +> VISIBILITY[1] },
+      FETCH => sub ($) { ($!mask +& VISIBILITY[0]) +> VISIBILITY[1] },
       STORE => -> $, $val where 0..3 {
         $!mask +&= +^VISIBILITY[0] +< VISIBILITY[1];
         $!mask +|= $val            +< VISIBILITY[1];
@@ -77,7 +77,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method pointer_events is rw {
     Proxy.new:
-      FETCH => -> $ { ($!mask +& PTR_EVENTS[0]) +> PTR_EVENTS[1] },
+      FETCH => sub ($) { ($!mask +& PTR_EVENTS[0]) +> PTR_EVENTS[1] },
       STORE => -> $, $val where 0..15 {
         $!mask +&= +^PTR_EVENTS[0] +< PTR_EVENTS[1];
         $!mask +|= $val            +< PTR_EVENTS[1];
@@ -86,7 +86,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method can_focus is rw {
     Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< CAN_FOCUS[1]) },
+      FETCH => sub ($) { so $!mask +& (1 +< CAN_FOCUS[1]) },
       STORE => -> $, BooleanValue $val {
         $val ??
           ( $!mask +|=    1 +< CAN_FOCUS[1]  ) !!
@@ -96,7 +96,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method own_style is rw {
     Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< OWN_STYLE[1]) },
+      FETCH => sub ($) { so $!mask +& (1 +< OWN_STYLE[1]) },
       STORE => -> $, BooleanValue $val {
         $val ??
           ( $!mask +|=    1 +< OWN_STYLE[1]  ) !!
@@ -106,7 +106,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method clip_fill_rule is rw {
     Proxy.new:
-      FETCH => -> $ { ($!mask +& CLIP_FILL[0]) +> CLIP_FILL[1] },
+      FETCH => sub ($) { ($!mask +& CLIP_FILL[0]) +> CLIP_FILL[1] },
       STORE => -> $, $val where 0..3 {
         $!mask +&= +^CLIP_FILL[0] +< CLIP_FILL[1];
         $!mask +|= $val           +< CLIP_FILL[1];
@@ -115,7 +115,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method is_static is rw {
     Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< STATIC[1]) },
+      FETCH => sub ($) { so $!mask +& (1 +< STATIC[1]) },
       STORE => -> $, BooleanValue $val {
         $val ??
           ( $!mask +|=    1 +< STATIC[1]  ) !!
@@ -125,7 +125,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method cache_setting is rw {
     Proxy.new:
-      FETCH => -> $ { ($!mask +& CACHE[0]) +> CACHE[1] },
+      FETCH => sub ($) { ($!mask +& CACHE[0]) +> CACHE[1] },
       STORE => -> $, $val where 0..3 {
         $!mask +&= +^CACHE[0] +< CACHE[1];
         $!mask +|= $val       +< CACHE[1];
@@ -134,7 +134,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
 
   method has_tooltip is rw {
     Proxy.new:
-      FETCH => -> $ { so $!mask +& (1 +< TOOLTIP[1]) },
+      FETCH => sub ($) { so $!mask +& (1 +< TOOLTIP[1]) },
       STORE => -> $, BooleanValue $val {
         $val ??
           ( $!mask +|=    1 +< TOOLTIP[1]  ) !!
@@ -175,7 +175,7 @@ my enum SimpleCanvasBitmask (
 #
 #   method need_update is rw {
 #     Proxy.new:
-#       FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_UPDATE) },
+#       FETCH => sub ($) { so $!mask +& (1 +< SIMPLE_NEED_UPDATE) },
 #       STORE => -> $, BooleanValue $val {
 #         $val ??
 #           ( $!mask +|=    1 +< SIMPLE_NEED_UPDATE  ) !!
@@ -185,7 +185,7 @@ my enum SimpleCanvasBitmask (
 #
 #   method need_entire_subtree_update is rw {
 #     Proxy.new:
-#       FETCH => -> $ { so $!mask +& (1 +< SIMPLE_NEED_ENTIRE) },
+#       FETCH => sub ($) { so $!mask +& (1 +< SIMPLE_NEED_ENTIRE) },
 #       STORE => -> $, BooleanValue $val {
 #         $val ??
 #           ( $!mask +|=    1 +< SIMPLE_NEED_ENTIRE  ) !!

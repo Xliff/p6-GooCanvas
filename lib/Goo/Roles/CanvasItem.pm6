@@ -179,7 +179,7 @@ role Goo::Roles::CanvasItem {
   method can-focus is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('can-focus', $gv)
         );
@@ -196,7 +196,7 @@ role Goo::Roles::CanvasItem {
   method description is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('description', $gv)
         );
@@ -213,7 +213,7 @@ role Goo::Roles::CanvasItem {
   method pointer-events is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('pointer-events', $gv)
         );
@@ -230,7 +230,7 @@ role Goo::Roles::CanvasItem {
   method title is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('title', $gv)
         );
@@ -247,7 +247,7 @@ role Goo::Roles::CanvasItem {
   method tooltip is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('tooltip', $gv)
         );
@@ -264,7 +264,7 @@ role Goo::Roles::CanvasItem {
   method transform (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('transform', $gv)
         );
@@ -287,7 +287,7 @@ role Goo::Roles::CanvasItem {
   method visibility is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('visibility', $gv)
         );
@@ -304,7 +304,7 @@ role Goo::Roles::CanvasItem {
   method visibility-threshold is also<visibility_threshold> is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('visibility-threshold', $gv)
         );
