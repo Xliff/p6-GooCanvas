@@ -34,7 +34,7 @@ role Goo::Roles::Table {
   method column-spacing is rw  is also<column_spacing> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('column-spacing', $gv)
         );
@@ -51,7 +51,7 @@ role Goo::Roles::Table {
   method homogeneous-columns is rw  is also<homogeneous_columns> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('homogeneous-columns', $gv)
         );
@@ -68,7 +68,7 @@ role Goo::Roles::Table {
   method homogeneous-rows is rw  is also<homogeneous_rows> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('homogeneous-rows', $gv)
         );
@@ -85,7 +85,7 @@ role Goo::Roles::Table {
   method horz-grid-line-width is rw  is also<horz_grid_line_width> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-width', $gv)
         );
@@ -102,7 +102,7 @@ role Goo::Roles::Table {
   method row-spacing is rw  is also<row_spacing> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('row-spacing', $gv)
         );
@@ -119,7 +119,7 @@ role Goo::Roles::Table {
   method vert-grid-line-width is rw  is also<vert_grid_line_width> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-width', $gv)
         );
@@ -136,7 +136,7 @@ role Goo::Roles::Table {
   method x-border-spacing is rw  is also<x_border_spacing> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x-border-spacing', $gv)
         );
@@ -153,7 +153,7 @@ role Goo::Roles::Table {
   method y-border-spacing is rw  is also<y_border_spacing> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y-border-spacing', $gv)
         );

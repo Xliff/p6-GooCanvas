@@ -4,11 +4,9 @@ use NativeCall;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
 
+use GDK::Cursor;
 use Goo::Canvas;
 use Goo::Points;
 
@@ -207,7 +205,7 @@ sub button_press ($item, $target, $event, $r) {
   CATCH { default { .message.say; $app.exit; } }
 
   my $canvas = $item.canvas;
-  my $fleur = GTK::Compat::Cursor.new_for_display($canvas.display, GDK_FLEUR);
+  my $fleur = GDK::Cursor.new_for_display($canvas.display, GDK_FLEUR);
   my $mask = GDK_POINTER_MOTION_MASK +|
              GDK_POINTER_MOTION_HINT_MASK +|
              GDK_BUTTON_RELEASE_MASK;
@@ -232,14 +230,15 @@ sub on_motion ($item, $target, $event, $r) {
 
   my ($p, $width, $change) = (
     +(%globals<model-mode> ??
-      Goo::CanvasItemSimple.new($target).model.CanvasItemModel !!
-      $item.CanvasItem
+      Goo::CanvasItemSimple.new($target).get_model.GooCanvasItemModel !!
+      $item.GooCanvasItem
     ).p,
     Nil,
     False
   );
 
-  my $meth-name = %globals<model-mode> ?? 'CanvasItemModel' !! 'CanvasItem';
+  my $meth-name = %globals<model-mode> ?? 'GooCanvasItemModel'
+                                       !! 'GooCanvasItem';
 
   if $p == +%data<canvas><width_drag_box>."$meth-name"().p {
     my $y     = $button_event.y;
@@ -282,14 +281,14 @@ sub set_events ($item) {
   $item.enter-notify-event.tap(-> *@a {
     CATCH { default { .message.say } }
     my $i = $item;
-    $i .= model if %globals<model-mode>;
+    $i .= get_model if %globals<model-mode>;
     $i.fill-color = 'red'; @a[*-1].r = 1
   });
 
   $item.leave-notify-event.tap(-> *@a {
     CATCH { default { .message.say } }
     my $i = $item;
-    $i .= model if %globals<model-mode>;
+    $i .= get_model if %globals<model-mode>;
     $i.fill-color = 'black'; @a[*-1].r = 1
   });
 
@@ -338,7 +337,7 @@ LABEL
     CATCH { default { .message.say } }
     if Goo::Model::Rect.is_type( @a[2] ) {
       set_events(
-        Goo::CanvasItemSimple.new( cast(GooCanvasItemSimple, @a[1]) )
+        Goo::CanvasItemSimple.new( @a[1] )
       );
     }
   }) if %globals<model-mode>;

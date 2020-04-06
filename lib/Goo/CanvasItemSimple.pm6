@@ -1,5 +1,7 @@
 use v6.c;
 
+use Method::Also;
+
 use Cairo;
 
 use Goo::Raw::Types;
@@ -10,30 +12,45 @@ use Pango::FontDescription;
 
 use Goo::Roles::CanvasItem;
 
+our subset GooCanvasItemSimpleAncestry is export of Mu
+  where GooCanvasItem | GooCanvasItemSimple;
+
 class Goo::CanvasItemSimple {
   also does Goo::Roles::CanvasItem;
 
   has GooCanvasItemSimple $!gc;
 
-  multi submethod BUILD (:$simplecanvas is required) {
+  submethod BUILD (:$simplecanvas) {
     #self.ADD-PREFIX('Goo::');
     self.setSimpleCanvasItem($simplecanvas) if $simplecanvas.defined;
   }
 
-  method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
+  method setSimpleCanvasItem (GooCanvasItemSimpleAncestry $_) {
     #self.IS-PROTECTED;
-    self.setCanvasItem($!gc = $simplecanvas);
+    my $to-parent;
+    $!gc = do {
+      when GooCanvasItemSimple {
+        $to-parent = cast(GooCanvasItem, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(GooCanvasItemSimple, $_);
+      }
+    }
+    self.setCanvasItem($to-parent);
   }
 
-  multi method new (GooCanvasItemSimple $simplecanvas) {
-    $simplecanvas ?? self.bless(:$simplecanvas) !! Nil;
+  multi method new (GooCanvasItemSimpleAncestry $simplecanvas) {
+    $simplecanvas ?? self.bless(:$simplecanvas) !! GooCanvasItemSimple;
   }
 
   # Type: GooCairoAntialias
   method antialias is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('antialias', $gv)
         );
@@ -47,10 +64,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoFillRule
-  method clip-fill-rule is rw  {
+  method clip-fill-rule is rw  is also<clip_fill_rule> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
@@ -64,10 +81,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: gchar
-  method clip-path is rw  {
+  method clip-path is rw  is also<clip_path> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'clip-path' does not allow reading" if $DEBUG;
         ''
       },
@@ -79,10 +96,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: gchar
-  method fill-color is rw  {
+  method fill-color is rw  is also<fill_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'fill-color' does not allow reading" if $DEBUG;
         '';
       },
@@ -94,10 +111,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: guint
-  method fill-color-rgba is rw  {
+  method fill-color-rgba is rw  is also<fill_color_rgba> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-color-rgba', $gv)
         );
@@ -111,10 +128,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoPattern
-  method fill-pattern (:$raw = False) is rw  {
+  method fill-pattern (:$raw = False) is rw  is also<fill_pattern> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
@@ -134,10 +151,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GdkPixbuf
-  method fill-pixbuf is rw  {
+  method fill-pixbuf is rw  is also<fill_pixbuf> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'fill-pixbuf' does not allow reading" if $DEBUG;
         0;
       },
@@ -149,10 +166,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoFillRule
-  method fill-rule is rw  {
+  method fill-rule is rw  is also<fill_rule> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-rule', $gv)
         );
@@ -169,7 +186,7 @@ class Goo::CanvasItemSimple {
   method font is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font', $gv)
         );
@@ -183,10 +200,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: PangoFontDescription
-  method font-desc (:$raw = False) is rw  {
+  method font-desc (:$raw = False) is rw  is also<font_desc> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
@@ -205,10 +222,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoHintMetrics
-  method hint-metrics is rw  {
+  method hint-metrics is rw  is also<hint_metrics> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
@@ -222,10 +239,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoLineCap
-  method line-cap is rw  {
+  method line-cap is rw  is also<line_cap> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-cap', $gv)
         );
@@ -239,10 +256,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCanvasLineDash
-  method line-dash is rw  {
+  method line-dash is rw  is also<line_dash> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-dash', $gv)
         );
@@ -256,10 +273,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoLineJoin
-  method line-join is rw  {
+  method line-join is rw  is also<line_join> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join', $gv)
         );
@@ -273,10 +290,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: gdouble
-  method line-join-miter-limit is rw  {
+  method line-join-miter-limit is rw  is also<line_join_miter_limit> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join-miter-limit', $gv)
         );
@@ -290,10 +307,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: gdouble
-  method line-width is rw  {
+  method line-width is rw  is also<line_width> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-width', $gv)
         );
@@ -310,7 +327,7 @@ class Goo::CanvasItemSimple {
   method operator is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('operator', $gv)
         );
@@ -324,10 +341,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: gchar
-  method stroke-color is rw  {
+  method stroke-color is rw  is also<stroke_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'stroke-color' does not allow reading" if $DEBUG;
         '';
       },
@@ -339,10 +356,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: guint
-  method stroke-color-rgba is rw  {
+  method stroke-color-rgba is rw  is also<stroke_color_rgba> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-color-rgba', $gv)
         );
@@ -356,10 +373,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoPattern
-  method stroke-pattern (:$raw = False) is rw  {
+  method stroke-pattern (:$raw = False) is rw  is also<stroke_pattern> {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
@@ -379,10 +396,10 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GdkPixbuf
-  method stroke-pixbuf is rw  {
+  method stroke-pixbuf is rw  is also<stroke_pixbuf> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn "'stroke-pixbuf' does not allow reading" if $DEBUG;
         0;
       },
@@ -404,7 +421,9 @@ class Goo::CanvasItemSimple {
     Num() $y,
     CairoContextObject $cr is copy,
     Int() $pointer_events
-  ) {
+  )
+    is also<check-in-path>
+  {
     my gdouble ($xx, $yy) = ($x, $y);
     my guint $p = $pointer_events;
 
@@ -412,36 +431,40 @@ class Goo::CanvasItemSimple {
     so goo_canvas_item_simple_check_in_path($!gc, $xx, $yy, $cr, $p);
   }
 
-  method check_style {
+  method check_style is also<check-style> {
     goo_canvas_item_simple_check_style($!gc);
   }
 
   method get_path_bounds (
     CairoContextObject $cr,
     GooCanvasBounds() $bounds
-  ) {
+  )
+    is also<get-path-bounds>
+  {
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_simple_get_path_bounds($!gc, $cr, $bounds);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
 
     unstable_get_type( self.^name, &goo_canvas_item_simple_get_type, $n, $t );
   }
 
-  method paint_path (CairoContextObject $cr is copy) {
+  method paint_path (CairoContextObject $cr is copy) is also<paint-path> {
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_simple_paint_path($!gc, $cr);
   }
 
-  method set_model (GooCanvasItemModel() $model) {
+  method set_model (GooCanvasItemModel() $model) is also<set-model> {
     goo_canvas_item_simple_set_model($!gc, $model);
   }
 
   method user_bounds_to_device (
     CairoContextObject $cr is copy,
-    GooCanvasBounds() $bounds)
+    GooCanvasBounds() $bounds
+  )
+    is also<user-bounds-to-device>
   {
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_simple_user_bounds_to_device($!gc, $cr, $bounds);
@@ -449,10 +472,24 @@ class Goo::CanvasItemSimple {
 
   method user_bounds_to_parent (
     CairoContextObject $cr,
-    GooCanvasBounds() $bounds)
+    GooCanvasBounds() $bounds
+  )
+    is also<user-bounds-to-parent>
   {
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_item_simple_user_bounds_to_parent($!gc, $cr, $bounds);
+  }
+
+  method unset_fill_pattern is also<unset-fill-pattern> {
+    self.fill-pattern = cairo_pattern_t;
+  }
+
+  method unset_stroke_pattern is also<unset-stroke-pattern> {
+    self.stroke-pattern = cairo_pattern_t;
+  }
+
+  method unset_patterns is also<unset-patterns> {
+    self.stroke-pattern = self.fill-pattern = cairo_pattern_t;
   }
 
 }

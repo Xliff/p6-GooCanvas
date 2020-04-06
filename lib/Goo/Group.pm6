@@ -2,12 +2,14 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::CanvasItemSimple;
 
 use Goo::Roles::Group;
+
+our subset GooCanvasGroupAncestry is export of Mu
+  where GooCanvasGroup | GooCanvasItemSimple;
 
 class Goo::Group is Goo::CanvasItemSimple {
   also does Goo::Roles::Group;
@@ -18,24 +20,45 @@ class Goo::Group is Goo::CanvasItemSimple {
     self.setGroup($group) if $group.defined;
   }
 
-  method setGroup(GooCanvasGroup $group) {
-    self.IS-PROTECTED;
-    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!g = $group) )
+  method setGroup(GooCanvasGroupAncestry $_) {
+    #self.IS-PROTECTED;
+    my $to-parent;
+    $!g = do {
+      when GooCanvasGroup {
+        $to-parent = cast(GooCanvasItemSimple, $_);
+        $_;
+      }
+
+      default {
+        $to-parent = $_;
+        cast(GooCanvasGroup, $_);
+      }
+    }
+    self.setSimpleCanvasItem($to-parent);
   }
 
-  method Goo::Raw::Types::GooGroup
-    #is also<Group>
+  method Goo::Raw::Definitions::GooCanvasGroup
+    #is also<
+    #   CanvasGroup
+    #   GooCanvasGroup
+    # >
   { $!g }
 
-  multi method new (GooCanvasGroup $group) {
-    self.bless(:$group);
+  # Included here due to errors in Method::Also and rakudo.
+  method GooCanvasGroup { $!g }
+
+  multi method new (GooCanvasGroupAncestry $group) {
+    $group ?? self.bless(:$group) !! GooCanvasGroup;
   }
   multi method new (GooCanvasItem() $parent) {
-    self.bless( group => goo_canvas_group_new($parent, Str) )
+    my $group = goo_canvas_group_new($parent, Str);
+
+    $group ?? self.bless(:$group) !! GooCanvasGroup;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_group_get_type, $n, $t);
   }
 

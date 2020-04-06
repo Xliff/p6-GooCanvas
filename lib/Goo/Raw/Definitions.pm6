@@ -9,12 +9,13 @@ use GLib::Roles::Pointers;
 unit package Goo::Raw::Definitions;
 
 # Number of times a forced recompile was deemed necessary.
-constant forced = 0;
+constant forced = 3;
 
 constant goo is export = 'goocanvas-2.0',v9;
 
 class GooCanvas           is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasEllipse    is repr<CPointer> is export does GLib::Roles::Pointers { }
+class GooCanvasGrid       is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasGroup      is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasImage      is repr<CPointer> is export does GLib::Roles::Pointers { }
 class GooCanvasItem       is repr<CPointer> is export does GLib::Roles::Pointers { }

@@ -13,31 +13,27 @@ use GLib::Roles::Object;
 use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
-  also does GLib::Roles::Object;
   also does GLib::Roles::Signals::Generic;
 
-  has GooCanvasItemModel $!im;
+  has GooCanvasItemModel $!im is implementor;
 
-  multi submethod BUILD (:$model is required) {
-    #self.ADD-PREFIX('Goo::');
-    self.setModelItem($model);
+  method setModelItem (GooCanvasItemModel $item) {
+    $!im = $item;
   }
 
-  method setModelItem ($item) {
-    self.IS-PROTECTED;
-    self!setObject($!im = $item);
-  }
-
-  multi method new-goocanvasitem-obj (GooCanvasItemModel $model) {
-    $model ?? self.bless(:$model) !! Nil;
-  }
-
-  method Goo::Raw::Types::GooCanvasItemModel
+  method Goo::Raw::Definitions::GooCanvasItemModel
     is also<
       ItemModel
       CanvasItemModel
+      GooCanvasItemModel
     >
   { $!im }
+
+  # Remove when Method::Also has been fixed!
+  method GooCanvasItemModel { $!im }
+
+  # Need .get_parent to achieve parity with the non-model version!
+  method get_parent (:$raw = False) { self.parent( :$raw ) }
 
   method parent (:$raw = False) is rw {
     Proxy.new(
@@ -45,9 +41,9 @@ role Goo::Model::Roles::Item {
         my $p = goo_canvas_item_model_get_parent($!im);
 
         $p ??
-          ( $raw ?? $p !! Goo::Model::Roles::Item.new-goocanvasitem-obj($p) )
+          ( $raw ?? $p !! ::('Goo::Model::Item').new($p) )
           !!
-          Nil;
+          GooCanvasItemModel;
       },
       STORE => sub ($, GooCanvasItemModel() $parent is copy) {
         goo_canvas_item_model_set_parent($!im, $parent);
@@ -60,7 +56,7 @@ role Goo::Model::Roles::Item {
       FETCH => sub ($) {
         my $s = goo_canvas_item_model_get_style($!im);
 
-        return Nil unless $s;
+        return GooCanvasStyle unless $s;
 
         $s = cast(GooCanvasStyle, $s);
         $raw ?? $s !! Goo::Style.new($s);
@@ -75,7 +71,7 @@ role Goo::Model::Roles::Item {
   method can-focus is rw  is also<can_focus> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('can-focus', $gv)
         );
@@ -92,7 +88,7 @@ role Goo::Model::Roles::Item {
   method description is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('description', $gv)
         );
@@ -109,11 +105,11 @@ role Goo::Model::Roles::Item {
   method pointer-events is rw  is also<pointer_events> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('pointer-events', $gv)
         );
-        GooCanvasPointerEvents( $gv.enum );
+        GooCanvasPointerEventsEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -126,7 +122,7 @@ role Goo::Model::Roles::Item {
   method title is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('title', $gv)
         );
@@ -143,7 +139,7 @@ role Goo::Model::Roles::Item {
   method tooltip is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('tooltip', $gv)
         );
@@ -160,12 +156,12 @@ role Goo::Model::Roles::Item {
   method transform (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('transform', $gv)
         );
 
-        return Nil unless $gv.pointer;
+        return cairo_matrix_t unless $gv.pointer;
 
         my $m = cast(cairo_matrix_t, $gv.pointer);
 
@@ -183,7 +179,7 @@ role Goo::Model::Roles::Item {
   method visibility is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('visibility', $gv)
         );
@@ -200,7 +196,7 @@ role Goo::Model::Roles::Item {
   method visibility-threshold is rw  is also<visibility_threshold> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('visibility-threshold', $gv)
         );
@@ -216,13 +212,15 @@ role Goo::Model::Roles::Item {
   # Is originally:
   # GooCanvasItemModel, gboolean, gpointer --> void
   method animation-finished is also<animation_finished> {
-    self.connect-bool($!im, 'animation-finished');
+    # Bool
+    self.connect-uint($!im, 'animation-finished');
   }
 
   # Is originally:
   # GooCanvasItemModel, gboolean, gpointer --> void
   method changed {
-    self.connect-bool($!im, 'changed');
+    # Bool
+    self.connect-uint($!im, 'changed');
   }
 
   # Is originally:

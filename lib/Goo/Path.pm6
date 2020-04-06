@@ -2,7 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::CanvasItemSimple;
@@ -19,14 +18,17 @@ class Goo::Path is Goo::CanvasItemSimple {
   }
 
   multi method new (GooCanvasPath $path) {
-    self.bless(:$path);
+    $path ?? self.bless(:$path) !! GooCanvasPath;
   }
   multi method new (GooCanvasItem() $parent, Str $path_data) {
-    self.bless( path => goo_canvas_path_new($parent, $path_data, Str) );
+    my $path = goo_canvas_path_new($parent, $path_data, Str);
+
+    $path ?? self.bless(:$path) !! GooCanvasPath;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_path_get_type, $n, $t );
   }
 }

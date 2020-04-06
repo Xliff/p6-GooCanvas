@@ -1,7 +1,5 @@
 use v6.c;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
 
 use GTK::Application;
@@ -14,6 +12,9 @@ use Goo::CanvasItemSimple;
 
 use Goo::Model::Group;
 
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
+
 my ($app, %data, %globals);
 
 unit package Demo::Reparenting04;
@@ -21,27 +22,26 @@ unit package Demo::Reparenting04;
 # Aren't these already a part of GObject? If not, they REALLY SHOULD BE!
 our subset ObjectOrPointer of Mu where * ~~ (
   GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
+  GLib::Roles::Pointers,
 ).any;
 
 sub get-data (ObjectOrPointer $i is copy, $k) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k};
 }
 sub set-data (ObjectOrPointer $i is copy, $k, $v) {
   return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
+
+  $i .= GObject if $i ~~ GLib::Roles::Object;
   %data{+$i.p}{$k} = $v;
 }
 
 sub button-press ($item, $event, $r) {
   CATCH { default { .message.say; $app.exit } }
 
-  my $i = %globals<model-mode> ?? $item.model !! $item;
+  my $i = %globals<model-mode> ?? $item.get_model !! $item;
 
   return ($r.r = 0) unless get-data($i, 'parent1');
 
@@ -52,7 +52,8 @@ sub button-press ($item, $event, $r) {
   say 'In button-press()';
 
   my ($p1, $p2) = ( get-data($i, 'parent1'), get-data($i, 'parent2') );
-  my $parent = $i.parent;
+  # Change back to .parent when issues with Method::Also have been resolved.
+  my $parent = $i.get_parent;
   $i.remove;
   +$parent.GObject.p == +$p1.GObject.p ??
     $p2.add_child($i) !! $p1.add_child($i);

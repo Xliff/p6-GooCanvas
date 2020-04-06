@@ -1,11 +1,10 @@
 use v6.c;
 
+use Method::Also;
+
 use NativeCall;
 
-
-
 use Goo::Raw::Types;
-
 
 use GLib::Value;
 use GTK::Widget;
@@ -20,40 +19,51 @@ class Goo::Widget is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!gw = $widget) )
   }
 
-  method Goo::Raw::Types::GooCanvasWidget
-    #is also<GooWidget>
+  method Goo::Raw::Definitions::GooCanvasWidget
+    is also<GooCanvasWidget>
   { $!gw }
 
+  my subset WidgetOrObject of Mu
+    where GTK::Widget | GtkWidget;
+
   multi method new (GooCanvasWidget $widget) {
-    self.bless(:$widget);
+    $widget ?? self.bless(:$widget) !! GooCanvasWidget;
   }
   multi method new (
     GooCanvasItem() $parent,
-                    $widget is copy,
+    WidgetOrObject  $gtk_widget is copy,
     Num()           $x,
     Num()           $y,
     Num()           $width,
     Num()           $height
   ) {
     my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
-    my $ww = $widget ~~ GTK::Widget ?? $widget.Widget !! $widget;
-    self.bless(
-      widget      => goo_canvas_widget_new(
-        $parent, $ww, $xx, $yy, $w, $h, Str
-      ),
-      gtk_widget  => $widget
+    my $gtkw = $gtk_widget ~~ GTK::Widget ?? $gtk_widget.GtkWidget
+                                          !! $gtk_widget;
+    my $widget = goo_canvas_widget_new(
+      $parent,
+      $gtkw,
+      $xx,
+      $yy,
+      $w,
+      $h,
+      Str
     );
+
+    return GooCanvasWidget unless $widget;
+
+    self.bless(:$widget, :$gtk_widget);
   }
 
   # Type: GooCanvasAnchorType
   method anchor is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
-        GooCanvasAnchorType( $gv.enum );
+        GooCanvasAnchorTypeEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -66,7 +76,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -83,7 +93,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
   method widget is rw  {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         # In this situation, we leave the creation logic to the caller.
         $!gtk_widget;
       },
@@ -92,6 +102,7 @@ class Goo::Widget is Goo::CanvasItemSimple {
 $val is not a GtkWidget compatible object! Please pass the widget object, if
 available, or cast(GtkWidget, $val) if you are sure this message is in error!
 D
+
         $!gtk_widget = $val;
         $gv.object = $val ~~ GTK::Widget ?? $val.Widget !! $val;
         self.prop_set('widget', $gv);
@@ -103,7 +114,7 @@ D
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -120,7 +131,7 @@ D
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -137,7 +148,7 @@ D
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
@@ -152,6 +163,7 @@ D
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_widget_get_type, $n, $t );
   }
 
@@ -161,7 +173,7 @@ sub goo_canvas_widget_get_type ()
   returns GType
   is native(goo)
   is export
-  { * }
+{ * }
 
 sub goo_canvas_widget_new (
   GooCanvasItem $parent,
@@ -175,4 +187,4 @@ sub goo_canvas_widget_new (
   returns GooCanvasWidget
   is native(goo)
   is export
-  { * }
+{ * }

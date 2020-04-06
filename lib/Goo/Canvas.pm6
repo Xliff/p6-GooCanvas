@@ -9,12 +9,12 @@ use GLib::Value;
 use GLib::GList;
 use GDK::RGBA;
 use GTK::Container;
-# Must use both objects if creating from Goo::Roles::CanvasItem
+use Goo::CanvasItem;
 use Goo::CanvasItemSimple;
+use Goo::Model::Item;
 
 use GLib::Roles::ListData;
 use GTK::Roles::Scrollable;
-use Goo::Roles::CanvasItem;
 use Goo::Roles::Signals::Canvas;
 
 our subset GooCanvasAncestry is export
@@ -33,7 +33,7 @@ class Goo::Canvas is GTK::Container {
   }
 
   submethod BUILD (:$canvas) {
-    self.ADD-PREFIX('Goo::');
+    #self.ADD-PREFIX('Goo::');
     given $canvas {
       when GooCanvasAncestry {
         my $to-parent;
@@ -42,11 +42,13 @@ class Goo::Canvas is GTK::Container {
             $to-parent = cast(GtkContainer, $_);
             $_;
           }
+
           when GtkScrollable {
             $!s = $_;
             $to-parent = cast(GtkContainer, $_);
             cast(GtkContainer, $_);
           }
+
           default {
             $to-parent = $_;
             cast(GtkContainer, $_);
@@ -55,36 +57,50 @@ class Goo::Canvas is GTK::Container {
         $!s //= cast(GtkScrollable, $canvas);
         self.setContainer($to-parent);
       }
+
       when Goo::Canvas {
       }
+
       default {
       }
     }
   }
 
-  method Goo::Raw::Types::GooCanvas
-    is also<Canvas>
+  method Goo::Raw::Definitions::GooCanvas
+    is also<
+      Canvas
+      GooCanvas
+    >
   { $!gc }
 
-  multi method new (GooCanvas $canvas) {
+  multi method new (GooCanvasAncestry $canvas, :$ref = True) {
+    return GooCanvas unless $canvas;
+
     my $o = self.bless(:$canvas);
-    $o.upref;
+    $o.ref if $ref;
+    $o;
   }
   multi method new {
-    self.bless( canvas => goo_canvas_new() );
+    my $canvas = goo_canvas_new();
+
+    $canvas ?? self.bless(:$canvas) !! GooCanvas;
   }
 
   # Is originally:
   # GooCanvas, GooCanvasItem, GooCanvasItemModel, gpointer --> void
   method item-created is also<item_created> {
-    my $s = self.connect-item-created($!gc);
-    $s;
+    self.connect-item-created($!gc);
   }
 
-  method root_item_model is rw is also<root-item-model> {
+  method root_item_model (:$raw = False) is rw is also<root-item-model> {
     Proxy.new(
       FETCH => sub ($) {
-        goo_canvas_get_root_item_model($!gc);
+        my $mi = goo_canvas_get_root_item_model($!gc);
+
+        $mi ??
+          ( $raw ?? $mi !! Goo::Model::Item.new($mi) )
+          !!
+          GooCanvasItemModel;
       },
       STORE => sub ($, GooCanvasItemModel() $model is copy) {
         goo_canvas_set_root_item_model($!gc, $model);
@@ -99,6 +115,7 @@ class Goo::Canvas is GTK::Container {
       },
       STORE => sub ($, Num() $scale is copy) {
         my gdouble $s = $scale;
+
         goo_canvas_set_scale($!gc, $s);
       }
     );
@@ -106,14 +123,16 @@ class Goo::Canvas is GTK::Container {
 
   # This will attempt to reuse the last set object for as long as it stays
   # the same.
-  method static_root_item is rw is also<static-root-item> {
+  method static_root_item (:$raw = False) is rw is also<static-root-item> {
     state $ri;
     Proxy.new(
       FETCH => sub ($) {
-        $ri = Goo::Roles::CanvasItem.new(
-          goo_canvas_get_static_root_item($!gc)
-        ) unless $ri.defined;
-        $ri;
+        $ri = goo_canvas_get_static_root_item($!gc);
+
+        $ri ??
+          ( $raw ?? $ri !! Goo::CanvasItem.new($ri) )
+          !!
+          GooCanvasItem;
       },
       STORE => sub ($, GooCanvasItem() $item is copy) {
         $ri = $item ~~ GooCanvas ?? $item !! Goo::Canvas.new( $item );
@@ -137,11 +156,11 @@ class Goo::Canvas is GTK::Container {
   method anchor is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
-        GooCanvasAnchorType( $gv.enum );
+        GooCanvasAnchorTypeEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -154,7 +173,7 @@ class Goo::Canvas is GTK::Container {
   method automatic-bounds is rw  is also<automatic_bounds> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('automatic-bounds', $gv)
         );
@@ -171,8 +190,8 @@ class Goo::Canvas is GTK::Container {
   method background-color is rw  is also<background_color> {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
-        warn "background-color does not allow reading"
+      FETCH => sub ($) {
+        warn 'background-color does not allow reading'
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -185,8 +204,8 @@ class Goo::Canvas is GTK::Container {
   method background-color-gdk-rgba is rw  is also<background_color_gdk_rgba> {
     my GLib::Value $gv .= new( G_TYPE_OBJECT );
     Proxy.new(
-      FETCH => -> $ {
-        warn "background-color-gdk-rgba does not allow reading"
+      FETCH => sub ($) {
+        warn 'background-color-gdk-rgba does not allow reading'
       },
       STORE => -> $, GdkRGBA() $val is copy {
         $gv.object = $val;
@@ -199,8 +218,8 @@ class Goo::Canvas is GTK::Container {
   method background-color-rgb is rw  is also<background_color_rgb> {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
-        warn "background-color-rgb does not allow reading"
+      FETCH => sub ($) {
+        warn 'background-color-rgb does not allow reading'
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -213,7 +232,7 @@ class Goo::Canvas is GTK::Container {
   method bounds-from-origin is rw  is also<bounds_from_origin> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('bounds-from-origin', $gv)
         );
@@ -230,7 +249,7 @@ class Goo::Canvas is GTK::Container {
   method bounds-padding is rw  is also<bounds_padding> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('bounds-padding', $gv)
         );
@@ -247,7 +266,7 @@ class Goo::Canvas is GTK::Container {
   method clear-background is rw  is also<clear_background> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('clear-background', $gv)
         );
@@ -264,7 +283,7 @@ class Goo::Canvas is GTK::Container {
   method integer-layout is rw  is also<integer_layout> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('integer-layout', $gv)
         );
@@ -281,7 +300,7 @@ class Goo::Canvas is GTK::Container {
   method redraw-when-scrolled is rw  is also<redraw_when_scrolled> {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('redraw-when-scrolled', $gv)
         );
@@ -298,7 +317,7 @@ class Goo::Canvas is GTK::Container {
   method resolution-x is rw  is also<resolution_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('resolution-x', $gv)
         );
@@ -315,7 +334,7 @@ class Goo::Canvas is GTK::Container {
   method resolution-y is rw  is also<resolution_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('resolution-y', $gv)
         );
@@ -332,7 +351,7 @@ class Goo::Canvas is GTK::Container {
   method scale-x is rw  is also<scale_x> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('scale-x', $gv)
         );
@@ -349,7 +368,7 @@ class Goo::Canvas is GTK::Container {
   method scale-y is rw  is also<scale_y> {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('scale-y', $gv)
         );
@@ -366,11 +385,11 @@ class Goo::Canvas is GTK::Container {
   method units is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('units', $gv)
         );
-        GtkUnit( $gv.uint )
+        GtkUnitEnum( $gv.uint )
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -383,7 +402,7 @@ class Goo::Canvas is GTK::Container {
   method x1 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x1', $gv)
         );
@@ -400,7 +419,7 @@ class Goo::Canvas is GTK::Container {
   method x2 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x2', $gv)
         );
@@ -417,7 +436,7 @@ class Goo::Canvas is GTK::Container {
   method y1 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y1', $gv)
         );
@@ -434,7 +453,7 @@ class Goo::Canvas is GTK::Container {
   method y2 is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y2', $gv)
         );
@@ -447,6 +466,12 @@ class Goo::Canvas is GTK::Container {
     );
   }
 
+  method root-item (:$raw = False) is also<root_item> {
+    Proxy.new:
+      FETCH => sub ($)                     { self.get_root_item(:$raw) },
+      STORE => -> $, GooCanvasItem() \i { self.set_root_item(i)     };
+  }
+
   method convert_bounds_to_item_space (
     GooCanvasItem() $item,
     GooCanvasBounds() $bounds
@@ -456,22 +481,36 @@ class Goo::Canvas is GTK::Container {
     goo_canvas_convert_bounds_to_item_space($!gc, $item, $bounds);
   }
 
-  method convert_from_item_space (
-    GooCanvasItem() $item,
-    Num() $x is rw,
-    Num() $y is rw
-  )
+  proto method convert_from_item_space (|)
     is also<convert-from-item-space>
-  {
-    my gdouble ($xx, $yy) = ($x, $y);
+  { * }
+
+  multi method convert_from_item_space (GooCanvasItem() $item) {
+    samewith($, $);
+  }
+  multi method convert_from_item_space (
+    GooCanvasItem() $item,
+    $x is rw,
+    $y is rw
+  ) {
+    my gdouble ($xx, $yy) = 0e0 xx 2;
+
     goo_canvas_convert_from_item_space($!gc, $item, $xx, $yy);
+    ($x, $y) = ($xx, $yy);
   }
 
-  method convert_from_pixels (Num() $x is rw, Num() $y is rw)
+  proto method convert_from_pixels (|)
     is also<convert-from-pixels>
-  {
-    my gdouble ($xx, $yy) = ($x, $y);
+  { * }
+
+  multi method convert_from_pixels {
+    samewith($, $);
+  }
+  multi method convert_from_pixels ($x is rw, $y is rw) {
+    my gdouble ($xx, $yy) = 0e0 xx 2;
+
     goo_canvas_convert_from_pixels($!gc, $xx, $yy);
+    ($x, $y) = ($xx, $yy);
   }
 
   method convert_to_item_space (
@@ -482,6 +521,7 @@ class Goo::Canvas is GTK::Container {
     is also<convert-to-item-space>
   {
     my gdouble ($xx, $yy) = ($x, $y);
+
     goo_canvas_convert_to_item_space($!gc, $item, $xx, $yy);
   }
 
@@ -492,6 +532,7 @@ class Goo::Canvas is GTK::Container {
     is also<convert-to-pixels>
   {
     my gdouble ($xx, $yy) = ($x, $y);
+
     goo_canvas_convert_to_pixels($!gc, $xx, $yy);
   }
 
@@ -502,6 +543,7 @@ class Goo::Canvas is GTK::Container {
     is also<convert-units-from-pixels>
   {
     my gdouble ($xx, $yy) = ($x, $y);
+
     goo_canvas_convert_units_from_pixels($!gc, $x, $y);
   }
 
@@ -512,6 +554,7 @@ class Goo::Canvas is GTK::Container {
     is also<convert-units-to-pixels>
   {
     my gdouble ($xx, $yy) = ($x, $y);
+
     goo_canvas_convert_units_to_pixels($!gc, $x, $y);
   }
 
@@ -532,6 +575,7 @@ class Goo::Canvas is GTK::Container {
     is also<get-bounds>
   {
     my gdouble ($l, $t, $r, $b) = ($left, $top, $right, $bottom);
+
     goo_canvas_get_bounds($!gc, $l, $t, $r, $b);
   }
 
@@ -539,33 +583,61 @@ class Goo::Canvas is GTK::Container {
     goo_canvas_get_default_line_width($!gc);
   }
 
-  method get_item (GooCanvasItemModel() $model) is also<get-item> {
-    Goo::Roles::CanvasItem.new( goo_canvas_get_item($!gc, $model) );
-  }
-
-  method get_item_at (Num() $x, Num() $y, Int() $is_pointer_event)
-    is also<get-item-at>
+  method get_item (
+    GooCanvasItemModel() $model,
+    Num() $x,
+    Num() $y,
+    Int() $is_pointer_event,
+    :$raw = False
+  )
+    is also<get-item>
   {
     my gdouble ($xx, $yy) = ($x, $y);
-    my gboolean $i = self.RESOLVE-BOOL($is_pointer_event);
-    Goo::Roles::CanvasItem.new( goo_canvas_get_item_at($!gc, $xx, $yy, $i) );
+    my gboolean $ipe = $is_pointer_event.so.Int;
+    my $i = goo_canvas_get_item_at($!gc, $xx, $yy, $ipe);
+
+    $i ??
+      ( $raw ?? $i !! Goo::CanvasItem.new($i) )
+      !!
+      GooCanvasItem;
+  }
+
+  method get_item_at (
+    Num() $x,
+    Num() $y,
+    Int() $is_pointer_event,
+    :$raw = False
+  )
+    is also<get-item-at>
+  {
+    my gdouble ($xx, $yy) = ($x, $y).map( *.so.Int );
+    my gboolean $ipe = $is_pointer_event;
+    my $i = goo_canvas_get_item_at($!gc, $xx, $yy, $ipe);
+
+    $i ??
+      ( $raw ?? $i !! Goo::CanvasItem.new($i) )
+      !!
+      GooCanvasItem;
   }
 
   method get_items_at (
     Num() $x,
     Num() $y,
     Int() $is_pointer_event = False,
+    :$glist = False,
     :$raw = False
   )
     is also<get-items-at>
   {
     my gdouble ($xx, $yy) = ($x, $y);
-    my gboolean $i = self.RESOLVE-BOOL($is_pointer_event);
-    my $l = GLib::GList.new(
-      goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event)
-    ) but GLib::Roles::ListData[GooCanvasItem];
-    $raw ??
-      $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
+    my gboolean $i = $is_pointer_event.so.Int;
+    my $l = goo_canvas_get_items_at($!gc, $xx, $yy, $is_pointer_event);
+
+    return Nil unless $l;
+    return $l if $glist;
+
+    $l = GLib::GList.new($l) but GLib::Roles::ListData[GooCanvasItem];
+    $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
   }
 
   method get_items_in_area (
@@ -573,34 +645,42 @@ class Goo::Canvas is GTK::Container {
     Int() $inside_area,
     Int() $allow_overlaps,
     Int() $include_containers,
+    :$glist = False,
     :$raw = False
   )
     is also<get-items-in-area>
   {
-    my gboolean ($ia, $ao, $ic) = self.RESOLVE-BOOL(
+    my gboolean ($ia, $ao, $ic) = (
       $inside_area,
       $allow_overlaps,
       $include_containers
-    );
-    my $l = GLib::GList.new(
-      goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic)
-    ) but GLib::Roles::ListData[GooCanvasItem];
-    $raw ??
-      $l.Array !! $l.Array.map({ Goo::Roles::CanvasItem.new($_) })
+    ).map( *.so.Int );
+
+    my $l = goo_canvas_get_items_in_area($!gc, $area, $ia, $ao, $ic);
+
+    return Nil unless $l;
+    return $l if $glist;
+
+    $l = GLib::GList.new($l) but GLib::Roles::ListData[GooCanvasItem];
+    $raw ?? $l.Array !! $l.Array.map({ Goo::CanvasItem.new($_) })
   }
 
-  method get_root_item
-    is also<
-      get-root-item
-      root-item
-      root_item
-    >
-  {
-    Goo::Roles::CanvasItem.new( goo_canvas_get_root_item($!gc) );
+  method get_root_item (:$raw = False) is also<get-root-item> {
+    my $c = goo_canvas_get_root_item($!gc);
+
+    $c ??
+      ( $raw ?? $c !! Goo::CanvasItem.new($c) )
+      !!
+      GooCanvasItem;
+  }
+
+  method set_root_item (GooCanvasItem() $item) {
+    goo_canvas_set_root_item($!gc, $item);
   }
 
   method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_get_type, $n, $t );
   }
 
@@ -615,15 +695,17 @@ class Goo::Canvas is GTK::Container {
   )
     is also<keyboard-grab>
   {
-    my gboolean $o = self.RESOLVE-BOOL($owner_events);
-    my guint $t = self.RESOLVE-UINT($time);
+    my gboolean $o = $owner_events.so.Int;
+    my guint $t = $time;
+
     goo_canvas_keyboard_grab($!gc, $item, $o, $t);
   }
 
   method keyboard_ungrab (GooCanvasItem() $item, Int() $time)
     is also<keyboard-ungrab>
   {
-    my guint $t = self.RESOLVE-UINT($time);
+    my guint $t = $time;
+
     goo_canvas_keyboard_ungrab($!gc, $item, $t);
   }
 
@@ -635,14 +717,16 @@ class Goo::Canvas is GTK::Container {
   )
     is also<pointer-grab>
   {
-    my guint ($t, $e) = self.RESOLVE-UINT($time, $event_mask);
+    my guint ($t, $e) = ($time, $event_mask);
+
     goo_canvas_pointer_grab($!gc, $item, $e, $cursor, $t);
   }
 
   method pointer_ungrab (GooCanvasItem() $item, Int() $time)
     is also<pointer-ungrab>
   {
-    my guint $t = self.RESOLVE-UINT($time);
+    my guint $t = $time;
+
     goo_canvas_pointer_ungrab($!gc, $item, $time);
   }
 
@@ -658,6 +742,7 @@ class Goo::Canvas is GTK::Container {
     Num() $scale
   ) {
     my gdouble $s = $scale;
+
     $cr .= context if $cr ~~ Cairo::Context;
     goo_canvas_render($!gc, $cr, $bounds, $s);
   }
@@ -668,7 +753,8 @@ class Goo::Canvas is GTK::Container {
   )
     is also<request-item-redraw>
   {
-    my gboolean $i = self.RESOLVE-BOOL($is_static);
+    my gboolean $i = $is_static.so.Int;
+
     goo_canvas_request_item_redraw($!gc, $bounds, $i);
   }
 
@@ -678,6 +764,7 @@ class Goo::Canvas is GTK::Container {
 
   method scroll_to (Num() $left, Num() $top) is also<scroll-to> {
     my gdouble ($l, $t) = ($left, $top);
+
     goo_canvas_scroll_to($!gc, $l, $t);
   }
 
@@ -690,6 +777,7 @@ class Goo::Canvas is GTK::Container {
     is also<set-bounds>
   {
     my gdouble ($l, $t, $r, $b) = ($left, $top, $right, $bottom);
+
     goo_canvas_set_bounds($!gc, $left, $top, $right, $bottom);
   }
 

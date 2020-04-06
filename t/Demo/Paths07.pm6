@@ -2,8 +2,6 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
 
 use GTK::Application;
@@ -15,37 +13,23 @@ use Goo::Canvas;
 
 use Goo::Model::Group;
 
-my (%data, %globals, $app, $path1);
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
 
-our subset ObjectOrPointer of Mu where * ~~ (
-  GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
-).any;
-
-sub get-data (ObjectOrPointer $i is copy, $k) {
-  return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k};
-}
-sub set-data (ObjectOrPointer $i is copy, $k, $v) {
-  return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k} = $v;
-}
+my (%globals, $app, $path1);
 
 sub background-button-press ($item, $target, $event, $r) {
   CATCH { default { .message.say; $app.exit } }
 
-  say "Button Press Item: { get-data($target, 'id') }" if $target.defined;
+  my $t = Goo::CanvasItem.new($target);
+
+  say "Button Press Item: { $t.get-data('id') }" if $target.defined;
 
   my $b_event = cast(GdkEventButton, $event);
   my $canvas = $item.canvas;
-  my $i = $canvas.get_items_at($b_event.x_root, $b_event.y_root, :raw);
+  my $i = $canvas.get_items_at($b_event.x_root, $b_event.y_root);
   $i .= grep( *.defined );
-  say "  clicked items: { $i.map({ get-data($_, 'id') }).join(', ')}"
+  say "  clicked items: { $i.map({ .get-data('id') }).join(', ')}"
     if $i.elems;
 
   $r.r = 1;
@@ -64,7 +48,7 @@ sub setup-canvas ($canvas) {
 
   # Test th simple commands like moveto and lineto: MmZzLlHhVv.
   my $count = 0;
-  set-data($_, 'id', "Line #{ $count++ }") for (
+  .set-data('id', "Line #{ $count++ }") for (
     $path1 = %globals<path-obj>.new($root, 'M 20 20 L 40 40'),
              %globals<path-obj>.new($root, 'M30 20 l20, 20'),
              %globals<path-obj>.new($root, 'M 60 20 H 80'),
@@ -77,17 +61,16 @@ sub setup-canvas ($canvas) {
 
   with %globals<path-obj>.new($root, 'M 180 20 h20 v20 h-20 z m 5,5 h10 v10 h-10 z') {
     .fill-color = 'red'; .fill-rule = FILL_RULE_EVEN_ODD;
-    set-data($_, 'id', "Line #{ $count++ }");
+    .set-data('id', "Line #{ $count++ }");
   }
-
   with %globals<path-obj>.new($root, 'M 220 20 L 260 20 L 240 40 z') {
     .fill-color = 'red'; .stroke-color = 'blue'; .line-width = 3;
-    set-data($_, 'id', "Line #{ $count++ }")
+    .set-data('id', "Line #{ $count++ }")
   }
 
   # Test the bezier curve commands: CcSsQqTt.
   $count = 0;
-  set-data($_, 'id', "Curve #{ $count++ }") for (
+  .set-data('id', "Curve #{ $count++ }") for (
     %globals<path-obj>.new($root, 'M20,100 C20,50 100,50 100,100 S180,150 180,100'),
     %globals<path-obj>.new($root, 'M220,100 c0,-50 80,-50 80,0 s80,50 80,0'),
 	  %globals<path-obj>.new($root, 'M20,200 Q60,130 100,200 T180,200'),
@@ -98,11 +81,11 @@ sub setup-canvas ($canvas) {
   $count = 0;
   with %globals<path-obj>.new($root, 'M200,500 h-150 a150,150 0 1,0 150,-150 z') {
     .fill-color = 'red';    .stroke-color = 'blue'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
   with %globals<path-obj>.new($root, 'M175,475 v-150 a150,150 0 0,0 -150,150 z') {
     .fill-color = 'yellow'; .stroke-color = 'blue'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
   with %globals<path-obj>.new($root, q:to/PATH/)
 M400,600 l 50,-25
@@ -113,24 +96,23 @@ a25,100 -30 0,1 50,-25 l 50,-25
 PATH
   {
     .stroke-color = 'red'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
-
   with %globals<path-obj>.new($root, 'M 525,75 a100,50 0 0,0 100,50') {
     .stroke-color = 'red'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
   with %globals<path-obj>.new($root, 'M 725,75 a100,50 0 0,1 100,50') {
     .stroke-color = 'red'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
   with %globals<path-obj>.new($root, 'M 525,200 a100,50 0 1,0 100,50') {
     .stroke-color = 'red'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
   with %globals<path-obj>.new($root, 'M 725,200 a100,50 0 1,1 100,50') {
     .stroke-color = 'red'; .line-width = 5;
-    set-data($_, 'id', "Arc #{ $count++ }")
+    .set-data('id', "Arc #{ $count++ }")
   }
 }
 

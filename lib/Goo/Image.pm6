@@ -2,12 +2,14 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::CanvasItemSimple;
 
 use Goo::Roles::Image;
+
+our subset GooCanvasImageAncestry is export of Mu
+  where GooCanvasImage | GooCanvasItemSimpleAncestry;
 
 class Goo::Image is Goo::CanvasItemSimple {
   also does Goo::Roles::Image;
@@ -15,11 +17,33 @@ class Goo::Image is Goo::CanvasItemSimple {
   has GooCanvasImage $!gi;
 
   submethod BUILD (:$image) {
-    self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!gi = $image) )
+    given $image {
+      when GooCanvasImageAncestry {
+        my $to-parent;
+        $!gi = do {
+          when GooCanvasImage {
+            $to-parent = cast(GooCanvasItemSimple, $_);
+            $_;
+          }
+
+          default {
+            $to-parent = $_;
+            cast(GooCanvasImage, $_);
+          }
+        }
+        self.setSimpleCanvasItem($to-parent);
+      }
+
+      when Goo::Image {
+      }
+
+      default {
+      }
+    }
   }
 
   multi method new (GooCanvasImage $image) {
-    self.bless(:$image);
+    $image ?? self.bless(:$image) !! GooCanvasImage;
   }
   multi method new (
     GooCanvasItem() $parent,
@@ -28,13 +52,14 @@ class Goo::Image is Goo::CanvasItemSimple {
     Num()           $y
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    self.bless(
-      image => goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str)
-    );
+    my $image = goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str);
+
+    $image ?? self.bless(:$image) !! GooCanvasImage;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_image_get_type, $n, $t );
   }
 

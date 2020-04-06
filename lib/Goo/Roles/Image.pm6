@@ -14,7 +14,7 @@ role Goo::Roles::Image {
   method alpha is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('alpha', $gv)
         );
@@ -31,7 +31,7 @@ role Goo::Roles::Image {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -48,7 +48,7 @@ role Goo::Roles::Image {
   method pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('pattern', $gv)
         );
@@ -70,7 +70,7 @@ role Goo::Roles::Image {
   method pixbuf is rw  {
     my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'pixbuf does not allow reading' if $DEBUG;
         0;
       },
@@ -85,7 +85,7 @@ role Goo::Roles::Image {
   method scale-to-fit is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('scale-to-fit', $gv)
         );
@@ -102,7 +102,7 @@ role Goo::Roles::Image {
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -119,7 +119,7 @@ role Goo::Roles::Image {
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -136,7 +136,7 @@ role Goo::Roles::Image {
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );

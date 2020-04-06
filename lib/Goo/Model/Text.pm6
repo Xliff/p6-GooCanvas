@@ -32,11 +32,12 @@ class Goo::Model::Text is Goo::Model::Simple {
       Str
     );
 
-    $simple ?? self.bless( :$simple, props  => @props ) !! Nil
+    $simple ?? self.bless( :$simple, :@props ) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_text_model_get_type, $n, $t );
   }
 

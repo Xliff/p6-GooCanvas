@@ -1,13 +1,10 @@
 use v6.c;
 
-
-
-use GLib::Value;
-
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;
 
-use GTK::Compat::Pixbuf;
+use GLib::Value;
+use GDK::RGBA;
 
 role Goo::Roles::Grid {
 
@@ -15,8 +12,8 @@ role Goo::Roles::Grid {
   method border-color is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
-        warn 'border-color does not allow reading';
+      FETCH => sub ($) {
+        warn 'border-color does not allow reading' if $DEBUG;
         '';
       },
       STORE => -> $, Str() $val is copy {
@@ -30,13 +27,16 @@ role Goo::Roles::Grid {
   method border-color-gdk-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('border-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('border-color-gdk-rgba', $gv);
       }
@@ -47,7 +47,7 @@ role Goo::Roles::Grid {
   method border-color-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('border-color-rgba', $gv)
         );
@@ -61,16 +61,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method border-pattern is rw  {
+  method border-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('border-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ CairoPatternObject;
@@ -82,10 +85,10 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method border-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
-        warn 'border-pixbuf does not allow reading';
+      FETCH => sub ($) {
+        warn 'border-pixbuf does not allow reading' if $DEBUG;
         0;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
@@ -99,7 +102,7 @@ role Goo::Roles::Grid {
   method border-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('border-width', $gv)
         );
@@ -116,7 +119,7 @@ role Goo::Roles::Grid {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -133,8 +136,9 @@ role Goo::Roles::Grid {
   method horz-grid-line-color is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
-        warn "horz-grid-line-color does not allow reading"
+      FETCH => sub ($) {
+        warn 'horz-grid-line-color does not allow reading' if $DEBUG;
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -147,13 +151,16 @@ role Goo::Roles::Grid {
   method horz-grid-line-color-gdk-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA;
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('horz-grid-line-color-gdk-rgba', $gv);
       }
@@ -164,7 +171,7 @@ role Goo::Roles::Grid {
   method horz-grid-line-color-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-color-rgba', $gv)
         );
@@ -178,16 +185,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method horz-grid-line-pattern is rw  {
+  method horz-grid-line-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
@@ -199,11 +209,12 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method horz-grid-line-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
-        warn 'horz-grid-line-pixbuf does not allow reading';
-        0;
+      FETCH => sub ($) {
+        warn 'horz-grid-line-pixbuf does not allow reading' if $DEBUG;
+
+        GdkPixbuf;
       },
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;
@@ -216,7 +227,7 @@ role Goo::Roles::Grid {
   method horz-grid-line-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('horz-grid-line-width', $gv)
         );
@@ -233,7 +244,7 @@ role Goo::Roles::Grid {
   method show-horz-grid-lines is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('show-horz-grid-lines', $gv)
         );
@@ -250,7 +261,7 @@ role Goo::Roles::Grid {
   method show-vert-grid-lines is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('show-vert-grid-lines', $gv)
         );
@@ -267,8 +278,10 @@ role Goo::Roles::Grid {
   method vert-grid-line-color is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
-        warn "vert-grid-line-color does not allow reading"
+      FETCH => sub ($) {
+        warn 'vert-grid-line-color does not allow reading' if $DEBUG;
+
+        '';
       },
       STORE => -> $, Str() $val is copy {
         $gv.string = $val;
@@ -281,13 +294,16 @@ role Goo::Roles::Grid {
   method vert-grid-line-color-gdk-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        my $c = $gv.pointer;
+
+        $c ?? cast(GdkRGBA, $c) !! GdkRGBA;
       },
-      STORE => -> $, GTK::Compat::RGBA $val is copy {
+      STORE => -> $, GDK::RGBA $val is copy {
         $gv.pointer = $val;
         self.prop_set('vert-grid-line-color-gdk-rgba', $gv);
       }
@@ -298,7 +314,7 @@ role Goo::Roles::Grid {
   method vert-grid-line-color-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-color-rgba', $gv)
         );
@@ -312,16 +328,19 @@ role Goo::Roles::Grid {
   }
 
   # Type: GooCairoPattern
-  method vert-grid-line-pattern is rw  {
+  method vert-grid-line-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Boxed.pattern_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-pattern', $gv)
         );
-        Cairo::Pattern.new(
-          pattern => cast(Cairo::cairo_pattern_t, $gv.boxed)
-        );
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $pattern = cast(Cairo::cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $pattern !! Cairo::Pattern.new(:$pattern);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
@@ -333,12 +352,13 @@ role Goo::Roles::Grid {
 
   # Type: GdkPixbuf
   method vert-grid-line-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
-        warn 'vert-grid-line-pixbuf does not allow reading'
+      FETCH => sub ($) {
+        warn 'vert-grid-line-pixbuf does not allow reading' if $DEBUG;
+
+        GdkPixbuf;
       },
-        0;
       STORE => -> $, GdkPixbuf() $val is copy {
         $gv.object = $val;
         self.prop_set('vert-grid-line-pixbuf', $gv);
@@ -350,7 +370,7 @@ role Goo::Roles::Grid {
   method vert-grid-line-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-line-width', $gv)
         );
@@ -367,7 +387,7 @@ role Goo::Roles::Grid {
   method vert-grid-lines-on-top is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('vert-grid-lines-on-top', $gv)
         );
@@ -384,7 +404,7 @@ role Goo::Roles::Grid {
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -401,7 +421,7 @@ role Goo::Roles::Grid {
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -418,7 +438,7 @@ role Goo::Roles::Grid {
   method x-offset is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x-offset', $gv)
         );
@@ -435,7 +455,7 @@ role Goo::Roles::Grid {
   method x-step is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x-step', $gv)
         );
@@ -452,7 +472,7 @@ role Goo::Roles::Grid {
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );
@@ -469,7 +489,7 @@ role Goo::Roles::Grid {
   method y-offset is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y-offset', $gv)
         );
@@ -486,7 +506,7 @@ role Goo::Roles::Grid {
   method y-step is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y-step', $gv)
         );

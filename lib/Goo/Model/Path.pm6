@@ -18,12 +18,12 @@ class Goo::Model::Path is Goo::Model::Simple {
   ) {
     my $simple = goo_canvas_path_model_new($parent, $path_data, Str);
 
-    $simple ?? self.bless(simple =>$simple, props  => @props) !! Nil;
+    $simple ?? self.bless(:$simple, :@props) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
-    
+
     unstable_get_type( self.^name, &goo_canvas_path_model_get_type, $n, $t );
   }
 

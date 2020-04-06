@@ -10,9 +10,11 @@ use Goo::Raw::Types;
 use GLib::Value;
 use Pango::FontDescription;
 
+use GLib::Roles::Object;
 use Goo::Model::Roles::Item;
 
 class Goo::Model::Simple {
+  also does GLib::Roles::Object;
   also does Goo::Model::Roles::Item;
 
   submethod BUILD (:$simple, :@props) {
@@ -20,20 +22,23 @@ class Goo::Model::Simple {
     self.setModelItem(
       cast( GooCanvasItemModel, $simple )
     );
+
     for @props.rotor(2) -> ($m, $v) {
       self."$m"() = $v
     }
+
+    self.roleInit-Object;
   }
 
   multi method new (GooCanvasItemModel $simple) {
-    $simple ?? self.bless(:$simple) !! Nil;
+    $simple ?? self.bless(:$simple) !! GooCanvasItemModel;
   }
 
   # Type: GooCairoAntialias
   method antialias is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('antialias', $gv)
         );
@@ -50,7 +55,7 @@ class Goo::Model::Simple {
   method clip-fill-rule is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('clip-fill-rule', $gv)
         );
@@ -67,7 +72,7 @@ class Goo::Model::Simple {
   method clip-path is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'clip-path does not allow reading' if $DEBUG;
         '';
       },
@@ -82,7 +87,7 @@ class Goo::Model::Simple {
   method fill-color is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'fill-color does not allow reading' if $DEBUG;
         '';
       },
@@ -97,7 +102,7 @@ class Goo::Model::Simple {
   method fill-color-gdk-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-color-gdk-rgba', $gv)
         );
@@ -117,7 +122,7 @@ class Goo::Model::Simple {
   method fill-color-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-color-rgba', $gv)
         );
@@ -134,7 +139,7 @@ class Goo::Model::Simple {
   method fill-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
@@ -157,7 +162,7 @@ class Goo::Model::Simple {
   method fill-pixbuf is rw  {
     my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'fill-pixbuf does not allow reading' if $DEBUG;
         0;
       },
@@ -172,7 +177,7 @@ class Goo::Model::Simple {
   method fill-rule is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('fill-rule', $gv)
         );
@@ -189,7 +194,7 @@ class Goo::Model::Simple {
   method font is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font', $gv)
         );
@@ -206,7 +211,7 @@ class Goo::Model::Simple {
   method font-desc (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
@@ -228,7 +233,7 @@ class Goo::Model::Simple {
   method hint-metrics is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('hint-metrics', $gv)
         );
@@ -245,7 +250,7 @@ class Goo::Model::Simple {
   method line-cap is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-cap', $gv)
         );
@@ -262,7 +267,7 @@ class Goo::Model::Simple {
   method line-dash is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.line_dash_get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-dash', $gv)
         );
@@ -279,7 +284,7 @@ class Goo::Model::Simple {
   method line-join is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join', $gv)
         );
@@ -296,7 +301,7 @@ class Goo::Model::Simple {
   method line-join-miter-limit is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-join-miter-limit', $gv)
         );
@@ -313,7 +318,7 @@ class Goo::Model::Simple {
   method line-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('line-width', $gv)
         );
@@ -330,7 +335,7 @@ class Goo::Model::Simple {
   method operator is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('operator', $gv)
         );
@@ -347,7 +352,7 @@ class Goo::Model::Simple {
   method stroke-color is rw  {
     my GLib::Value $gv .= new( G_TYPE_STRING );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'stroke-color does not allow reading' if $DEBUG;
         '';
       },
@@ -362,7 +367,7 @@ class Goo::Model::Simple {
   method stroke-color-gdk-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-color-gdk-rgba', $gv)
         );
@@ -383,7 +388,7 @@ class Goo::Model::Simple {
   method stroke-color-rgba is rw  {
     my GLib::Value $gv .= new( G_TYPE_UINT );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-color-rgba', $gv)
         );
@@ -402,7 +407,7 @@ class Goo::Model::Simple {
       Goo::Raw::Boxed.pattern_get_type()
     );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
@@ -425,7 +430,7 @@ class Goo::Model::Simple {
   method stroke-pixbuf is rw  {
     my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         warn 'stroke-pixbuf does not allow reading' if $DEBUG;
         0;
       },

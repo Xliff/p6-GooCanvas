@@ -2,7 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;
@@ -22,19 +21,24 @@ class Goo::Model::Ellipse is Goo::Model::Simple {
   ) {
     my gdouble ($cx, $cy, $rx, $ry) =
       ($center_x, $center_y, $radius_x, $radius_y);
-    self.bless(
-      simple => goo_canvas_ellipse_model_new(
-        $parent,
-        $cx, $cy, $rx, $ry,
-        Str
-      ),
-      props  => @props
+    my $simple = goo_canvas_ellipse_model_new(
+      $parent,
+      $cx, $cy, $rx, $ry,
+      Str
     );
+
+    $simple ?? self.bless(:$simple, :@props) !! GooCanvasItemModel;
   }
 
   method get_type {
     state ($n, $t);
-    unstable_get_type( self.^name, &goo_canvas_ellipse_model_get_type, $n, $t );
+
+    unstable_get_type(
+      self.^name,
+      &goo_canvas_ellipse_model_get_type,
+      $n,
+      $t
+    );
   }
 
 }

@@ -1,11 +1,6 @@
 use v6.c;
 
-use Pango::Raw::Types;
-
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
 
 use GTK::Application;
 use GTK::Box;
@@ -17,6 +12,9 @@ use Goo::Canvas;
 
 use Goo::Model::Group;
 
+use GLib::Roles::Object;
+use GLib::Roles::Pointers;
+
 enum DemoItemType (
   DEMO_RECT_ITEM   => 0,
   DEMO_TEXT_ITEM   => 1,
@@ -26,27 +24,7 @@ enum DemoItemType (
 );
 
 # Aren't these already a part of GObject? If not, they REALLY SHOULD BE!
-my (%data, %globals);
-
-our subset ObjectOrPointer of Mu where * ~~ (
-  GLib::Roles::Object,
-  GTK::Roles::Pointers,
-  GTK::Roles::Properties
-).any;
-
-sub get-data (ObjectOrPointer $i is copy, $k) {
-  return unless $i.defined;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k};
-}
-sub set-data (ObjectOrPointer $i is copy, $k, $v) {
-  return unless $i.defined;
-  $i = %globals<canvas>.get_item($i) if %globals<model-mode>;
-  $i .= GObject
-    if $i ~~ (GLib::Roles::Object, GTK::Roles::Properties).any;
-  %data{+$i.p}{$k} = $v;
-}
+my %globals;
 
 sub button-press ($item, $evt, $r) {
   CATCH { default { .message.say; } }
@@ -54,9 +32,9 @@ sub button-press ($item, $evt, $r) {
   my $event = cast(GdkEventButton, $evt);
 
   say qq:to/SAY/.chomp;
-{ get-data($item, 'id') // '<unknown>' } received 'button-press' signal at {
-  $event.x_root }, { $event.y_root }
-SAY
+    { $item.get-data('id') // '<unknown>' } received 'button-press' signal at {
+      $event.x_root }, { $event.y_root }
+    SAY
 
   $r.r = 1;
 }
@@ -81,10 +59,19 @@ sub create_demo_item (
       $item = %globals<rect-obj>.new($table, 0, 0, 38, 19);
       $item.fill-color = 'red';
     }
+
     when DEMO_TEXT_ITEM | DEMO_TEXT_ITEM_2 | DEMO_TEXT_ITEM_3 {
-      $item = %globals<text-obj>.new($table, $text, 0, 0, $width, GOO_CANVAS_ANCHOR_NW);
+      $item = %globals<text-obj>.new(
+        $table,
+        $text,
+        0,
+        0,
+        $width,
+        GOO_CANVAS_ANCHOR_NW
+      );
       $item.alignment = $text_alignment;
     }
+
     when DEMO_WIDGET_ITEM {
       my $widget = GTK::Button.new_with_label($text);
       $item = %globals<widget-obj>.new($table, $widget, 0, 0, -1, -1);
@@ -105,7 +92,7 @@ sub create_demo_item (
   warn "Got bad row setting: { $new_row } should be: { $row }"
     unless $new_row == $row;
 
-  set-data($item, 'id', $text);
+  $item.set-data('id', $text);
 
   # Insure we are woring with a CanvasItem, not a canvasItemModel when
   # dealing with events.
@@ -126,6 +113,7 @@ sub create_table (
 	$show_grid_lines
 ) {
   my $table = %globals<table-obj>.new($parent);
+
   ($table.row-spacing, $table.column-spacing) = 4 xx 2;
   ($table.horz-grid-line-width, $table.vert-grid-line-width) = 1 xx 2
     if $show_grid_lines;
@@ -262,32 +250,44 @@ sub create_demo_table ($root, $x, $y, $w, $h) {
     with $table;
   $table.translate($x, $y);
 
-  my $square = %globals<rect-obj>.new($table, 0, 0, 50, 50);
-  $square.fill-color = 'red';
-  set-data($square, 'id', 'Red square');
-  $table.set-child-properties($square,
+  given ( my $square = %globals<rect-obj>.new($table, 0, 0, 50, 50) ) {
+    .fill-color = 'red';
+    .set-data('id', 'Red square');
+  }
+  $table.set_child_properties($square,
     'row', 0, 'column', 0, 'x-shrink', True
   );
 
-  my $circle = %globals<ellipse-obj>.new($table, 0, 0, 25, 25);
-  $circle.fill-color = 'blue';
-  set-data($circle, 'id', 'Blue circle');
+  given ( my $circle = %globals<ellipse-obj>.new($table, 0, 0, 25, 25) ) {
+    .fill-color = 'blue';
+    .set-data('id', 'Blue circle');
+  }
 
-  $table.set-child-properties($circle,
+  $table.set_child_properties($circle,
     'row', 0, 'column', 1, 'x-shrink', True
   );
 
-  my $triangle = %globals<polyline-obj>.new($table, True, 3, 25, 0, 0, 50, 50, 50);
+  my $triangle = %globals<polyline-obj>.new(
+    $table,
+    True,
+    3,
+    25, 0,
+    0, 50,
+    50, 50
+  );
   $triangle.fill-color = 'yellow';
-  set-data($triangle, 'id', 'Yellow triangle');
+  $triangle.set-data('id', 'Yellow triangle');
 
-  $table.set-child-properties($triangle,
+  $table.set_child_properties($triangle,
     'row', 0, 'column', 2, 'x-shrink', True
   );
 
-  for $square, $circle, $triangle {
-    my $i = %globals<canvas>.get_item($_) if %globals<model-mode>;
-    $i.button-press-event.tap(-> *@a { button-press($i, |@a[2, *-1]) })
+  if %globals<model-mode> {
+    for $square, $circle, $triangle {
+      my $i = %globals<canvas>.get_item($_);
+
+      $i.button-press-event.tap(-> *@a { button-press($i, |@a[2, *-1]) })
+    }
   }
 
 }
@@ -301,9 +301,10 @@ sub create_width_for_height_table (
   $rotation
 ) {
   my $t = qq:to/TEXT/.chomp;
-  This is a long paragraph will have to be split over a few lines so we can{''
-  } see if its allocated height changes when its allocated width is changed
-  TEXT
+    This is a long paragraph will have to be split over a few lines so we{''
+    } can see if its allocated height changes when its allocated width is{''
+    } changed
+    TEXT
 
   my $table = %globals<table-obj>.new($root);
   (.width, .height) = ($width, $height) with $table;
@@ -312,16 +313,16 @@ sub create_width_for_height_table (
 
   my $item = %globals<rect-obj>.new($table, 0, 0, $width - 10, 10);
   $item.fill-color = 'red';
-  $table.set-child-properties($item,
+  $table.set_child_properties($item,
     'row', 0, 'column', 0, 'x-shrink', True
   );
 
   $item = %globals<text-obj>.new($table, $t, 0, 0, -1, GOO_CANVAS_ANCHOR_NW);
-  $table.set-child-properties($item,
+  $table.set_child_properties($item,
     'row',      1,    'column',   0,     'x-expand', True, 'x-fill', True,
     'x-shrink', True, 'y-expand', True,  'y-fill',   True
   );
-  set-data($item, 'id', 'Text Item');
+  $item.set-data('id', 'Text Item');
 
   # Rather than reuse $item and confuse thing, we use a new lexical to
   # clarify the fact that this MAY be a different thing.
@@ -330,7 +331,7 @@ sub create_width_for_height_table (
 
   $item = %globals<rect-obj>.new($table, 0, 0, $width - 2, 10);
   $item.fill-color = 'red';
-  $table.set-child-properties($item, 'row', 2, 'column', 0, 'x-shrink', True);
+  $table.set_child_properties($item, 'row', 2, 'column', 0, 'x-shrink', True);
 }
 
 sub create_table_page {
@@ -351,9 +352,15 @@ sub create_table_page {
   $sw.set_size_request(600, 450);
   $sw.add(%globals<canvas>);
 
-  $root = %globals<model-mode> ??
-    Goo::Model::Group.new !! %globals<canvas>.get_root_item;
-  %globals<canvas>.root-item-model = $root if %globals;
+  if %globals<model-mode> {
+    $root = Goo::Model::Group.new;
+    %globals<canvas>.root-item-model = $root if $root;
+  } else {
+    $root = %globals<canvas>.get_root_item;
+    %globals<canvas>.root-item = $root if $root;
+  }
+  die 'Could not access root item!' unless $root;
+
   create_demo_table($root, 400, 200, -1, -1);
   create_demo_table($root, 400, 260, 100, -1);
 

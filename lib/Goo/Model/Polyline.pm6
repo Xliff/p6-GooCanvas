@@ -23,12 +23,9 @@ class Goo::Model::Polyline is Goo::Model::Simple {
     my @points = @props[0] ~~ Str ?? () !! @props.splice(0, $num_points * 2);
     my $simple = goo_canvas_polyline_model_new($parent, $cp, $np, Str);
 
-    return Nil unless $simple;
+    return GooCanvasItemModel unless $simple;
 
-    my $o = self.bless(
-      simple => $simple,
-      props  => @props
-    );
+    my $o = self.bless( :$simple, :@props );
     $o.points = @points if +@points;
     $o;
   }
@@ -54,7 +51,7 @@ class Goo::Model::Polyline is Goo::Model::Simple {
       Str
     );
 
-    $simple ?? self.bless( :$simple, props => @props ) !! Nil;
+    $simple ?? self.bless( :$simple, :@props ) !! Nil;
   }
 
   method get_type is also<get-type> {

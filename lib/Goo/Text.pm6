@@ -1,9 +1,8 @@
 use v6.c;
 
+use Method::Also;
+
 use Pango::Raw::Types;
-
-
-use GTK::Raw::Utils;
 
 use Goo::Raw::Types;
 use Goo::Raw::Text;
@@ -11,6 +10,9 @@ use Goo::Raw::Text;
 use Goo::CanvasItemSimple;
 
 use Goo::Roles::Text;
+
+our subset GooCanvasTextAncestry is export of Mu
+  where GooCanvasText | GooCanvasItemSimpleAncestry;
 
 class Goo::Text is Goo::CanvasItemSimple {
   also does Goo::Roles::Text;
@@ -21,39 +23,45 @@ class Goo::Text is Goo::CanvasItemSimple {
     self.setSimpleCanvasItem( cast(GooCanvasItemSimple, $!t = $text) )
   }
 
-  method Goo::Raw::Types::GooCanvasText
-    #is also<Text>
+  method Goo::Raw::Definitions::GooCanvasText
+    is also<GooCanvasText>
   { $!t }
 
   proto method new (|) { * }
 
-  multi method new (GooCanvasText $text) {
-    self.bless($text);
+  multi method new (GooCanvasTextAncestry $text) {
+    $text ?? self.bless($text) !! GooCanvasText;
+  }
+  multi method new (GooCanvasItem() $parent) {
+    samewith($parent, Str, 0, 0, -1, 0);
   }
   multi method new (
     GooCanvasItem() $parent,
-    Str() $text,
+    Str() $t,
     Num() $x,
     Num() $y,
     Num() $width,
     Int() $anchor
   ) {
     my gdouble ($xx, $yy, $w) = ($x, $y, $width);
-    my guint $a = resolve-uint($anchor);
-    self.bless(
-      text => goo_canvas_text_new($parent, $text, $xx, $yy, $w, $a, Str)
-    );
+    my guint $a = $anchor;
+    my $text = goo_canvas_text_new($parent, $t, $xx, $yy, $w, $a, Str);
+
+    $text ?? self.bless(:$text) !! Nil;
   }
 
   method get_natural_extents (
     PangoRectangle $ink_rect,
     PangoRectangle $logical_rect
-  ) {
+  )
+    is also<get-natural-extents>
+  {
     goo_canvas_text_get_natural_extents($!t, $ink_rect, $logical_rect);
   }
 
-  method get_type {
+  method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_text_get_type, $n, $t );
   }
 

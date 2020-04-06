@@ -1,6 +1,5 @@
 use v6.c;
 
-
 use Goo::Raw::Types;
 
 use GLib::Value;
@@ -12,7 +11,7 @@ role Goo::Roles::Polyline {
   method arrow-length is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-length', $gv)
         );
@@ -29,7 +28,7 @@ role Goo::Roles::Polyline {
   method arrow-tip-length is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-tip-length', $gv)
         );
@@ -46,7 +45,7 @@ role Goo::Roles::Polyline {
   method arrow-width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('arrow-width', $gv)
         );
@@ -63,7 +62,7 @@ role Goo::Roles::Polyline {
   method close-path is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('close-path', $gv)
         );
@@ -80,7 +79,7 @@ role Goo::Roles::Polyline {
   method end-arrow is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('end-arrow', $gv)
         );
@@ -97,7 +96,7 @@ role Goo::Roles::Polyline {
   method height is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('height', $gv)
         );
@@ -114,22 +113,19 @@ role Goo::Roles::Polyline {
   method points is rw  {
     my GLib::Value $gv .= new( Goo::Points.get_type() );
     Proxy.new(
-      FETCH => -> $ {
-        $gv.boxed.defined ??
-          Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) ) !! 0;
+      FETCH => sub ($) {
+        $gv.boxed ?? Goo::Points.new( cast(GooCanvasPoints, $gv.boxed) )
+                  !! GooCanvasPoints;
       },
       STORE => -> $, $val is copy {
         die "Invalid value of type '{ $val.^name }' passed."
           unless $val ~~ (Array, GooCanvasPoints, Goo::Points).any;
-        given $val {
-          when Array {
-            $val = Goo::Points.new($val).Points;
-          }
-          when Goo::Points {
-            $val = Goo::Raw::Types::GooCanvasPoints($val);
-          }
+
+        $gv.boxed = do given $val {
+          when Array       { $_ = Goo::Points.new($val); proceed }
+          when Goo::Points { $val.GooCanvasPoints                }
         }
-        $gv.boxed = $val;
+        
         self.prop_set('points', $gv);
       }
     );
@@ -139,7 +135,7 @@ role Goo::Roles::Polyline {
   method start-arrow is rw  {
     my GLib::Value $gv .= new( G_TYPE_BOOLEAN );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('start-arrow', $gv)
         );
@@ -156,7 +152,7 @@ role Goo::Roles::Polyline {
   method width is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('width', $gv)
         );
@@ -173,7 +169,7 @@ role Goo::Roles::Polyline {
   method x is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('x', $gv)
         );
@@ -190,7 +186,7 @@ role Goo::Roles::Polyline {
   method y is rw  {
     my GLib::Value $gv .= new( G_TYPE_DOUBLE );
     Proxy.new(
-      FETCH => -> $ {
+      FETCH => sub ($) {
         $gv = GLib::Value.new(
           self.prop_get('y', $gv)
         );

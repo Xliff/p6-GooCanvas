@@ -1,7 +1,5 @@
 use v6.c;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
 
 use GTK::Application;
@@ -14,21 +12,14 @@ use Goo::CanvasItemSimple;
 
 use Goo::Model::Group;
 
-my (%globals, %data, $app);
-
-sub get-data (GObject() $i, $k) {
-  %data{+$i.p}{$k};
-}
-sub set-data (GObject() $i, $k, $v) {
-  %data{+$i.p}{$k} = $v;
-}
+my (%globals, $app);
 
 sub on_focus_in ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
-  my $id = get-data($i, 'id');
+  $i .= get_model if %globals<model-mode>;
+  my $id = $i.get-data('id');
 
   say "{ $id // '<unknown>' } received focus-in event";
   $i.stroke-color = 'black';
@@ -40,8 +31,8 @@ sub on_focus_out ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
-  my $id = get-data($i, 'id');
+  $i .= get_model if %globals<model-mode>;
+  my $id = $i.get-data('id');
 
   say "{ $id // '<unknown>' } received focus-out event";
 
@@ -57,8 +48,8 @@ sub on_button_press ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
-  my $id = get-data($i, 'id');
+  $i .= get_model if %globals<model-mode>;
+  my $id = $i.get-data('id');
 
   say "{ $id // 'unknwon' } received button-press event";
   $item.canvas.grab_focus($item);
@@ -69,8 +60,8 @@ sub on_key_press ($item, $r) {
   CATCH { default { .message.say; $app.exit } }
 
   my $i = $item;
-  $i .= model if %globals<model-mode>;
-  my $id = get-data($i, 'id');
+  $i .= get_model if %globals<model-mode>;
+  my $id = $i.get-data('id');
 
   say "{ $id // 'unknown' } received key-press event";
   $r.r = 0;
@@ -90,12 +81,13 @@ sub create_focus_box ($can, $x, $y, $w, $h, $c) {
   my $root = %globals<model-mode> ??
     $can.root_item_model!! $can.root_item;
 
-  my $item = %globals<rect-obj>.new($root, $x, $y, $w, $h);
-  #$item.stroke-pattern = CairoPatternObject;
-  $item.fill-color = $c;
-  $item.line-width = 2;
-  $item.can-focus  = True;
-  set-data($item, 'id', $c);
+  given ( my $item = %globals<rect-obj>.new($root, $x, $y, $w, $h) ) {
+    #.stroke-pattern = CairoPatternObject;
+    .fill-color = $c;
+    .line-width = 2;
+    .can-focus  = True;
+    .set-data('id', $c);
+  }
 
   unless %globals<model-mode> {
     $item.focus-in-event.tap(->     *@a { on_focus_in(    $item, @a[*-1] ) });
