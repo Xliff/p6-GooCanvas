@@ -2,19 +2,12 @@ use v6.c;
 
 use Cairo;
 
-use Pango::Raw::Types;
-use GTK::Compat::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
-
-use GTK::Raw::Utils;
-
 use Goo::Raw::CanvasItemSimple;
 
 use GLib::Value;
 use Pango::FontDescription;
 
-use GTK::Roles::Protection;
 use Goo::Roles::CanvasItem;
 
 class Goo::CanvasItemSimple {
@@ -22,18 +15,18 @@ class Goo::CanvasItemSimple {
 
   has GooCanvasItemSimple $!gc;
 
-  submethod BUILD (:$simplecanvas) {
-    self.ADD-PREFIX('Goo::');
+  multi submethod BUILD (:$simplecanvas is required) {
+    #self.ADD-PREFIX('Goo::');
     self.setSimpleCanvasItem($simplecanvas) if $simplecanvas.defined;
   }
 
   method setSimpleCanvasItem (GooCanvasItemSimple $simplecanvas) {
-    self.IS-PROTECTED;
+    #self.IS-PROTECTED;
     self.setCanvasItem($!gc = $simplecanvas);
   }
 
   multi method new (GooCanvasItemSimple $simplecanvas) {
-    self.bless(:$simplecanvas);
+    $simplecanvas ?? self.bless(:$simplecanvas) !! Nil;
   }
 
   # Type: GooCairoAntialias
@@ -118,14 +111,19 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoPattern
-  method fill-pattern is rw  {
+  method fill-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
-        cast(cairo_pattern_t, $gv.pointer);
+
+        return Nil unless $gv.pointer;
+
+        my $fp = cast(cairo_pattern_t, $gv.pointer);
+
+        $raw ?? $fp !! Cairo::Pattern.new($fp);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val = $val.pattern if $val ~~ Cairo::Pattern;
@@ -185,16 +183,19 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: PangoFontDescription
-  method font-desc is rw  {
+  method font-desc (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
-        Pango::FontDescription(
-          cast(PangoFontDescription, $gv.pointer)
-        )
+
+        return Nil unless $gv.pointer;
+
+        my $fd = cast(PangoFontDescription, $gv.pointer);
+
+        $raw ?? $fd !! Pango::FontDescription($fd);
       },
       STORE => -> $, PangoFontDescription() $val is copy {
         $gv.pointer = $val;
@@ -355,17 +356,23 @@ class Goo::CanvasItemSimple {
   }
 
   # Type: GooCairoPattern
-  method stroke-pattern is rw  {
+  method stroke-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
-        cast(GooCairoPattern, $gv.pointer);
+
+        return Nil unless $gv.pointer;
+
+        my $fp = cast(cairo_pattern_t, $gv.pointer);
+
+        $raw ?? $fp !! Cairo::Pattern.new($fp);
       },
       STORE => -> $, GooCairoPattern $val is copy {
-        $gv.pointer = $val // cairo_matrix_t;
+        $val = $val.pattern if $val ~~ Cairo::Pattern;
+        $gv.pointer = $val;
         self.prop_set('stroke-pattern', $gv);
       }
     );
@@ -387,20 +394,22 @@ class Goo::CanvasItemSimple {
   }
 
   method changed (Int() $recompute_bounds) {
-    my gboolean $r = resolve-int($recompute_bounds);
+    my gboolean $r = $recompute_bounds.so.Int;
+
     goo_canvas_item_simple_changed($!gc, $r);
   }
 
   method check_in_path (
-    Num $x,
-    Num $y,
+    Num() $x,
+    Num() $y,
     CairoContextObject $cr is copy,
     Int() $pointer_events
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
-    my guint $p = resolve-uint($pointer_events);
+    my guint $p = $pointer_events;
+
     $cr .= context if $cr ~~ Cairo::Context;
-    goo_canvas_item_simple_check_in_path($!gc, $xx, $yy, $cr, $p);
+    so goo_canvas_item_simple_check_in_path($!gc, $xx, $yy, $cr, $p);
   }
 
   method check_style {
@@ -417,6 +426,7 @@ class Goo::CanvasItemSimple {
 
   method get_type {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_item_simple_get_type, $n, $t );
   }
 

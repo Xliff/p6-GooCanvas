@@ -2,10 +2,10 @@ use v6.c;
 
 use NativeCall;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
+
+
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
+
 
 use GLib::Value;
 use GTK::Widget;

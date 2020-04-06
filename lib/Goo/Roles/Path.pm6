@@ -1,7 +1,6 @@
 use v6.c;
 
-use GTK::Compat::Types;
-
+use Goo::Raw::Types;
 use GLib::Value;
 
 role Goo::Roles::Path {

@@ -2,13 +2,11 @@ use v6.c;
 
 use Cairo;
 
-use GTK::Compat::Types;
-
 use Goo::Raw::Types;
 use Goo::Raw::Boxed;
 
 use GLib::Value;
-use GTK::Compat::Pixbuf;
+use GDK::Pixbuf;
 
 role Goo::Roles::Image {
 
@@ -47,14 +45,18 @@ role Goo::Roles::Image {
   }
 
   # Type: GooCairoPattern
-  method pattern is rw  {
+  method pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('pattern', $gv)
         );
-        cast(cairo_pattern_t, $gv.boxed);
+
+        return Nil unless $gv.boxed;
+
+        my $p = cast(cairo_pattern_t, $gv.boxed);
+        $raw ?? $p !! Cairo::Pattern.new($p);
       },
       STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;

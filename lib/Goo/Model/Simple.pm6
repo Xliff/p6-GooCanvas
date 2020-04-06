@@ -3,20 +3,20 @@ use v6.c;
 use Cairo;
 
 use Pango::Raw::Types;
-use GTK::Compat::Types;
-use GTK::Compat::RGBA;
-use Goo::Raw::Types;
 
-use Goo::Model::Roles::Item;
+use GDK::RGBA;
+use Goo::Raw::Types;
 
 use GLib::Value;
 use Pango::FontDescription;
+
+use Goo::Model::Roles::Item;
 
 class Goo::Model::Simple {
   also does Goo::Model::Roles::Item;
 
   submethod BUILD (:$simple, :@props) {
-    self.ADD-PREFIX('Goo::');
+    #self.ADD-PREFIX('Goo::');
     self.setModelItem(
       cast( GooCanvasItemModel, $simple )
     );
@@ -26,7 +26,7 @@ class Goo::Model::Simple {
   }
 
   multi method new (GooCanvasItemModel $simple) {
-    self.bless(:$simple);
+    $simple ?? self.bless(:$simple) !! Nil;
   }
 
   # Type: GooCairoAntialias
@@ -101,7 +101,10 @@ class Goo::Model::Simple {
         $gv = GLib::Value.new(
           self.prop_get('fill-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer)
+
+        return GdkRGBA unless $gv.pointer;
+
+        cast(GdkRGBA, $gv.pointer)
       },
       STORE => -> $, GdkRGBA() $val is copy {
         $gv.pointer = $val;
@@ -128,23 +131,21 @@ class Goo::Model::Simple {
   }
 
   # Type: GooCairoPattern
-  method fill-pattern is rw  {
-    my GLib::Value $gv .= new(
-      Goo::Raw::Boxed.pattern_get_type()
-    );
+  method fill-pattern (:$raw = False) is rw  {
+    my GLib::Value $gv .= new( Goo::Raw::Boxed.pattern_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('fill-pattern', $gv)
         );
-        $gv.boxed.defined ??
-          Cairo::Pattern::Surface.new(
-            cast(cairo_pattern_t, $gv.boxed)
-          ) !! Nil;
+
+        return Nil unless $gv.boxed;
+
+        my $p = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $p !! Cairo::Pattern.new($p);
       },
-      STORE => -> $, $val is copy {
-        die 'Pattern must be a Cairo::Pattern compatible object!'
-          unless $val ~~ CairoPatternObject;
+      STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
         $gv.boxed = $val;
         self.prop_set('fill-pattern', $gv);
@@ -154,7 +155,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method fill-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'fill-pixbuf does not allow reading' if $DEBUG;
@@ -202,16 +203,19 @@ class Goo::Model::Simple {
   }
 
   # Type: PangoFontDescription
-  method font-desc is rw  {
+  method font-desc (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('font-desc', $gv)
         );
-        Pango::FontDescription.new(
-          cast(PangoFontDescription, $gv.pointer)
-        );
+
+        return Nil unless $gv.pointer;
+
+        my $fd = cast(PangoFontDescription, $gv.pointer);
+
+        $raw ?? $fd !! Pango::FontDescription.new($fd);
       },
       STORE => -> $, PangoFontDescription() $val is copy {
         $gv.pointer = $val;
@@ -256,9 +260,7 @@ class Goo::Model::Simple {
 
   # Type: GooCanvasLineDash
   method line-dash is rw  {
-    my GLib::Value $gv .= new(
-      Goo::Raw::Boxed.line_dash_get_type()
-    );
+    my GLib::Value $gv .= new( Goo::Raw::Boxed.line_dash_get_type() );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
@@ -364,7 +366,11 @@ class Goo::Model::Simple {
         $gv = GLib::Value.new(
           self.prop_get('stroke-color-gdk-rgba', $gv)
         );
-        cast(GTK::Compat::RGBA, $gv.pointer);
+
+        return Nil unless $gv.pointer;
+
+        cast(GdkRGBA, $gv.pointer);
+
       },
       STORE => -> $, GdkRGBA $val is copy {
         $gv.pointer = $val;
@@ -391,7 +397,7 @@ class Goo::Model::Simple {
   }
 
   # Type: GooCairoPattern
-  method stroke-pattern is rw  {
+  method stroke-pattern (:$raw = False) is rw  {
     my GLib::Value $gv .= new(
       Goo::Raw::Boxed.pattern_get_type()
     );
@@ -400,14 +406,14 @@ class Goo::Model::Simple {
         $gv = GLib::Value.new(
           self.prop_get('stroke-pattern', $gv)
         );
-        $gv.boxed.defined ??
-          Cairo::Pattern::Surface.new(
-            cast(cairo_pattern_t, $gv.boxed)
-          ) !! Nil;
+
+        return cairo_pattern_t unless $gv.boxed;
+
+        my $p = cast(cairo_pattern_t, $gv.boxed);
+
+        $raw ?? $p !! Cairo::Pattern.new($p);
       },
-      STORE => -> $, $val is copy {
-        die 'Pattern must be a Cairo::Pattern compatible object!'
-          unless $val ~~ CairoPatternObject;
+      STORE => -> $, CairoPatternObject $val is copy {
         $val .= pattern if $val ~~ Cairo::Pattern;
         $gv.boxed = $val;
         self.prop_set('stroke-pattern', $gv);
@@ -417,7 +423,7 @@ class Goo::Model::Simple {
 
   # Type: GdkPixbuf
   method stroke-pixbuf is rw  {
-    my GLib::Value $gv .= new( GTK::Compat::Pixbuf.get_type() );
+    my GLib::Value $gv .= new( GDK::Pixbuf.get_type() );
     Proxy.new(
       FETCH => -> $ {
         warn 'stroke-pixbuf does not allow reading' if $DEBUG;

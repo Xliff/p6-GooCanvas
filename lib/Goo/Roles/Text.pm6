@@ -1,11 +1,8 @@
 use v6.c;
 
-use Pango::Raw::Types;
-use GTK::Compat::Types;
-use Goo::Raw::Enums;
+use Goo::Raw::Types;
 
 use GLib::Value;
-
 
 role Goo::Roles::Text {
 
@@ -17,7 +14,7 @@ role Goo::Roles::Text {
         $gv = GLib::Value.new(
           self.prop_get('alignment', $gv)
         );
-        PangoAlignment( $gv.enum );
+        PangoAlignmentEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -34,7 +31,7 @@ role Goo::Roles::Text {
         $gv = GLib::Value.new(
           self.prop_get('anchor', $gv)
         );
-        GooCanvasAnchorType( $gv.uint );
+        GooCanvasAnchorTypeEnum( $gv.uint );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -51,7 +48,7 @@ role Goo::Roles::Text {
         $gv = GLib::Value.new(
           self.prop_get('ellipsize', $gv)
         );
-        PangoEllipsizeMode( $gv.uint );
+        PangoEllipsizeModeEnum( $gv.uint );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -136,7 +133,7 @@ role Goo::Roles::Text {
         $gv = GLib::Value.new(
           self.prop_get('wrap', $gv)
         );
-        PangoWrapMode( $gv.uint );
+        PangoWrapModeEnum( $gv.uint );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;

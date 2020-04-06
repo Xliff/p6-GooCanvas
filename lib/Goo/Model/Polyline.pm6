@@ -3,10 +3,7 @@ use v6.c;
 use Method::Also;
 use NativeCall;
 
-use GTK::Compat::Types;
 use Goo::Raw::Types;
-
-use GTK::Raw::Utils;
 
 use Goo::Model::Simple;
 
@@ -21,11 +18,15 @@ class Goo::Model::Polyline is Goo::Model::Simple {
     Int()                $num_points,
     *@props
   ) {
-    my gboolean $cp = resolve-bool($close_path);
-    my gint $np = resolve-int($num_points);
+    my gboolean $cp = $close_path.so.Int;
+    my gint $np = $num_points;
     my @points = @props[0] ~~ Str ?? () !! @props.splice(0, $num_points * 2);
+    my $simple = goo_canvas_polyline_model_new($parent, $cp, $np, Str);
+
+    return Nil unless $simple;
+
     my $o = self.bless(
-      simple => goo_canvas_polyline_model_new($parent, $cp, $np, Str),
+      simple => $simple,
       props  => @props
     );
     $o.points = @points if +@points;
@@ -43,16 +44,22 @@ class Goo::Model::Polyline is Goo::Model::Simple {
     is also<new-line>
   {
     my ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
-    self.bless(
-      simple => goo_canvas_polyline_model_new_line(
-        $parent, $xx1, $yy1, $xx2, $yy2, Str
-      ),
-      props  => @props
+
+    my $simple = goo_canvas_polyline_model_new_line(
+      $parent,
+      $xx1,
+      $yy1,
+      $xx2,
+      $yy2,
+      Str
     );
+
+    $simple ?? self.bless( :$simple, props => @props ) !! Nil;
   }
 
   method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type(
       self.^name, &goo_canvas_polyline_model_get_type, $n, $t
     );

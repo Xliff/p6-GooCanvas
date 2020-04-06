@@ -1,6 +1,6 @@
 use NativeCall;
 
-use GTK::Compat::Types;
+
 use Goo::Raw::Types;
 
 class Goo::Raw::Boxed {

@@ -1,8 +1,8 @@
 use v6.c;
 
-use GTK::Compat::Types;
-
 use GLib::Value;
+
+use Goo::Raw::Types;
 
 role Goo::Roles::Rect {
 

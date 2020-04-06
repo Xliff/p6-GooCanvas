@@ -4,30 +4,22 @@ use Method::Also;
 
 use Cairo;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
-
-use GTK::Raw::Utils;
-
 use Goo::Model::Raw::Item;
 
 use GLib::Value;
 
-use GTK::Roles::Properties;
-use GTK::Roles::Protection;
-use GTK::Roles::Signals::Generic;
+use GLib::Roles::Object;
+use GLib::Roles::Signals::Generic;
 
 role Goo::Model::Roles::Item {
-  also does GTK::Roles::Properties;
-  also does GTK::Roles::Protection;
-  also does GTK::Roles::Signals::Generic;
+  also does GLib::Roles::Object;
+  also does GLib::Roles::Signals::Generic;
 
   has GooCanvasItemModel $!im;
 
-  submethod BUILD (:$model) {
-    self.ADD-PREFIX('Goo::');
+  multi submethod BUILD (:$model is required) {
+    #self.ADD-PREFIX('Goo::');
     self.setModelItem($model);
   }
 
@@ -36,8 +28,8 @@ role Goo::Model::Roles::Item {
     self!setObject($!im = $item);
   }
 
-  multi method new (GooCanvasItemModel $model) {
-    self.bless(:$model);
+  multi method new-goocanvasitem-obj (GooCanvasItemModel $model) {
+    $model ?? self.bless(:$model) !! Nil;
   }
 
   method Goo::Raw::Types::GooCanvasItemModel
@@ -47,12 +39,15 @@ role Goo::Model::Roles::Item {
     >
   { $!im }
 
-  method parent is rw {
+  method parent (:$raw = False) is rw {
     Proxy.new(
       FETCH => sub ($) {
-        Goo::Model::Roles::Item.new(
-          goo_canvas_item_model_get_parent($!im)
-        );
+        my $p = goo_canvas_item_model_get_parent($!im);
+
+        $p ??
+          ( $raw ?? $p !! Goo::Model::Roles::Item.new-goocanvasitem-obj($p) )
+          !!
+          Nil;
       },
       STORE => sub ($, GooCanvasItemModel() $parent is copy) {
         goo_canvas_item_model_set_parent($!im, $parent);
@@ -60,12 +55,15 @@ role Goo::Model::Roles::Item {
     );
   }
 
-  method style is rw {
+  method style (:$raw = False) is rw {
     Proxy.new(
       FETCH => sub ($) {
-        Goo::Style.new(
-          cast( GooCanvasStyle, goo_canvas_item_model_get_style($!im) )
-        );
+        my $s = goo_canvas_item_model_get_style($!im);
+
+        return Nil unless $s;
+
+        $s = cast(GooCanvasStyle, $s);
+        $raw ?? $s !! Goo::Style.new($s);
       },
       STORE => sub ($, GooCanvasStyle() $style is copy) {
         goo_canvas_item_model_set_style($!im, $style);
@@ -159,14 +157,19 @@ role Goo::Model::Roles::Item {
   }
 
   # Type: GooCairoMatrix
-  method transform is rw  {
+  method transform (:$raw = False) is rw  {
     my GLib::Value $gv .= new( G_TYPE_POINTER );
     Proxy.new(
       FETCH => -> $ {
         $gv = GLib::Value.new(
           self.prop_get('transform', $gv)
         );
-        Cairo::Matrix.new( matrix => cast(cairo_matrix_t, $gv.pointer) );
+
+        return Nil unless $gv.pointer;
+
+        my $m = cast(cairo_matrix_t, $gv.pointer);
+
+        $raw ?? $m !! Cairo::Matrix.new($m);
       },
       STORE => -> $, CairoMatrixObject $val is copy {
         $val .= matrix if $val ~~ Cairo::Matrix;
@@ -184,7 +187,7 @@ role Goo::Model::Roles::Item {
         $gv = GLib::Value.new(
           self.prop_get('visibility', $gv)
         );
-        GooCanvasItemVisibility( $gv.enum );
+        GooCanvasItemVisibilityEnum( $gv.enum );
       },
       STORE => -> $, Int() $val is copy {
         $gv.uint = $val;
@@ -249,7 +252,8 @@ role Goo::Model::Roles::Item {
   method add_child (GooCanvasItemModel() $child, Int() $position = -1)
     is also<add-child>
   {
-    my gint $p = resolve-int($position);
+    my gint $p = $position;
+
     goo_canvas_item_model_add_child($!im, $child, $position);
   }
 
@@ -264,9 +268,10 @@ role Goo::Model::Roles::Item {
     Int() $type
   ) {
     my gdouble ($xx, $yy, $s, $d) = ($x, $y, $scale, $degrees);
-    my gboolean $a = resolve-bool($absolute);
-    my gint ($dur, $st) = resolve-int($duration, $step_time);
-    my guint $t = resolve-uint($type);
+    my gboolean $a = $absolute.so.Int;
+    my gint ($dur, $st) = ($duration, $step_time);
+    my guint $t = $type;
+
     goo_canvas_item_model_animate($!im, $xx, $yy, $s, $d, $a, $dur, $st, $t);
   }
 
@@ -275,7 +280,8 @@ role Goo::Model::Roles::Item {
   }
 
   method get_child (Int() $child_num) is also<get-child> {
-    my gint $cn = resolve-int($child_num);
+    my gint $cn = $child_num;
+
     goo_canvas_item_model_get_child($!im, $cn);
   }
 
@@ -314,6 +320,7 @@ role Goo::Model::Roles::Item {
     is also<get-simple-transform>
   {
     my gdouble ($xx, $yy, $s, $r) = ($x, $y, $scale, $rotation);
+
     goo_canvas_item_model_get_simple_transform($!im, $xx, $yy, $s, $r);
   }
 
@@ -325,18 +332,26 @@ role Goo::Model::Roles::Item {
   # the 'transform' property, above.
   # Replace the attribute with a proxy object that call get_transform and
   # set_transform?
-  multi method get_transform {
+  multi method get_transform (:$raw = False) {
     my $matrix = cairo_matrix_t.new;
     samewith($matrix);
-    Cairo::Matrix.new(:$matrix);
   }
-  multi method get_transform (CairoMatrixObject $transform is copy) {
+  multi method get_transform (
+    CairoMatrixObject $transform is copy,
+    :$raw = False
+  ) {
+    die '$transform must be a defined, Cairo::Matrix compatible object!'
+      unless $transform;
+
     $transform .= matrix if $transform ~~ Cairo::Matrix;
     goo_canvas_item_model_get_transform($!im, $transform);
+
+    Cairo::Matrix.new($transform);
   }
 
   method get_type is also<get-type> {
     state ($n, $t);
+
     unstable_get_type( self.^name, &goo_canvas_item_model_get_type, $n, $t );
   }
 
@@ -347,7 +362,8 @@ role Goo::Model::Roles::Item {
   method move_child (Int() $old_position, Int() $new_position)
     is also<move-child>
   {
-    my gint ($op, $np) = resolve-int($old_position, $new_position);
+    my gint ($op, $np) = ($old_position, $new_position);
+
     goo_canvas_item_model_move_child($!im, $old_position, $new_position);
   }
 
@@ -360,17 +376,20 @@ role Goo::Model::Roles::Item {
   }
 
   method remove_child (Int() $child_num) is also<remove-child> {
-    my gint $cn = resolve-int($child_num);
+    my gint $cn = $child_num;
+
     goo_canvas_item_model_remove_child($!im, $cn);
   }
 
   method rotate (Num() $degrees, Num() $cx, Num() $cy) {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_model_rotate($!im, $d, $cxx, $cyy);
   }
 
   method scale (Num() $sx, Num() $sy) {
     my gdouble ($sxx, $syy) = ($sx, $sy);
+
     goo_canvas_item_model_scale($!im, $sxx, $syy);
   }
 
@@ -398,21 +417,25 @@ role Goo::Model::Roles::Item {
     is also<set-simple-transform>
   {
     my gdouble ($xx, $yy, $s, $r) = ($x, $y, $scale, $rotation);
+
     goo_canvas_item_model_set_simple_transform($!im, $xx, $yy, $s, $r);
   }
 
   method set_transform (CairoMatrixObject $transform) is also<set-transform> {
     $transform .= matrix if $transform ~~ Cairo::Matrix;
+
     goo_canvas_item_model_set_transform($!im, $transform);
   }
 
   method skew_x (Num() $degrees, Num() $cx, Num() $cy) is also<skew-x> {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_model_skew_x($!im, $d, $cxx, $cyy);
   }
 
   method skew_y (Num() $degrees, Num() $cx, Num() $cy) is also<skew-y> {
     my gdouble ($d, $cxx, $cyy) = ($degrees, $cx, $cy);
+
     goo_canvas_item_model_skew_y($!im, $d, $cxx, $cyy);
   }
 
@@ -422,6 +445,7 @@ role Goo::Model::Roles::Item {
 
   method translate (Num() $tx, Num() $ty) {
     my gdouble ($txx, $tyy) = ($tx, $ty);
+
     goo_canvas_item_model_translate($!im, $txx, $tyy);
   }
 

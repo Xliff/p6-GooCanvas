@@ -2,14 +2,11 @@ use v6.c;
 
 use NativeCall;
 
-use GTK::Compat::Types;
-
-use GLib::Roles::Object;
-
 use Goo::Raw::Types;
 
 use Goo::Model::Simple;
 
+use GLib::Roles::Object;
 use Goo::Roles::Rect;
 
 class Goo::Model::Rect is Goo::Model::Simple {
@@ -24,10 +21,9 @@ class Goo::Model::Rect is Goo::Model::Simple {
     *@props
   ) {
     my gdouble ($xx, $yy, $w, $h) = ($x, $y, $width, $height);
-    self.bless(
-      simple => goo_canvas_rect_model_new($parent, $xx, $yy, $w, $h, Str),
-      props  => @props
-    );
+    my $simple = goo_canvas_rect_model_new($parent, $xx, $yy, $w, $h, Str);
+
+    $simple ?? self.bless( :$simple, props  => @props ) !! Nil;
   }
 
   method get_type {

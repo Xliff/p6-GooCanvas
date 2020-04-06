@@ -3,7 +3,7 @@ use v6.c;
 use NativeCall;
 
 use Pango::Raw::Types;
-use GTK::Compat::Types;
+
 use Goo::Raw::Types;
 
 unit package Goo::Raw::Text;

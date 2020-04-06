@@ -2,26 +2,20 @@ use v6.c;
 
 use Method::Also;
 
-use GTK::Compat::Types;
-use GTK::Raw::Types;
 use Goo::Raw::Types;
-use Goo::Raw::Enums;
-
 use Goo::Raw::Canvas;
-
-use GLib::Roles::ListData;
-use GTK::Roles::Scrollable;
-use Goo::Roles::Signals::Canvas;
 
 use GLib::Value;
 use GLib::GList;
-use GTK::Compat::RGBA;
+use GDK::RGBA;
 use GTK::Container;
-
 # Must use both objects if creating from Goo::Roles::CanvasItem
 use Goo::CanvasItemSimple;
 
+use GLib::Roles::ListData;
+use GTK::Roles::Scrollable;
 use Goo::Roles::CanvasItem;
+use Goo::Roles::Signals::Canvas;
 
 our subset GooCanvasAncestry is export
   where GooCanvas | GtkScrollable | ContainerAncestry;

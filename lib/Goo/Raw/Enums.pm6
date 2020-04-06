@@ -2,27 +2,28 @@ use v6.c;
 
 use Cairo;
 
+use GLib::Raw::Definitions;
+
 unit package Goo::Raw::Enums;
 
-constant cairo_fill_rule_t   is export := Cairo::FillRule;
-constant cairo_line_cap_t    is export := Cairo::LineCap;
-constant cairo_line_join_t   is export := Cairo::LineJoin;
-
-our enum GooCanvasItemVisibility is export (
-    GOO_CANVAS_ITEM_HIDDEN =>  0,
-    GOO_CANVAS_ITEM_INVISIBLE =>  1,
-    GOO_CANVAS_ITEM_VISIBLE =>  2,
-    GOO_CANVAS_ITEM_VISIBLE_ABOVE_THRESHOLD =>  3,
+our constant GooCanvasItemVisibility is export := guint32;
+our enum GooCanvasItemVisibilityEnum is export (
+    GOO_CANVAS_ITEM_HIDDEN                  => 0,
+    GOO_CANVAS_ITEM_INVISIBLE               => 1,
+    GOO_CANVAS_ITEM_VISIBLE                 => 2,
+    GOO_CANVAS_ITEM_VISIBLE_ABOVE_THRESHOLD => 3,
 );
 
-our enum GooCanvasAnimateType is export <
+our constant GooCanvasAnimateType is export := guint32;
+our enum GooCanvasAnimateTypeEnum is export <
     GOO_CANVAS_ANIMATE_FREEZE
     GOO_CANVAS_ANIMATE_RESET
     GOO_CANVAS_ANIMATE_RESTART
     GOO_CANVAS_ANIMATE_BOUNCE
 >;
 
-our enum GooCanvasPointerEvents is export (
+our constant GooCanvasPointerEvents is export := guint32;
+our enum GooCanvasPointerEventsEnum is export (
   GOO_CANVAS_EVENTS_NONE                => 0,
   GOO_CANVAS_EVENTS_VISIBLE_MASK        => 1 +< 0,
   GOO_CANVAS_EVENTS_PAINTED_MASK        => 1 +< 1,
@@ -39,7 +40,8 @@ our enum GooCanvasPointerEvents is export (
   GOO_CANVAS_EVENTS_ALL                 => 12      # GOO_CANVAS_EVENTS_FILL_MASK | GOO_CANVAS_EVENTS_STROKE_MASK
 );
 
-our enum GooCanvasAnchorType is export (
+our constant GooCanvasAnchorType is export := guint32;
+our enum GooCanvasAnchorTypeEnum is export (
   'GOO_CANVAS_ANCHOR_CENTER',
   'GOO_CANVAS_ANCHOR_NORTH',
   'GOO_CANVAS_ANCHOR_NORTH_WEST',
@@ -58,3 +60,17 @@ our enum GooCanvasAnchorType is export (
   GOO_CANVAS_ANCHOR_W            => 7,
   GOO_CANVAS_ANCHOR_E            => 8
 );
+
+our constant GooCanvasPathCommandTypeEnum is export := guint32;
+our enum GooCanvasPathCommandTypeEnumEnum is export <
+    GOO_CANVAS_PATH_MOVE_TO
+    GOO_CANVAS_PATH_CLOSE_PATH
+    GOO_CANVAS_PATH_LINE_TO
+    GOO_CANVAS_PATH_HORIZONTAL_LINE_TO
+    GOO_CANVAS_PATH_VERTICAL_LINE_TO
+    GOO_CANVAS_PATH_CURVE_TO
+    GOO_CANVAS_PATH_SMOOTH_CURVE_TO
+    GOO_CANVAS_PATH_QUADRATIC_CURVE_TO
+    GOO_CANVAS_PATH_SMOOTH_QUADRATIC_CURVE_TO
+    GOO_CANVAS_PATH_ELLIPTICAL_ARC
+>;
