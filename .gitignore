@@ -11,3 +11,4 @@ t/004-large-items.t
 scripts.old*/
 *.old
 *.ref-bak
+BuildList
