@@ -3,35 +3,37 @@ use v6.c;
 use NativeCall;
 
 use GLib::Raw::Definitions;
+use GLib::Raw::Object;
 use GLib::Raw::Structs;
 use Goo::Raw::Definitions;
 
 unit package Goo::Raw::Structs;
 
-class GooCanvasBounds is repr('CStruct')         is export does GLib::Roles::Pointers {
+class GooCanvasBounds is repr<CStruct>         is export does GLib::Roles::Pointers {
   has gdouble $.x1 is rw;
   has gdouble $.y1 is rw;
   has gdouble $.x2 is rw;
   has gdouble $.y2 is rw;
 }
 
-class GooCanvasPoints is repr('CStruct')         is export does GLib::Roles::Pointers {
+class GooCanvasPoints is repr<CStruct>         is export does GLib::Roles::Pointers {
   has CArray[num64] $.coords;
   has gint          $num_points;
   has gint          $ref_count;
 }
 
-class GooCanvasStyle is repr('CStruct')          is export does GLib::Roles::Pointers {
+class GooCanvasStyle is repr<CStruct>          is export does GLib::Roles::Pointers {
+  HAS GObject        $.parent_object;
   has GooCanvasStyle $.parent;
   has GArray         $.properties;
 }
 
-class GooCanvasStyleProperty                     is repr('CStruct') is export does GLib::Roles::Pointers {
+class GooCanvasStyleProperty is repr<CStruct> is export does GLib::Roles::Pointers {
   has GQuark $.id;
-  has GValue $.value;
+  HAS GValue $.value;
 }
 
-class GooCanvasLineDash                          is repr('CStruct') is export does GLib::Roles::Pointers {
+class GooCanvasLineDash      is repr<CStruct> is export does GLib::Roles::Pointers {
   has gint    $.ref_count   is rw;
   has gint    $.num_dashes  is rw;
   has gdouble $.dashes      is rw;
@@ -49,7 +51,7 @@ our enum CanvasDataBitmask (
   TOOLTIP     => (0b0001,  0)
 );
 
-class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Pointers {
+class GooCanvasItemSimpleData is repr<CStruct> is export does GLib::Roles::Pointers {
   has GooCanvasStyle  $.style;
   has cairo_matrix_t  $.transform;
   has GArray          $.clip_path_commands;
@@ -107,7 +109,7 @@ class GooCanvasItemSimpleData is repr('CStruct') is export does GLib::Roles::Poi
   method clip_fill_rule is rw {
     Proxy.new:
       FETCH => sub ($) { ($!mask +& CLIP_FILL[0]) +> CLIP_FILL[1] },
-      STORE => -> $, $val where 0..3 {
+      STORE => -> $, $val where 0..15 {
         $!mask +&= +^CLIP_FILL[0] +< CLIP_FILL[1];
         $!mask +|= $val           +< CLIP_FILL[1];
       }
@@ -150,7 +152,7 @@ my enum SimpleCanvasBitmask (
   SIMPLE_NEED_ENTIRE   => 0
 );
 
-# class GooCanvasItemModelSimple is repr('CStruct') is export does GLib::Roles::Pointers {
+# class GooCanvasItemModelSimple is repr<CStruct> is export does GLib::Roles::Pointers {
 #   HAS GObject                 $!parent_object;
 #   has GooCanvasItemModel      $.parent;
 #   HAS GooCanvasItemSimpleData $.simple_data;
@@ -158,7 +160,7 @@ my enum SimpleCanvasBitmask (
 #   has Str                     $!description;
 # }
 
-# class GooCanvasItemSimple is repr('CStruct') is export does GLib::Roles::Pointers {
+# class GooCanvasItemSimple is repr<CStruct> is export does GLib::Roles::Pointers {
 #   HAS GObject                  $!parent_object;
 #
 #   has GooCanvas                $.canvas;
