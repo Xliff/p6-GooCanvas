@@ -9,7 +9,7 @@ use GLib::Roles::Pointers;
 unit package Goo::Raw::Definitions;
 
 # Number of times a forced recompile was deemed necessary.
-constant forced = 3;
+my constant forced = 6;
 
 constant goo is export = 'goocanvas-2.0',v9;
 
