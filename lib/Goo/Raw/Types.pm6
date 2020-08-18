@@ -2,7 +2,6 @@ use v6.c;
 
 use NativeCall;
 
-use CompUnit::Util :re-export;
 use GLib::Raw::Exports;
 use Pango::Raw::Exports;
 use GIO::Raw::Exports;
@@ -43,11 +42,10 @@ need Goo::Raw::Enums;
 need Goo::Raw::Structs;
 
 BEGIN {
-  re-export($_) for
-    |@glib-exports,
-    |@pango-exports,
-    |@gio-exports,
-    |@gdk-exports,
-    |@gtk-exports,
-    |@goo-exports;
+  glib-re-export($_) for |@glib-exports,
+                         |@pango-exports,
+                         |@gio-exports,
+                         |@gdk-exports,
+                         |@gtk-exports,
+                         |@goo-exports;
 }
