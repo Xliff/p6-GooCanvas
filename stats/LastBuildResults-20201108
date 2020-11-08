@@ -1,0 +1,1603 @@
+Dependency Generation
+=====================
+real 0.80
+user 1.24
+sys 0.04
+ === Cairo ===
+Stage start      :   0.000
+Stage parse      :   1.323
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GDK::Pixbuf ===
+Stage start      :   0.000
+Stage parse      :   2.118
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.003
+Stage moar       :   0.000
+ === GDK::RGBA ===
+Stage start      :   0.000
+Stage parse      :   1.542
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GDK::Raw::Definitions ===
+Stage start      :   0.000
+Stage parse      :   1.425
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GDK::Raw::Enums ===
+Stage start      :   0.000
+Stage parse      :   1.401
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.002
+Stage mast       :   0.005
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GDK::Raw::Exports ===
+Stage start      :   0.000
+Stage parse      :   1.259
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === GDK::Raw::Structs ===
+Stage start      :   0.000
+Stage parse      :   1.463
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GDK::Raw::Subs ===
+Stage start      :   0.000
+Stage parse      :   1.421
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GIO::DBus::Raw::Types ===
+Stage start      :   0.000
+Stage parse      :   1.569
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GIO::Raw::Definitions ===
+Stage start      :   0.000
+Stage parse      :   1.551
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GIO::Raw::Enums ===
+Stage start      :   0.000
+Stage parse      :   1.375
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GIO::Raw::Exports ===
+Stage start      :   0.000
+Stage parse      :   1.268
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === GIO::Raw::Quarks ===
+Stage start      :   0.000
+Stage parse      :   1.575
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GIO::Raw::Structs ===
+Stage start      :   0.000
+Stage parse      :   1.534
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GIO::Raw::Subs ===
+Stage start      :   0.000
+Stage parse      :   1.507
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::GList ===
+Stage start      :   0.000
+Stage parse      :   1.530
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Raw::Definitions ===
+Stage start      :   0.000
+Stage parse      :   1.345
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Raw::Enums ===
+Stage start      :   0.000
+Stage parse      :   1.482
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.003
+Stage mast       :   0.006
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GLib::Raw::Exports ===
+Stage start      :   0.000
+Stage parse      :   1.286
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === GLib::Raw::Object ===
+Stage start      :   0.000
+Stage parse      :   1.413
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Raw::ReturnedValue ===
+Stage start      :   0.000
+Stage parse      :   1.240
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === GLib::Raw::Struct_Subs ===
+Stage start      :   0.000
+Stage parse      :   1.386
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Raw::Structs ===
+Stage start      :   0.000
+Stage parse      :   1.418
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Raw::Subs ===
+Stage start      :   0.000
+Stage parse      :   1.393
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.010
+Stage moar       :   0.000
+ === GLib::Roles::ListData ===
+Stage start      :   0.000
+Stage parse      :   1.435
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Roles::Object ===
+Stage start      :   0.000
+Stage parse      :   1.656
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GLib::Roles::Pointers ===
+Stage start      :   0.000
+Stage parse      :   1.303
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Roles::Signals::Generic ===
+Stage start      :   0.000
+Stage parse      :   1.530
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GLib::Value ===
+Stage start      :   0.000
+Stage parse      :   1.504
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GTK::Container ===
+Stage start      :   0.000
+Stage parse      :   3.060
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.009
+Stage moar       :   0.000
+ === GTK::Raw::Definitions ===
+Stage start      :   0.000
+Stage parse      :   1.342
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GTK::Raw::Enums ===
+Stage start      :   0.000
+Stage parse      :   1.363
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.003
+Stage mast       :   0.006
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GTK::Raw::Exports ===
+Stage start      :   0.000
+Stage parse      :   1.201
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === GTK::Raw::Requisition ===
+Stage start      :   0.000
+Stage parse      :   1.598
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.002
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GTK::Raw::Structs ===
+Stage start      :   0.000
+Stage parse      :   1.594
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.002
+Stage moar       :   0.000
+ === GTK::Raw::Subs ===
+Stage start      :   0.000
+Stage parse      :   1.371
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === GTK::Roles::Scrollable ===
+Stage start      :   0.000
+Stage parse      :   2.156
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.011
+Stage moar       :   0.000
+ === GTK::Widget ===
+Stage start      :   0.000
+Stage parse      :   2.968
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.008
+Stage moar       :   0.000
+ === Method::Also ===
+Stage start      :   0.000
+Stage parse      :   1.247
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === NativeCall ===
+Stage start      :   0.000
+Stage parse      :   1.316
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Pango::FontDescription ===
+Stage start      :   0.000
+Stage parse      :   1.570
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Pango::Raw::Definitions ===
+Stage start      :   0.000
+Stage parse      :   1.363
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Pango::Raw::Enums ===
+Stage start      :   0.000
+Stage parse      :   1.401
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Pango::Raw::Exports ===
+Stage start      :   0.000
+Stage parse      :   1.220
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Pango::Raw::Structs ===
+Stage start      :   0.000
+Stage parse      :   1.513
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Pango::Raw::Subs ===
+Stage start      :   0.000
+Stage parse      :   1.498
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Pango::Raw::Types ===
+Stage start      :   0.000
+Stage parse      :   1.615
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.006
+Stage mast       :   0.008
+Stage mbc        :   0.004
+Stage moar       :   0.000
+ === Goo::Raw::Definitions ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Definitions.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.469
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.004
+    Stage mast       :   0.033
+    Stage mbc        :   0.002
+Stage parse      :   2.809
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Goo::Raw::Structs ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Structs.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.820
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.060
+    Stage mbc        :   0.004
+Stage parse      :   3.257
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Exports ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Exports.pm6
+    Stage start      :   0.000
+    Stage parse      :   0.106
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.001
+    Stage mast       :   0.003
+    Stage mbc        :   0.002
+Stage parse      :   1.371
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Enums ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Enums.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.573
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.005
+    Stage mast       :   0.047
+    Stage mbc        :   0.004
+Stage parse      :   2.929
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Goo::Raw::Types ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Types.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.629
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.001
+    Stage mast       :   0.041
+    Stage mbc        :   0.004
+Stage parse      :   4.145
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.014
+Stage mast       :   0.021
+Stage mbc        :   0.017
+Stage moar       :   0.000
+ === Goo::Roles::Ellipse ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Ellipse.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.193
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.013
+    Stage mast       :   0.066
+    Stage mbc        :   0.012
+Stage parse      :   3.736
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Group ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Group.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.139
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.010
+    Stage mast       :   0.059
+    Stage mbc        :   0.011
+Stage parse      :   3.706
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.014
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Path ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Path.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.103
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.012
+    Stage mast       :   0.048
+    Stage mbc        :   0.011
+Stage parse      :   3.622
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Rect ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Rect.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.954
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.015
+    Stage mast       :   0.057
+    Stage mbc        :   0.012
+Stage parse      :   3.482
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Signals::Canvas ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Signals/Canvas.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.857
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.029
+    Stage mast       :   0.051
+    Stage mbc        :   0.014
+Stage parse      :   3.410
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Signals::CanvasItem ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Signals/CanvasItem.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.673
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.061
+    Stage mbc        :   0.026
+Stage parse      :   4.231
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Text ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Text.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.186
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.031
+    Stage mast       :   0.070
+    Stage mbc        :   0.012
+Stage parse      :   3.758
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Raw::Item ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Raw/Item.pm6
+    Stage start      :   0.000
+    Stage parse      :   5.011
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.031
+    Stage mast       :   0.102
+    Stage mbc        :   0.121
+Stage parse      :   6.772
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Goo::Model::Roles::Item ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Roles/Item.pm6
+    Stage start      :   0.000
+    Stage parse      :   3.011
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.050
+    Stage mast       :   0.211
+    Stage mbc        :   0.027
+Adding alias in Goo::Model::Roles::Item for ItemModel...
+Stage parse      :   4.856
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Model::Roles::Item for CanvasItemModel...
+Adding alias in Goo::Model::Roles::Item for GooCanvasItemModel...
+Adding alias in Goo::Model::Roles::Item for can_focus...
+Adding alias in Goo::Model::Roles::Item for pointer_events...
+Adding alias in Goo::Model::Roles::Item for visibility_threshold...
+Adding alias in Goo::Model::Roles::Item for animation_finished...
+Adding alias in Goo::Model::Roles::Item for child_added...
+Adding alias in Goo::Model::Roles::Item for child_moved...
+Adding alias in Goo::Model::Roles::Item for child_notify...
+Adding alias in Goo::Model::Roles::Item for child_removed...
+Adding alias in Goo::Model::Roles::Item for add-child...
+Adding alias in Goo::Model::Roles::Item for find-child...
+Adding alias in Goo::Model::Roles::Item for get-child...
+Adding alias in Goo::Model::Roles::Item for get-child-property...
+Adding alias in Goo::Model::Roles::Item for get-n-children...
+Adding alias in Goo::Model::Roles::Item for n_children...
+Adding alias in Goo::Model::Roles::Item for n-children...
+Adding alias in Goo::Model::Roles::Item for elems...
+Adding alias in Goo::Model::Roles::Item for get-simple-transform...
+Adding alias in Goo::Model::Roles::Item for get-transform...
+Adding alias in Goo::Model::Roles::Item for get-type...
+Adding alias in Goo::Model::Roles::Item for move-child...
+Adding alias in Goo::Model::Roles::Item for remove-child...
+Adding alias in Goo::Model::Roles::Item for set-child-property...
+Adding alias in Goo::Model::Roles::Item for set-simple-transform...
+Adding alias in Goo::Model::Roles::Item for set-transform...
+Adding alias in Goo::Model::Roles::Item for skew-x...
+Adding alias in Goo::Model::Roles::Item for skew-y...
+Adding alias in Goo::Model::Roles::Item for stop-animation...
+ === Goo::Model::Simple ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Simple.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.756
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.036
+    Stage mast       :   0.144
+    Stage mbc        :   0.048
+Stage parse      :   4.581
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Text ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Text.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.109
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.062
+    Stage mbc        :   0.014
+Stage parse      :   3.832
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Boxed ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Boxed.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.811
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.022
+    Stage mast       :   0.070
+    Stage mbc        :   0.044
+Stage parse      :   4.372
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Canvas ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Canvas.pm6
+    Stage start      :   0.000
+    Stage parse      :   6.489
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.044
+    Stage mast       :   0.122
+    Stage mbc        :   0.158
+Stage parse      :   8.368
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Goo::Raw::CanvasItem ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/CanvasItem.pm6
+    Stage start      :   0.000
+    Stage parse      :   6.768
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.048
+    Stage mast       :   0.135
+    Stage mbc        :   0.170
+Stage parse      :   8.674
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.001
+Stage moar       :   0.000
+ === Goo::Raw::CanvasItemSimple ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/CanvasItemSimple.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.888
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.017
+    Stage mast       :   0.056
+    Stage mbc        :   0.057
+Stage parse      :   4.472
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Grid ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Grid.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.150
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.021
+    Stage mast       :   0.055
+    Stage mbc        :   0.018
+Stage parse      :   3.733
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Points ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Points.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.390
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.015
+    Stage mast       :   0.054
+    Stage mbc        :   0.029
+Stage parse      :   3.937
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Polyline ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Polyline.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.309
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.056
+    Stage mbc        :   0.028
+Stage parse      :   3.893
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Rect ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Rect.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.847
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.022
+    Stage mast       :   0.045
+    Stage mbc        :   0.014
+Stage parse      :   3.388
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Raw::Text ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Text.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.291
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.019
+    Stage mast       :   0.053
+    Stage mbc        :   0.052
+Stage parse      :   3.873
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::CanvasItem ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/CanvasItem.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.964
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.070
+    Stage mast       :   0.151
+    Stage mbc        :   0.027
+Adding alias in Goo::Roles::CanvasItem for animation_finished...
+Stage parse      :   4.832
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Roles::CanvasItem for button_press_event...
+Adding alias in Goo::Roles::CanvasItem for button_release_event...
+Adding alias in Goo::Roles::CanvasItem for child_notify...
+Adding alias in Goo::Roles::CanvasItem for enter_notify_event...
+Adding alias in Goo::Roles::CanvasItem for focus_in_event...
+Adding alias in Goo::Roles::CanvasItem for focus_out_event...
+Adding alias in Goo::Roles::CanvasItem for grab_broken_event...
+Adding alias in Goo::Roles::CanvasItem for key_press_event...
+Adding alias in Goo::Roles::CanvasItem for key_release_event...
+Adding alias in Goo::Roles::CanvasItem for leave_notify_event...
+Adding alias in Goo::Roles::CanvasItem for motion_notify_event...
+Adding alias in Goo::Roles::CanvasItem for query_tooltip...
+Adding alias in Goo::Roles::CanvasItem for scroll_event...
+Adding alias in Goo::Roles::CanvasItem for is-static...
+Adding alias in Goo::Roles::CanvasItem for visibility_threshold...
+Adding alias in Goo::Roles::CanvasItem for add-child...
+Adding alias in Goo::Roles::CanvasItem for allocate-area...
+Adding alias in Goo::Roles::CanvasItem for ensure-updated...
+Adding alias in Goo::Roles::CanvasItem for find-child...
+Adding alias in Goo::Roles::CanvasItem for get-bounds...
+Adding alias in Goo::Roles::CanvasItem for bounds...
+Adding alias in Goo::Roles::CanvasItem for get-child...
+Adding alias in Goo::Roles::CanvasItem for get-child-property...
+Adding alias in Goo::Roles::CanvasItem for get-items-at...
+Adding alias in Goo::Roles::CanvasItem for get-model...
+Adding alias in Goo::Roles::CanvasItem for model...
+Adding alias in Goo::Roles::CanvasItem for get-n-children...
+Adding alias in Goo::Roles::CanvasItem for n_children...
+Adding alias in Goo::Roles::CanvasItem for n-children...
+Adding alias in Goo::Roles::CanvasItem for elems...
+Adding alias in Goo::Roles::CanvasItem for get-parent...
+Adding alias in Goo::Roles::CanvasItem for parent...
+Adding alias in Goo::Roles::CanvasItem for get-requested-area...
+Adding alias in Goo::Roles::CanvasItem for get-requested-area-for-width...
+Adding alias in Goo::Roles::CanvasItem for get-requested-height...
+Adding alias in Goo::Roles::CanvasItem for get-simple-transform...
+Adding alias in Goo::Roles::CanvasItem for get-transform...
+Adding alias in Goo::Roles::CanvasItem for get-transform-for-child...
+Adding alias in Goo::Roles::CanvasItem for get-type...
+Adding alias in Goo::Roles::CanvasItem for goo-canvas-bounds-get-type...
+Adding alias in Goo::Roles::CanvasItem for is-visible...
+Adding alias in Goo::Roles::CanvasItem for move-child...
+Adding alias in Goo::Roles::CanvasItem for remove-child...
+Adding alias in Goo::Roles::CanvasItem for request-update...
+Adding alias in Goo::Roles::CanvasItem for set-child-property...
+Adding alias in Goo::Roles::CanvasItem for set-simple-transform...
+Adding alias in Goo::Roles::CanvasItem for set-transform...
+Adding alias in Goo::Roles::CanvasItem for skew-x...
+Adding alias in Goo::Roles::CanvasItem for skew-y...
+Adding alias in Goo::Roles::CanvasItem for stop-animation...
+ === Goo::Roles::Grid ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Grid.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.548
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.056
+    Stage mast       :   0.123
+    Stage mbc        :   0.038
+Stage parse      :   4.204
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Image ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Image.pm6
+    Stage start      :   0.000
+    Stage parse      :   3.390
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.017
+    Stage mast       :   0.069
+    Stage mbc        :   0.022
+Stage parse      :   5.080
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Roles::Table ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Table.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.503
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.124
+    Stage mbc        :   0.014
+Adding alias in Goo::Roles::Table for column_spacing...
+Stage parse      :   4.310
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Roles::Table for homogeneous_columns...
+Adding alias in Goo::Roles::Table for homogeneous_rows...
+Adding alias in Goo::Roles::Table for horz_grid_line_width...
+Adding alias in Goo::Roles::Table for row_spacing...
+Adding alias in Goo::Roles::Table for vert_grid_line_width...
+Adding alias in Goo::Roles::Table for x_border_spacing...
+Adding alias in Goo::Roles::Table for y_border_spacing...
+Adding alias in Goo::Roles::Table for get-child-property...
+Adding alias in Goo::Roles::Table for set-child-properties...
+ === Goo::CanvasItem ===
+Stage start      :   0.000
+
+    precomp lib/Goo/CanvasItem.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.262
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.012
+    Stage mast       :   0.065
+    Stage mbc        :   0.008
+Stage parse      :   3.966
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::CanvasItemSimple ===
+Stage start      :   0.000
+
+    precomp lib/Goo/CanvasItemSimple.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.915
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.071
+    Stage mast       :   0.116
+    Stage mbc        :   0.011
+Adding alias in Goo::CanvasItemSimple for clip_fill_rule...
+Stage parse      :   4.765
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+Adding alias in Goo::CanvasItemSimple for clip_path...
+Adding alias in Goo::CanvasItemSimple for fill_color...
+Adding alias in Goo::CanvasItemSimple for fill_color_rgba...
+Adding alias in Goo::CanvasItemSimple for fill_pattern...
+Adding alias in Goo::CanvasItemSimple for fill_pixbuf...
+Adding alias in Goo::CanvasItemSimple for fill_rule...
+Adding alias in Goo::CanvasItemSimple for font_desc...
+Adding alias in Goo::CanvasItemSimple for hint_metrics...
+Adding alias in Goo::CanvasItemSimple for line_cap...
+Adding alias in Goo::CanvasItemSimple for line_dash...
+Adding alias in Goo::CanvasItemSimple for line_join...
+Adding alias in Goo::CanvasItemSimple for line_join_miter_limit...
+Adding alias in Goo::CanvasItemSimple for line_width...
+Adding alias in Goo::CanvasItemSimple for stroke_color...
+Adding alias in Goo::CanvasItemSimple for stroke_color_rgba...
+Adding alias in Goo::CanvasItemSimple for stroke_pattern...
+Adding alias in Goo::CanvasItemSimple for stroke_pixbuf...
+Adding alias in Goo::CanvasItemSimple for check-in-path...
+Adding alias in Goo::CanvasItemSimple for check-style...
+Adding alias in Goo::CanvasItemSimple for get-path-bounds...
+Adding alias in Goo::CanvasItemSimple for get-type...
+Adding alias in Goo::CanvasItemSimple for paint-path...
+Adding alias in Goo::CanvasItemSimple for set-model...
+Adding alias in Goo::CanvasItemSimple for user-bounds-to-device...
+Adding alias in Goo::CanvasItemSimple for user-bounds-to-parent...
+Adding alias in Goo::CanvasItemSimple for unset-fill-pattern...
+Adding alias in Goo::CanvasItemSimple for unset-stroke-pattern...
+Adding alias in Goo::CanvasItemSimple for unset-patterns...
+Roles: ((CanvasItem))
+R: Goo::Roles::CanvasItem
+ === Goo::Ellipse ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Ellipse.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.157
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.071
+    Stage mbc        :   0.014
+Stage parse      :   3.956
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Grid ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Grid.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.343
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.020
+    Stage mast       :   0.064
+    Stage mbc        :   0.008
+Adding alias in Goo::Grid for GooCanvasGrid...
+Stage parse      :   4.132
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Grid for get-type...
+Roles: ((Grid))
+R: Goo::Roles::Grid
+ === Goo::Group ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Group.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.158
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.021
+    Stage mast       :   0.062
+    Stage mbc        :   0.014
+Stage parse      :   3.936
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Image ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Image.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.217
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.018
+    Stage mast       :   0.074
+    Stage mbc        :   0.014
+Stage parse      :   4.093
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Ellipse ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Ellipse.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.095
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.017
+    Stage mast       :   0.071
+    Stage mbc        :   0.014
+Stage parse      :   3.841
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Grid ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Grid.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.126
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.061
+    Stage mbc        :   0.015
+Stage parse      :   3.864
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Group ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Group.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.137
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.025
+    Stage mast       :   0.054
+    Stage mbc        :   0.017
+Stage parse      :   3.883
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Image ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Image.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.185
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.066
+    Stage mbc        :   0.014
+Stage parse      :   4.047
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Item ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Item.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.611
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.009
+    Stage mast       :   0.059
+    Stage mbc        :   0.009
+Stage parse      :   4.229
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Path ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Path.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.138
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.019
+    Stage mast       :   0.055
+    Stage mbc        :   0.017
+Stage parse      :   3.877
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Rect ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Rect.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.078
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.061
+    Stage mbc        :   0.014
+Stage parse      :   3.784
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Model::Table ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Table.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.175
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.067
+    Stage mbc        :   0.013
+Adding alias in Goo::Model::Table for get-type...
+Stage parse      :   3.975
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Roles: ((Table))
+R: Goo::Roles::Table
+ === Goo::Path ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Path.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.149
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.016
+    Stage mast       :   0.063
+    Stage mbc        :   0.014
+Stage parse      :   3.933
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Points ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Points.pm6
+    Stage start      :   0.000
+    Stage parse      :   1.784
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.025
+    Stage mast       :   0.083
+    Stage mbc        :   0.016
+Adding alias in Goo::Points for Points...
+Stage parse      :   3.391
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Points for GooCanvasPoints...
+Adding alias in Goo::Points for set-points...
+Adding alias in Goo::Points for set-point...
+Adding alias in Goo::Points for get-points...
+Adding alias in Goo::Points for points...
+Adding alias in Goo::Points for get-point...
+Adding alias in Goo::Points for get-type...
+Roles: ((Positional))
+R: Positional
+ === Goo::Rect ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Rect.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.427
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.017
+    Stage mast       :   0.067
+    Stage mbc        :   0.009
+Adding alias in Goo::Rect for GooCanvasRect...
+Stage parse      :   4.213
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Rect for radius_x...
+Adding alias in Goo::Rect for radius_y...
+Adding alias in Goo::Rect for get-type...
+Roles: ()
+ === Goo::Roles::Polyline ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Polyline.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.283
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.076
+    Stage mbc        :   0.032
+Stage parse      :   3.896
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+ === Goo::Table ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Table.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.731
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.070
+    Stage mbc        :   0.018
+Adding alias in Goo::Table for GooCanvasTable...
+Stage parse      :   4.615
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Table for get-type...
+Roles: ((Table))
+R: Goo::Roles::Table
+ === Goo::Text ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Text.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.392
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.010
+    Stage mast       :   0.064
+    Stage mbc        :   0.009
+Adding alias in Goo::Text for GooCanvasText...
+Stage parse      :   4.261
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Text for get-natural-extents...
+Adding alias in Goo::Text for get-type...
+Roles: ((Text))
+R: Goo::Roles::Text
+ === Goo::Widget ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Widget.pm6
+    Stage start      :   0.000
+    Stage parse      :   5.371
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.020
+    Stage mast       :   0.153
+    Stage mbc        :   0.042
+Adding alias in Goo::Widget for GooCanvasWidget...
+Stage parse      :   7.875
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+Roles: ()
+ === Goo::Canvas ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Canvas.pm6
+    Stage start      :   0.000
+    Stage parse      :   6.039
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.041
+    Stage mast       :   0.225
+    Stage mbc        :   0.036
+Adding alias in Goo::Canvas for Canvas...
+Stage parse      :   8.710
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Canvas for GooCanvas...
+Adding alias in Goo::Canvas for item_created...
+Adding alias in Goo::Canvas for root-item-model...
+Adding alias in Goo::Canvas for static-root-item...
+Adding alias in Goo::Canvas for static-root-item-model...
+Adding alias in Goo::Canvas for automatic_bounds...
+Adding alias in Goo::Canvas for background_color...
+Adding alias in Goo::Canvas for background_color_gdk_rgba...
+Adding alias in Goo::Canvas for background_color_rgb...
+Adding alias in Goo::Canvas for bounds_from_origin...
+Adding alias in Goo::Canvas for bounds_padding...
+Adding alias in Goo::Canvas for clear_background...
+Adding alias in Goo::Canvas for integer_layout...
+Adding alias in Goo::Canvas for redraw_when_scrolled...
+Adding alias in Goo::Canvas for resolution_x...
+Adding alias in Goo::Canvas for resolution_y...
+Adding alias in Goo::Canvas for scale_x...
+Adding alias in Goo::Canvas for scale_y...
+Adding alias in Goo::Canvas for root_item...
+Adding alias in Goo::Canvas for convert-bounds-to-item-space...
+Adding alias in Goo::Canvas for convert-from-item-space...
+Adding alias in Goo::Canvas for convert-from-pixels...
+Adding alias in Goo::Canvas for convert-to-item-space...
+Adding alias in Goo::Canvas for convert-to-pixels...
+Adding alias in Goo::Canvas for convert-units-from-pixels...
+Adding alias in Goo::Canvas for convert-units-to-pixels...
+Adding alias in Goo::Canvas for create-cairo-context...
+Adding alias in Goo::Canvas for create-item...
+Adding alias in Goo::Canvas for get-bounds...
+Adding alias in Goo::Canvas for get-default-line-width...
+Adding alias in Goo::Canvas for get-item...
+Adding alias in Goo::Canvas for get-item-at...
+Adding alias in Goo::Canvas for get-items-at...
+Adding alias in Goo::Canvas for get-items-in-area...
+Adding alias in Goo::Canvas for get-root-item...
+Adding alias in Goo::Canvas for get-type...
+Adding alias in Goo::Canvas for grab-focus...
+Adding alias in Goo::Canvas for keyboard-grab...
+Adding alias in Goo::Canvas for keyboard-ungrab...
+Adding alias in Goo::Canvas for pointer-grab...
+Adding alias in Goo::Canvas for pointer-ungrab...
+Adding alias in Goo::Canvas for register-widget-item...
+Adding alias in Goo::Canvas for request-item-redraw...
+Adding alias in Goo::Canvas for request-redraw...
+Adding alias in Goo::Canvas for scroll-to...
+Adding alias in Goo::Canvas for set-bounds...
+Adding alias in Goo::Canvas for unregister-item...
+Adding alias in Goo::Canvas for unregister-widget-item...
+Roles: ((Scrollable) (Canvas))
+R: GTK::Roles::Scrollable
+R: Goo::Roles::Signals::Canvas
+ === Goo::Model::Polyline ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Polyline.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.245
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.020
+    Stage mast       :   0.066
+    Stage mbc        :   0.018
+Adding alias in Goo::Model::Polyline for new-line...
+Stage parse      :   3.961
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.001
+Stage moar       :   0.000
+Adding alias in Goo::Model::Polyline for get-type...
+Roles: ((Polyline))
+R: Goo::Roles::Polyline
+ === Goo::Polyline ===
+Stage start      :   0.000
+
+    precomp lib/Goo/Polyline.pm6
+    Stage start      :   0.000
+    Stage parse      :   2.102
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.022
+    Stage mast       :   0.071
+    Stage mbc        :   0.009
+Adding alias in Goo::Polyline for Polyline...
+Stage parse      :   3.900
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.000
+Stage moar       :   0.000
+Adding alias in Goo::Polyline for GooPolyline...
+Adding alias in Goo::Polyline for new-line...
+Adding alias in Goo::Polyline for get-type...
+Roles: ((Polyline))
+R: Goo::Roles::Polyline
+
+real 318.17
+user 371.68
+sys 24.53
