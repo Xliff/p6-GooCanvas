@@ -1,0 +1,1218 @@
+
+Parallel build started for Raku 2022.03.87.g.2182.d.530.e on MoarVM 2022.03.4.g.5.d.79.a.3.ed.9
+ === Goo::Raw::Exports (1/53) === 
+
+Stage start      :   0.000
+Stage parse      :   3.025
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.005
+Stage mast       :   0.031
+Stage mbc        :   0.009
+Stage moar       :   0.000
+
+Goo::Raw::Exports compile time: 4.64903706
+ === Goo::Raw::Definitions (2/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Raw/Definitions.pm6
+    Stage start      :   0.000
+    Stage parse      :   5.136
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.022
+    Stage mast       :   0.061
+    Stage mbc        :   0.005
+Stage parse      :   8.972
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.006
+Stage mast       :   0.031
+Stage mbc        :   0.004
+Stage moar       :   0.000
+
+Goo::Raw::Definitions compile time: 11.10262963
+ === Goo::Raw::Enums (3/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Enums.pm6
+    Stage start      :   0.000
+    Stage parse      :   5.098
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.039
+    Stage mast       :   0.051
+    Stage mbc        :   0.007
+Stage parse      :   9.904
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.002
+Stage mast       :   0.005
+Stage mbc        :   0.004
+Stage moar       :   0.000
+
+Goo::Raw::Enums compile time: 11.9213107
+ === Goo::Raw::Structs (4/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Structs.pm6
+    Stage start      :   0.000
+    Stage parse      :   6.786
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.034
+    Stage mast       :   0.053
+    Stage mbc        :   0.006
+Stage parse      :  11.319
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Raw::Structs compile time: 13.19823437
+ === Goo::Raw::Types (5/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Types.pm6
+    Stage start      :   0.000
+    Stage parse      :   7.577
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.003
+    Stage mast       :   0.017
+    Stage mbc        :   0.004
+Stage parse      :  12.651
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.017
+Stage mast       :   0.025
+Stage mbc        :   0.025
+Stage moar       :   0.000
+
+Goo::Raw::Types compile time: 14.31478067
+ === Goo::Roles::Path (6/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Path.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   8.468
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.039
+    Stage mbc        :   0.009
+Stage parse      :  13.377
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Path compile time: 15.23366093
+ === Goo::Roles::Text (7/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Text.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   8.614
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.025
+    Stage mast       :   0.091
+    Stage mbc        :   0.017
+Stage parse      :  14.268
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Roles::Text compile time: 16.4264653
+ === Goo::Raw::Boxed (8/53) === 
+
+Stage start      :   0.003
+
+    precomp lib/Goo/Raw/Boxed.pm6
+    Stage start      :   0.002
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   9.128
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.033
+    Stage mast       :   0.180
+    Stage mbc        :   0.024
+Stage parse      :  14.735
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.003
+Stage moar       :   0.000
+
+Goo::Raw::Boxed compile time: 16.69168486
+ === Goo::Roles::Signals::Canvas (9/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Roles/Signals/Canvas.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   8.939
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.045
+    Stage mbc        :   0.014
+Stage parse      :  14.880
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Signals::Canvas compile time: 16.89978189
+ === Goo::Roles::Signals::CanvasItem (10/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Signals/CanvasItem.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   9.401
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.031
+    Stage mast       :   0.077
+    Stage mbc        :   0.029
+Stage parse      :  15.408
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Signals::CanvasItem compile time: 17.32511974
+ === Goo::Raw::Points (11/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Points.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :   9.835
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.037
+    Stage mbc        :   0.020
+Stage parse      :  15.052
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Raw::Points compile time: 17.1610842
+ === Goo::Roles::Group (12/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Group.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  10.292
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.053
+    Stage mbc        :   0.017
+Stage parse      :  16.451
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Group compile time: 18.33652019
+ === Goo::Raw::CanvasItem (13/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/CanvasItem.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  10.718
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.047
+    Stage mast       :   0.109
+    Stage mbc        :   0.088
+Stage parse      :  15.941
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Raw::CanvasItem compile time: 18.3257382
+ === Goo::Roles::Ellipse (14/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Ellipse.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  10.855
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.035
+    Stage mast       :   0.078
+    Stage mbc        :   0.008
+Stage parse      :  17.007
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.002
+Stage mast       :   0.005
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Roles::Ellipse compile time: 18.9005248
+ === Goo::Roles::Grid (15/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Grid.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  11.476
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.288
+    Stage mast       :   0.104
+    Stage mbc        :   0.034
+Stage parse      :  17.263
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Grid compile time: 19.97326541
+ === Goo::Raw::Polyline (16/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Raw/Polyline.pm6
+    Stage start      :   0.002
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  11.837
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.039
+    Stage mast       :   0.065
+    Stage mbc        :   0.034
+Stage parse      :  17.555
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Raw::Polyline compile time: 20.05015
+ === Goo::Raw::Rect (17/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Raw/Rect.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  11.790
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.038
+    Stage mast       :   0.043
+    Stage mbc        :   0.018
+Stage parse      :  17.948
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Raw::Rect compile time: 20.07596621
+ === Goo::Raw::Canvas (18/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Raw/Canvas.pm6
+    Stage start      :   0.002
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  14.113
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.084
+    Stage mast       :   0.117
+    Stage mbc        :   0.155
+Stage parse      :  20.053
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.003
+Stage moar       :   0.000
+
+Goo::Raw::Canvas compile time: 22.63890227
+ === Goo::Roles::Rect (19/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Roles/Rect.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  15.566
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.053
+    Stage mast       :   0.094
+    Stage mbc        :   0.023
+Stage parse      :  20.903
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.005
+Stage mbc        :   0.003
+Stage moar       :   0.000
+
+Goo::Roles::Rect compile time: 22.87679078
+ === Goo::Raw::CanvasItemSimple (20/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Raw/CanvasItemSimple.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  14.239
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.051
+    Stage mast       :   0.069
+    Stage mbc        :   0.041
+Stage parse      :  20.209
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.003
+Stage moar       :   0.000
+
+Goo::Raw::CanvasItemSimple compile time: 22.8325402
+ === Goo::Raw::Text (21/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Raw/Text.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  15.914
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.047
+    Stage mbc        :   0.018
+Stage parse      :  21.085
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Raw::Text compile time: 23.40599885
+ === Goo::Raw::Grid (22/53) === 
+
+Stage start      :   0.005
+
+    precomp lib/Goo/Raw/Grid.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  16.834
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.036
+    Stage mbc        :   0.014
+Stage parse      :  22.235
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Raw::Grid compile time: 24.57600666
+ === Goo::Model::Raw::Item (23/53) === 
+
+Stage start      :   0.002
+
+    precomp lib/Goo/Model/Raw/Item.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  16.942
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.039
+    Stage mast       :   0.070
+    Stage mbc        :   0.062
+Stage parse      :  23.405
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Raw::Item compile time: 25.31979853
+ === Goo::Roles::Image (24/53) === 
+
+Stage start      :   0.009
+
+    precomp lib/Goo/Roles/Image.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    Stage parse      :  16.490
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.038
+    Stage mast       :   0.065
+    Stage mbc        :   0.026
+Stage parse      :  22.289
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.004
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Roles::Image compile time: 25.12914995
+ === Goo::Points (25/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Points.pm6
+    Stage start      :   0.000
+    Stage parse      :   3.132
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.050
+    Stage mast       :   0.074
+    Stage mbc        :   0.021
+Stage parse      :   6.338
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Points compile time: 7.25684762
+ === Goo::Model::Roles::Item (26/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Roles/Item.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Model/Raw/Item.pm6
+    Stage parse      :  19.858
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.047
+    Stage mast       :   0.182
+    Stage mbc        :   0.018
+Stage parse      :  25.495
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Roles::Item compile time: 27.5037673
+ === Goo::Roles::Polyline (27/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Polyline.pm6
+    Stage start      :   0.001
+    Stage parse      :   2.960
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.091
+    Stage mast       :   0.044
+    Stage mbc        :   0.011
+Stage parse      :   6.239
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Polyline compile time: 7.3296448
+ === Goo::Model::Item (28/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Item.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Raw/Item.pm6
+    
+        load    lib/Goo/Model/Roles/Item.pm6
+    Stage parse      :   7.852
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.027
+    Stage mast       :   0.034
+    Stage mbc        :   0.009
+Stage parse      :  10.390
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Item compile time: 11.11477069
+ === Goo::Model::Simple (29/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Model/Simple.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Model/Roles/Item.pm6
+    Stage parse      :  21.153
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.086
+    Stage mast       :   0.116
+    Stage mbc        :   0.009
+Stage parse      :  26.075
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Simple compile time: 28.17944806
+ === Goo::Model::Text (30/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Model/Text.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  21.494
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.032
+    Stage mbc        :   0.011
+Stage parse      :  26.483
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Text compile time: 28.8852762
+ === Goo::Model::Ellipse (31/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Ellipse.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  13.678
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.025
+    Stage mast       :   0.034
+    Stage mbc        :   0.012
+Stage parse      :  15.590
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Model::Ellipse compile time: 16.06814438
+ === Goo::Model::Grid (32/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Grid.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  12.307
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.033
+    Stage mast       :   0.039
+    Stage mbc        :   0.011
+Stage parse      :  14.559
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Model::Grid compile time: 15.13912678
+ === Goo::Model::Group (33/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Group.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  11.150
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.018
+    Stage mast       :   0.046
+    Stage mbc        :   0.012
+Stage parse      :  13.686
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Group compile time: 14.352704
+ === Goo::Model::Image (34/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Image.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  10.092
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.034
+    Stage mbc        :   0.011
+Stage parse      :  12.868
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.003
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Model::Image compile time: 13.66838093
+ === Goo::Model::Path (35/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Path.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  10.092
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.031
+    Stage mbc        :   0.011
+Stage parse      :  12.552
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.002
+Stage moar       :   0.000
+
+Goo::Model::Path compile time: 13.3337139
+ === Goo::Model::Rect (36/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Rect.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :   9.459
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.030
+    Stage mbc        :   0.011
+Stage parse      :  12.241
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Rect compile time: 12.9525847
+ === Goo::Model::Polyline (37/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Polyline.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :   3.917
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.025
+    Stage mast       :   0.034
+    Stage mbc        :   0.012
+Stage parse      :   6.521
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Polyline compile time: 7.57406182
+ === Goo::Roles::CanvasItem (38/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Roles/CanvasItem.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Model/Simple.pm6
+    Stage parse      :  22.448
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.087
+    Stage mast       :   0.101
+    Stage mbc        :   0.020
+Stage parse      :  28.082
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::CanvasItem compile time: 30.27853901
+ === Goo::CanvasItem (39/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/CanvasItem.pm6
+    Stage start      :   0.005
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Roles/CanvasItem.pm6
+    Stage parse      :  22.715
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.040
+    Stage mbc        :   0.007
+Stage parse      :  28.520
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::CanvasItem compile time: 30.80357837
+ === Goo::Roles::Table (40/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Roles/Table.pm6
+    Stage start      :   0.002
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Roles/CanvasItem.pm6
+    Stage parse      :  22.887
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.066
+    Stage mast       :   0.065
+    Stage mbc        :   0.012
+Stage parse      :  28.444
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Roles::Table compile time: 30.99849958
+ === Goo::CanvasItemSimple (41/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/CanvasItemSimple.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/Roles/CanvasItem.pm6
+    Stage parse      :  22.298
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.060
+    Stage mast       :   0.087
+    Stage mbc        :   0.037
+Stage parse      :  28.602
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::CanvasItemSimple compile time: 31.36115866
+ === Goo::Model::Table (42/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Model/Table.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Model/Group.pm6
+    
+        load    lib/Goo/Roles/Table.pm6
+    Stage parse      :  10.986
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.019
+    Stage mast       :   0.028
+    Stage mbc        :   0.009
+Stage parse      :  13.645
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Model::Table compile time: 14.40818074
+ === Goo::Group (43/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Group.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  17.622
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.037
+    Stage mbc        :   0.010
+Stage parse      :  19.632
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.013
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Group compile time: 21.47446605
+ === Goo::Image (44/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Image.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  17.709
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.031
+    Stage mast       :   0.050
+    Stage mbc        :   0.011
+Stage parse      :  19.794
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Image compile time: 21.0491763
+ === Goo::Ellipse (45/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Ellipse.pm6
+    Stage start      :   0.001
+    
+        load    lib/Goo/Raw/Types.pm6
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  24.251
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.033
+    Stage mast       :   0.043
+    Stage mbc        :   0.010
+Stage parse      :  29.932
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.009
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Ellipse compile time: 32.6485222
+ === Goo::Grid (46/53) === 
+
+Stage start      :   0.001
+
+    precomp lib/Goo/Grid.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Raw/Grid.pm6
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  20.482
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.024
+    Stage mast       :   0.039
+    Stage mbc        :   0.017
+Stage parse      :  25.763
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Grid compile time: 28.46150758
+ === Goo::Widget (47/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Widget.pm6
+    Stage start      :   0.000
+    Stage parse      :   5.935
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.028
+    Stage mast       :   0.098
+    Stage mbc        :   0.032
+Stage parse      :   9.410
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Widget compile time: 10.47144166
+ === Goo::Path (48/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Path.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  11.202
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.023
+    Stage mast       :   0.028
+    Stage mbc        :   0.009
+Stage parse      :  14.184
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.007
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Path compile time: 15.03507379
+ === Goo::Table (49/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Table.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/Group.pm6
+    Stage parse      :   8.681
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.030
+    Stage mast       :   0.041
+    Stage mbc        :   0.012
+Stage parse      :  12.023
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Table compile time: 13.08752282
+ === Goo::Rect (50/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Rect.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :  10.323
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.039
+    Stage mast       :   0.057
+    Stage mbc        :   0.009
+Stage parse      :  13.694
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Rect compile time: 14.6345459
+ === Goo::Text (51/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Text.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :   9.019
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.030
+    Stage mast       :   0.040
+    Stage mbc        :   0.005
+Stage parse      :  12.358
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.001
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Text compile time: 13.32077261
+ === Goo::Polyline (52/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Polyline.pm6
+    Stage start      :   0.000
+    
+        load    lib/Goo/CanvasItemSimple.pm6
+    Stage parse      :   7.045
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.026
+    Stage mast       :   0.036
+    Stage mbc        :   0.008
+Stage parse      :   9.250
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.002
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Polyline compile time: 10.30364083
+ === Goo::Canvas (53/53) === 
+
+Stage start      :   0.000
+
+    precomp lib/Goo/Canvas.pm6
+    Stage start      :   0.000
+    Stage parse      :   7.008
+    Stage syntaxcheck:   0.000
+    Stage ast        :   0.000
+    Stage optimize   :   0.076
+    Stage mast       :   0.161
+    Stage mbc        :   0.022
+Stage parse      :  10.303
+Stage syntaxcheck:   0.000
+Stage ast        :   0.000
+Stage optimize   :   0.000
+Stage mast       :   0.001
+Stage mbc        :   0.001
+Stage moar       :   0.000
+
+Goo::Canvas compile time: 11.5277478
+
+Total compile time: 34.5069773s
