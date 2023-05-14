@@ -77,10 +77,10 @@ sub goo_canvas_create_item (GooCanvas $canvas, GooCanvasItemModel $model)
 
 sub goo_canvas_get_bounds (
   GooCanvas $canvas,
-  gdouble $left,
-  gdouble $top,
-  gdouble $right,
-  gdouble $bottom
+  gdouble   $left   is rw,
+  gdouble   $top    is rw,
+  gdouble   $right  is rw,
+  gdouble   $bottom is rw
 )
   is native(goo)
   is export
