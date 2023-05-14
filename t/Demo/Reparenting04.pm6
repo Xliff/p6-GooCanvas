@@ -138,7 +138,7 @@ sub Reparenting_04_MAIN ($ellipse-obj, $group-obj, $rect-obj) is export {
   $app = GTK::Application.new( title => 'org.genex.goo.reparenting' );
 
   setObjects($ellipse-obj, $group-obj, $rect-obj);
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.wait-for-init;
     $app.window.add(create_canvas_features);
     $app.window.show-all;

@@ -77,11 +77,11 @@ sub create_animation_page($rect-obj, $ellipse-obj) is export {
 
   %widgets<button1> = GTK::Button.new_with_label('Start Animation');
   %widgets<hbox>.pack_start(%widgets<button1>);
-  %widgets<button1>.clicked.tap({ start_animation });
+  %widgets<button1>.clicked.tap( -> *@a { start_animation });
 
   %widgets<button2> = GTK::Button.new_with_label('Stop Animation');
   %widgets<hbox>.pack_start(%widgets<button2>);
-  %widgets<button2>.clicked.tap({ .stop_animation for %shapes.values });
+  %widgets<button2>.clicked.tap( -> *@a { .stop_animation for %shapes.values });
 
   %widgets<scrolled_win> = GTK::ScrolledWindow.new;
   %widgets<scrolled_win>.set_size_request(599, 449);
@@ -101,12 +101,12 @@ sub create_animation_page($rect-obj, $ellipse-obj) is export {
 sub Animate_02_MAIN($rect-obj, $ellipse-obj) is export {
   my $app = GTK::Application.new( title => 'org.genex.goo.animate' );
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.wait-for-init;
 
     $app.window.set_default_size(640, 480);
     $app.window.add( create_animation_page($rect-obj, $ellipse-obj) );
-    $app.window.destroy-signal.tap({ $app.exit });
+    $app.window.destroy-signal.tap( -> *@a { $app.exit });
     $app.window.show-all;
   });
 

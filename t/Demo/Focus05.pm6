@@ -162,7 +162,7 @@ sub Focus_05_MAIN($rect-obj) is export {
 
   setupObjects($rect-obj);
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.wait-for-init;
     $app.window.add(create_focus);
     $app.window.show_all;

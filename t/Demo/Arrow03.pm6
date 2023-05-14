@@ -409,7 +409,7 @@ LABEL
 sub Arrow_03_MAIN($rect-obj, $polyline-obj, $text-obj) is export {
   $app = GTK::Application.new( title => 'org.genex.goo.arrow' );
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.wait-for-init;
     %globals<rect-obj   polyline-obj   text-obj> = (
             $rect-obj, $polyline-obj, $text-obj

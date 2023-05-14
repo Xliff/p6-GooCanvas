@@ -196,7 +196,7 @@ sub Clipping_06_MAIN (
 
   setupObjects($ellipse-obj, $rect-obj, $table-obj, $text-obj);
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.window.add(create_clipping_page);
     $app.window.show_all;
   });

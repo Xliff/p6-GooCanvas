@@ -161,7 +161,7 @@ sub Paths_07_MAIN ($path-obj) is export {
 
   setupObjects($path-obj);
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.window.set-size-request(800, 600);
     $app.window.add(create-paths-page);
     $app.window.show_all;

@@ -18,7 +18,7 @@ sub Simple_01_MAIN ($title, $rect-obj, $text-obj) is export {
 
   $app = GTK::Application.new( :$title );
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.wait-for-init;
     $app.window.set_default_size(640, 480);
 

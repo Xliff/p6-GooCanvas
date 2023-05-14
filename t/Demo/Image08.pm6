@@ -66,7 +66,7 @@ sub Image_08_MAIN ($image-obj, $rect-obj) is export {
 
   setupObjects($image-obj, $rect-obj);
 
-  $app.activate.tap({
+  $app.activate.tap( -> *@a {
     $app.window.add(create_canvas_scalability);
     $app.window.show_all;
   });
