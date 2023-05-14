@@ -566,17 +566,23 @@ class Goo::Canvas is GTK::Container {
     goo_canvas_create_item($!gc, $model);
   }
 
-  method get_bounds (
-    Num() $left,
-    Num() $top,
-    Num() $right,
-    Num() $bottom
-  )
+  proto method get_bounds (|)
     is also<get-bounds>
-  {
-    my gdouble ($l, $t, $r, $b) = ($left, $top, $right, $bottom);
+  { * }
+
+  multi method get_bounds {
+    samewith($, $, $, $);
+  }
+  multi method get_bounds (
+    $left   is rw,
+    $top    is rw,
+    $right  is rw,
+    $bottom is rw
+  ) {
+    my gdouble ($l, $t, $r, $b) = 0e0 xx 4;
 
     goo_canvas_get_bounds($!gc, $l, $t, $r, $b);
+    ($left, $top, $right, $bottom) = ($l, $t, $r, $b);
   }
 
   method get_default_line_width is also<get-default-line-width> {
@@ -769,9 +775,9 @@ class Goo::Canvas is GTK::Container {
   }
 
   method set_bounds (
-    Num() $left,
-    Num() $top,
-    Num() $right,
+    Num() $left  ,
+    Num() $top   ,
+    Num() $right ,
     Num() $bottom
   )
     is also<set-bounds>
