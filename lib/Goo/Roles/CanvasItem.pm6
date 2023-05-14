@@ -327,8 +327,8 @@ role Goo::Roles::CanvasItem {
 
   method allocate_area (
     CairoContextObject $cr is copy,
-    GooCanvasBounds() $requested_area,
-    GooCanvasBounds() $allocated_area,
+    GooCanvasBounds()  $requested_area,
+    GooCanvasBounds()  $allocated_area,
     Num() $x_offset,
     Num() $y_offset
   )
@@ -358,9 +358,10 @@ role Goo::Roles::CanvasItem {
     Int() $type
   ) {
     my gdouble ($xx, $yy, $s, $d) = ($x, $y, $scale, $degrees);
-    my guint $t = $type;
+    my gint    ($dur, $st)        = ($duration, $step_time);
+
+    my guint    $t = $type;
     my gboolean $a = $absolute.so.Int;
-    my gint ($dur, $st) = ($duration, $step_time);
 
     goo_canvas_item_animate($!ci, $xx, $yy, $s, $d, $a, $dur, $st, $t);
   }
@@ -407,13 +408,13 @@ role Goo::Roles::CanvasItem {
   { * }
 
   multi method get_items_at (
-    Num() $x,
-    Num() $y,
-    CairoContextObject $cr is copy,
-    Int() $is_pointer_event,
-    Int() $parent_is_visible,
-    :$glist = False;
-    :$raw = False
+    Num()               $x,
+    Num()               $y,
+    CairoContextObject  $cr                  is copy,
+    Int()               $is_pointer_event,
+    Int()               $parent_is_visible,
+                       :$glist                        = False;
+                       :$raw                          = False
   ) {
     my $fi = GList.new;
 
@@ -429,14 +430,14 @@ role Goo::Roles::CanvasItem {
     );
   }
   multi method get_items_at (
-    Num() $x,
-    Num() $y,
-    CairoContextObject $cr is copy,
-    Int() $is_pointer_event,
-    Int() $parent_is_visible,
-    GList() $found_items,
-    :$glist = False,
-    :$raw = False
+    Num()               $x,
+    Num()               $y,
+    CairoContextObject  $cr                  is copy,
+    Int()               $is_pointer_event,
+    Int()               $parent_is_visible,
+    GList()             $found_items,
+                       :$glist                        = False,
+                       :$raw                          = False
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
     my gboolean ($i, $p) =
@@ -500,8 +501,8 @@ role Goo::Roles::CanvasItem {
   }
 
   method get_requested_area (
-    CairoContextObject $cr is copy,
-    GooCanvasBounds() $requested_area
+    CairoContextObject $cr             is copy,
+    GooCanvasBounds()  $requested_area
   )
     is also<get-requested-area>
   {
@@ -510,9 +511,9 @@ role Goo::Roles::CanvasItem {
   }
 
   method get_requested_area_for_width (
-    CairoContextObject $cr is copy,
-    Num() $width,
-    GooCanvasBounds() $requested_area
+    CairoContextObject $cr              is copy,
+    Num()              $width,
+    GooCanvasBounds()  $requested_area
   )
     is also<get-requested-area-for-width>
   {
@@ -528,8 +529,8 @@ role Goo::Roles::CanvasItem {
   }
 
   method get_requested_height (
-    CairoContextObject $cr is copy,
-    Num() $width
+    CairoContextObject $cr    is copy,
+    Num()              $width
   )
     is also<get-requested-height>
   {
@@ -566,7 +567,7 @@ role Goo::Roles::CanvasItem {
   }
 
   method get_transform_for_child (
-    GooCanvasItem() $child,
+    GooCanvasItem()   $child,
     CairoMatrixObject $transform
   )
     is also<get-transform-for-child>
@@ -604,9 +605,9 @@ role Goo::Roles::CanvasItem {
   }
 
   method paint (
-    CairoContextObject $cr is copy,
-    GooCanvasBounds() $bounds,
-    Num() $scale
+    CairoContextObject $cr      is copy,
+    GooCanvasBounds()  $bounds,
+    Num()              $scale
   ) {
     my gdouble $s = $scale;
     $cr .= context if $cr ~~ Cairo::Context;
@@ -649,8 +650,8 @@ role Goo::Roles::CanvasItem {
 
   multi method set_child_property (
     GooCanvasItem() $child,
-    Str() $property_name,
-    GValue() $value
+    Str()           $property_name,
+    GValue()        $value
   ) {
     goo_canvas_item_set_child_property($!ci, $child, $property_name, $value);
   }
