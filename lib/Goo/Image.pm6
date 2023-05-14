@@ -48,8 +48,8 @@ class Goo::Image is Goo::CanvasItemSimple {
   multi method new (
     GooCanvasItem() $parent,
     GdkPixbuf()     $pixbuf,
-    Num()           $x,
-    Num()           $y
+    Num()           $x       = 0,
+    Num()           $y       = 0
   ) {
     my gdouble ($xx, $yy) = ($x, $y);
     my $image = goo_canvas_image_new($parent, $pixbuf, $xx, $yy, Str);
