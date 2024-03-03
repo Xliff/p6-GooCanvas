@@ -12,6 +12,7 @@ use Goo::Raw::Exports;
 unit package Goo::Raw::Types;
 
 need Cairo;
+need GLib::Raw::Debug;
 need GLib::Raw::Definitions;
 need GLib::Raw::Enums;
 need GLib::Raw::Exceptions;
